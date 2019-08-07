@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Peent.Application\Peent.Application.csproj" />
+    <ProjectReference Include="..\Peent.Domain\Peent.Domain.csproj" />
+    <ProjectReference Include="..\Peent.Infrastructure\Peent.Infrastructure.csproj" />
+    <ProjectReference Include="..\Peent.Persistence\Peent.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
