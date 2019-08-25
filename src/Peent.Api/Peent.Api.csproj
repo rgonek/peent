@@ -6,8 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +17,10 @@
     <ProjectReference Include="..\Peent.Domain\Peent.Domain.csproj" />
     <ProjectReference Include="..\Peent.Infrastructure\Peent.Infrastructure.csproj" />
     <ProjectReference Include="..\Peent.Persistence\Peent.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
