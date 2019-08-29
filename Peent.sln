@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.Api", "src\Peent.Api\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.Web", "src\Peent.Web\Peent.Web.csproj", "{2C545613-88E5-4B1F-B421-77D1315FC7AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peent.IntegrationTests", "tests\Peent.IntegrationTests\Peent.IntegrationTests.csproj", "{74C58EB6-9D21-4D65-BB43-17B6948A2F03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peent.UnitTests", "tests\Peent.UnitTests\Peent.UnitTests.csproj", "{2AA19E0E-1096-4A77-B2E3-6D30C94187AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,14 @@ Global
 		{2C545613-88E5-4B1F-B421-77D1315FC7AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C545613-88E5-4B1F-B421-77D1315FC7AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C545613-88E5-4B1F-B421-77D1315FC7AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C58EB6-9D21-4D65-BB43-17B6948A2F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C58EB6-9D21-4D65-BB43-17B6948A2F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C58EB6-9D21-4D65-BB43-17B6948A2F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C58EB6-9D21-4D65-BB43-17B6948A2F03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AA19E0E-1096-4A77-B2E3-6D30C94187AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AA19E0E-1096-4A77-B2E3-6D30C94187AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AA19E0E-1096-4A77-B2E3-6D30C94187AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AA19E0E-1096-4A77-B2E3-6D30C94187AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +85,8 @@ Global
 		{131BBAC5-931E-478E-B7E3-19B27C36313B} = {CA18F571-E646-4569-A760-EB5558215FEC}
 		{4FDF1A54-0560-41BA-BF33-20D8B9B7DE5D} = {2F5C7AA4-07CF-489B-B216-B81F171873A5}
 		{2C545613-88E5-4B1F-B421-77D1315FC7AB} = {2F5C7AA4-07CF-489B-B216-B81F171873A5}
+		{74C58EB6-9D21-4D65-BB43-17B6948A2F03} = {4CB2E54E-17EF-4105-91E5-1CEDF7DED8BA}
+		{2AA19E0E-1096-4A77-B2E3-6D30C94187AA} = {4CB2E54E-17EF-4105-91E5-1CEDF7DED8BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A5DD1BD4-41F1-4485-AE20-6470E4CE1BCA}
