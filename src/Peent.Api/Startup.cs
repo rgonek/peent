@@ -1,9 +1,12 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Peent.Application.Categories.Queries.GetCategory;
+using Peent.Application.Infrastructure;
 using Peent.Persistence;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -23,11 +26,6 @@ namespace Peent.Api
         {
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "Peent API", Version = "V1" });
-            });
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -35,6 +33,25 @@ namespace Peent.Api
             //services.AddDefaultIdentity<ApplicationUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>()
             //    .AddDefaultTokenProviders();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Peent API", Version = "V1" });
+            });
+
+            services.AddMediatR(typeof(GetCategoryQueryHandler));
+            services.AddScoped(
+                typeof(IPipelineBehavior<,>),
+                typeof(TransactionBehavior<,>));
+            services.AddScoped(
+                typeof(IPipelineBehavior<,>),
+                typeof(LoggingBehavior<,>));
+            services.AddScoped(
+                typeof(IPipelineBehavior<,>),
+                typeof(ValidationBehavior<,>));
+            services.AddScoped(
+                typeof(IPipelineBehavior<,>),
+                typeof(PerformanceBehaviour<,>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.Infrastructure", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.Persistence", "src\Peent.Persistence\Peent.Persistence.csproj", "{131BBAC5-931E-478E-B7E3-19B27C36313B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peent.Api", "src\Peent.Api\Peent.Api.csproj", "{4FDF1A54-0560-41BA-BF33-20D8B9B7DE5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.Api", "src\Peent.Api\Peent.Api.csproj", "{4FDF1A54-0560-41BA-BF33-20D8B9B7DE5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peent.Web", "src\Peent.Web\Peent.Web.csproj", "{2C545613-88E5-4B1F-B421-77D1315FC7AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.Web", "src\Peent.Web\Peent.Web.csproj", "{2C545613-88E5-4B1F-B421-77D1315FC7AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
