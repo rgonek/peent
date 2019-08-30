@@ -1,4 +1,6 @@
-﻿namespace Peent.Application.Categories.Models
+﻿using Peent.Domain.Entities;
+
+namespace Peent.Application.Categories.Models
 {
     public class CategoryModel
     {
@@ -6,5 +8,12 @@
 
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public CategoryModel(Category category)
+        {
+            Id = category.Id;
+            Name = category.Name;
+            Description = category.Description;
+        }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using System.Data;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Configuration;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
 

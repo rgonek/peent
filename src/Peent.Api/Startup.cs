@@ -1,12 +1,15 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
+using Peent.Application.Interfaces;
+using Peent.Domain.Entities;
 using Peent.Persistence;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -30,9 +33,12 @@ namespace Peent.Api
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddDefaultIdentity<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentityCore<ApplicationUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>().HttpContext.User);
 
             services.AddSwaggerGen(c =>
             {

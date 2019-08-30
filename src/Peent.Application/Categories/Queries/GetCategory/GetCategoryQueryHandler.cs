@@ -25,7 +25,7 @@ namespace Peent.Application.Categories.Queries.GetCategory
             if (category == null)
                 throw new NotFoundException(nameof(Category), query.Id);
 
-            return new CategoryModel();
+            return new CategoryModel(category);
         }
     }
 }

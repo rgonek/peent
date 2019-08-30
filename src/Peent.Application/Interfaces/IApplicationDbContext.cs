@@ -8,6 +8,7 @@ namespace Peent.Application.Interfaces
 {
     public interface IApplicationDbContext
     {
+        DbSet<ApplicationUser> Users { get; set; }
         DbSet<Account> Accounts { get; set; }
         DbSet<Category> Categories { get; set; }
         DbSet<Currency> Currencies { get; set; }
@@ -16,6 +17,9 @@ namespace Peent.Application.Interfaces
         DbSet<TransactionEntry> TransactionEntries { get; set; }
         DbSet<Workspace> Workspaces { get; set; }
 
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
+
+        EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry<TEntity> Remove<TEntity>(TEntity entity) where TEntity : class;
         int SaveChanges();
