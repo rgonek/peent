@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Peent.Application.Categories.Queries.GetCategory;
-using Peent.Domain.Entities;
 using AutoFixture;
 using FluentAssertions;
-using Peent.Domain.ValueObjects;
+using Peent.Application.Categories.Commands.CreateCategory;
 using Xunit;
 using static Peent.IntegrationTests.DatabaseFixture;
 
@@ -16,23 +15,18 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var category = new Category
+            var command = new CreateCategoryCommand
             {
                 Name = F.Create<string>(),
-                Description = F.Create<string>(),
-                Workspace = new Workspace
-                {
-                    CreationInfo = new CreationInfo(user.Id)
-                },
-                CreationInfo = new CreationInfo(user.Id)
+                Description = F.Create<string>()
             };
-            await InsertAsync(category);
+            var categoryId = await SendAsync(command);
 
-            var categoryModel = await SendAsync(new GetCategoryQuery { Id = category.Id });
+            var categoryModel = await SendAsync(new GetCategoryQuery { Id = categoryId });
 
-            categoryModel.Id.Should().Be(category.Id);
-            categoryModel.Name.Should().Be(category.Name);
-            categoryModel.Description.Should().Be(category.Description);
+            categoryModel.Id.Should().Be(categoryId);
+            categoryModel.Name.Should().Be(command.Name);
+            categoryModel.Description.Should().Be(command.Description);
         }
     }
 }
