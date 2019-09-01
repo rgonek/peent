@@ -36,7 +36,8 @@ namespace Peent.Application.Categories.Commands.EditCategory
                 .SingleOrDefaultAsync(x =>
                     x.Id != command.Id &&
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
+                    x.DeletionInfo.DeletionDate.HasValue == false,
                     token);
 
             if (existingCategory != null)

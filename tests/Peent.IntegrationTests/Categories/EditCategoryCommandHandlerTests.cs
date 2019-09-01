@@ -5,6 +5,7 @@ using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
+using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Categories.Commands.EditCategory;
 using static Peent.IntegrationTests.DatabaseFixture;
 using static FluentAssertions.FluentActions;
@@ -87,6 +88,20 @@ namespace Peent.IntegrationTests.Categories
                     Name = command2.Name
                 }))
                 .Should().Throw<DuplicateException>();
+        }
+
+        [Fact]
+        public async Task when_category_with_given_name_exists_but_is_deleted__do_not_throw()
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
+            var command = F.Create<CreateCategoryCommand>();
+            var categoryId = await SendAsync(command);
+            var command2 = F.Create<CreateCategoryCommand>();
+            await SendAsync(command2);
+            await SendAsync(new DeleteCategoryCommand { Id = categoryId });
+
+            await SendAsync(command);
         }
 
         [Fact]

@@ -4,6 +4,7 @@ using Xunit;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Categories.Commands.CreateCategory;
+using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Exceptions;
 using static Peent.IntegrationTests.DatabaseFixture;
 using static FluentAssertions.FluentActions;
@@ -97,6 +98,22 @@ namespace Peent.IntegrationTests.Categories
 
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+            await SendAsync(command);
+        }
+
+        [Fact]
+        public async Task when_category_with_given_name_exists_but_is_deleted__do_not_throw()
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
+            var command = new CreateCategoryCommand
+            {
+                Name = F.Create<string>(),
+                Description = F.Create<string>()
+            };
+            var categoryId = await SendAsync(command);
+            await SendAsync(new DeleteCategoryCommand {Id = categoryId});
+
             await SendAsync(command);
         }
     }

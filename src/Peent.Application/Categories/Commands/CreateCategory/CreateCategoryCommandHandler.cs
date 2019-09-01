@@ -26,7 +26,8 @@ namespace Peent.Application.Categories.Commands.CreateCategory
             var existingCategory = await _db.Categories
                 .SingleOrDefaultAsync(x =>
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
+                    x.DeletionInfo.DeletionDate.HasValue == false,
                     token);
 
             if (existingCategory != null)
