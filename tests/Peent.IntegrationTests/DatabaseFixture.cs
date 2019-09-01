@@ -1,14 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
+using FakeItEasy;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Peent.Api;
+using Peent.Application.Categories.Queries.GetCategory;
+using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
+using Peent.Domain.ValueObjects;
 using Peent.Persistence;
 using Respawn;
 
@@ -16,10 +20,11 @@ namespace Peent.IntegrationTests
 {
     public class DatabaseFixture
     {
-        public static Fixture F = new Fixture();
+        public static readonly Fixture F = new Fixture();
         private static readonly Checkpoint _checkpoint;
         private static readonly IConfigurationRoot _configuration;
-        public static readonly IServiceScopeFactory _scopeFactory;
+        private static readonly IServiceScopeFactory _scopeFactory;
+        public static readonly IUserAccessor UserAccessor;
 
         static DatabaseFixture()
         {
@@ -28,13 +33,26 @@ namespace Peent.IntegrationTests
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
             _configuration = builder.Build();
+            UserAccessor = A.Fake<IUserAccessor>();
 
-            var startup = new Startup(_configuration);
+            //var startup = new Startup(_configuration);
             var services = new ServiceCollection();
-            startup.ConfigureServices(services);
+            ConfigureServices(services);
             var provider = services.BuildServiceProvider();
             _scopeFactory = provider.GetService<IServiceScopeFactory>();
             _checkpoint = new Checkpoint();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    _configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
+
+            services.AddScoped(sp => UserAccessor);
+
+            services.AddMediatR(typeof(GetCategoryQueryHandler));
         }
 
         public static Task ResetCheckpoint() => _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
@@ -166,7 +184,7 @@ namespace Peent.IntegrationTests
         public static ValueTask<T> FindAsync<T>(int id)
             where T : class
         {
-            return ExecuteDbContextAsync(db => db.Set<T>().FindAsync());
+            return ExecuteDbContextAsync(db => db.Set<T>().FindAsync(id));
         }
 
         public static ValueTask<T> FindAsync<T>(long id)
@@ -199,6 +217,38 @@ namespace Peent.IntegrationTests
 
                 return new ValueTask(mediator.Send(request));
             });
+        }
+
+        public static async Task<ApplicationUser> CreateUserAsync()
+        {
+            var user = F.Create<ApplicationUser>();
+            await InsertAsync(user);
+
+            return user;
+        }
+
+        public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user)
+        {
+            var workspace = new Workspace
+            {
+                CreationInfo = new CreationInfo(user.Id)
+            };
+            await InsertAsync(workspace);
+
+            return workspace;
+        }
+
+        public static ClaimsPrincipal SetCurrentUser(ApplicationUser user, Workspace workspace)
+        {
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(KnownClaims.WorkspaceId, workspace.Id.ToString()),
+            }, "mock"));
+            A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
+
+            return claimsPrincipal;
         }
     }
 }

@@ -16,6 +16,12 @@ namespace Peent.Domain.ValueObjects
             LastModifiedBy = lastModifiedBy;
         }
 
+        public ModificationInfo(string lastModifiedById)
+        {
+            LastModificationDate = Clock.UtcNow;
+            LastModifiedById = lastModifiedById;
+        }
+
         public virtual DateTime? LastModificationDate { get; protected internal set; }
         public virtual string LastModifiedById { get; protected set; }
         public virtual ApplicationUser LastModifiedBy { get; protected internal set; }

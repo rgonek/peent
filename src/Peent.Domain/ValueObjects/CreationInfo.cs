@@ -16,6 +16,12 @@ namespace Peent.Domain.ValueObjects
             CreatedBy = createdBy;
         }
 
+        public CreationInfo(string createdById)
+        {
+            CreationDate = Clock.UtcNow;
+            CreatedById = createdById;
+        }
+
         public virtual DateTime CreationDate { get; protected set; }
         public virtual string CreatedById { get; protected set; }
         public virtual ApplicationUser CreatedBy { get; protected set; }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Peent.Api.Infrastructure;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
@@ -37,8 +38,8 @@ namespace Peent.Api
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>().HttpContext.User);
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddSwaggerGen(c =>
             {

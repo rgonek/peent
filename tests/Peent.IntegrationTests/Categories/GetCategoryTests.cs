@@ -14,24 +14,17 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_get_category()
         {
-            var user = new ApplicationUser
-            {
-                Email = F.Create<string>(),
-                UserName = F.Create<string>(),
-                NormalizedEmail = F.Create<string>(),
-                NormalizedUserName = F.Create<string>(),
-                PasswordHash = F.Create<string>(),
-                FirstName = F.Create<string>()
-            };
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var category = new Category
             {
                 Name = F.Create<string>(),
                 Description = F.Create<string>(),
                 Workspace = new Workspace
                 {
-                    CreationInfo = new CreationInfo(user)
+                    CreationInfo = new CreationInfo(user.Id)
                 },
-                CreationInfo = new CreationInfo(user)
+                CreationInfo = new CreationInfo(user.Id)
             };
             await InsertAsync(category);
 
