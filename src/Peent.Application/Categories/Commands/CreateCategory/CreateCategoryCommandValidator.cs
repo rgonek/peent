@@ -8,6 +8,7 @@ namespace Peent.Application.Categories.Commands.CreateCategory
         {
             RuleFor(x => x.Name)
                 .NotNull()
+                .NotEmpty()
                 .MaximumLength(1000);
             RuleFor(x => x.Description)
                 .MaximumLength(2000);
