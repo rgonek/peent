@@ -29,16 +29,6 @@ namespace Peent.Api.Controllers
             {
                 return Conflict(duplicateException.Message);
             }
-            catch (ValidationException validationException)
-            {
-                var message = validationException.Message;
-                var failures = validationException.Failures;
-                foreach (var failure in failures)
-                {
-                    message += Environment.NewLine + $"{failure.Key} - {string.Join(";", failure.Value)}";
-                }
-                return BadRequest(message);
-            }
         }
     }
 }

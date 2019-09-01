@@ -12,8 +12,8 @@ namespace Peent.Application.Exceptions
 
         public override string Message =>
             string.IsNullOrEmpty(KeyName) ?
-                $"Entity \"{EntityName}\" ({Key}) was not found.":
-                $"Entity \"{EntityName}\" ({KeyName}: {Key}) was not found.";
+                $"Entity \"{EntityName}\" ({Key}) already exists." :
+                $"Entity \"{EntityName}\" ({KeyName}: {Key}) already exists.";
 
         public DuplicateException(string name, object key)
         {

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Peent.Application.Categories.Commands.CreateCategory;
 using Peent.Application.Exceptions;
@@ -7,6 +8,7 @@ using Xunit;
 using AutoFixture;
 using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Categories.Commands.EditCategory;
+using Peent.Common.Time;
 using static Peent.IntegrationTests.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
@@ -70,6 +72,28 @@ namespace Peent.IntegrationTests.Categories
 
             var category = await FindAsync<Category>(categoryId);
             category.ModificationInfo.LastModifiedById.Should().Be(user.Id);
+        }
+
+        [Fact]
+        public async Task when_category_is_edited__lastModificationDate_is_set_to_utc_now()
+        {
+            var utcNow = new DateTime(2019, 02, 02, 11, 28, 32);
+            using (new ClockOverride(() => utcNow, () => utcNow.AddHours(2)))
+            {
+                var user = await CreateUserAsync();
+                SetCurrentUser(user, await CreateWorkspaceAsync(user));
+                var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
+                var command = new EditCategoryCommand
+                {
+                    Id = categoryId,
+                    Name = F.Create<string>(),
+                    Description = F.Create<string>()
+                };
+                await SendAsync(command);
+
+                var category = await FindAsync<Category>(categoryId);
+                category.ModificationInfo.LastModificationDate.Should().Be(utcNow);
+            }
         }
 
         [Fact]
