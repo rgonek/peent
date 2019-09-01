@@ -1,18 +1,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Peent.Api.Infrastructure;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
 using Peent.Persistence;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace Peent.Api
 {
@@ -43,7 +42,7 @@ namespace Peent.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Peent API", Version = "V1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Peent API", Version = "V1" });
             });
 
             services.AddMediatR(typeof(GetCategoryQueryHandler));

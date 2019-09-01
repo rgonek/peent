@@ -8,7 +8,8 @@ namespace Peent.Api.Controllers
     [Route("[controller]")]
     public class CategoriesController : BaseController
     {
-        public async Task<IActionResult> Get(GetCategoryQuery query)
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] GetCategoryQuery query)
         {
             return await Execute(query);
         }
