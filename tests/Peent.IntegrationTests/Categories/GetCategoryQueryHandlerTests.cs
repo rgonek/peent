@@ -11,7 +11,7 @@ using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class GetCategoryTests : IntegrationTestBase
+    public class GetCategoryQueryHandlerTests : IntegrationTestBase
     {
         [Fact]
         public async Task when_category_exists__return_it()

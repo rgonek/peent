@@ -8,7 +8,7 @@ using static Peent.IntegrationTests.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class CreateCategoryTests : IntegrationTestBase
+    public class CreateCategoryCommandHandlerTests : IntegrationTestBase
     {
         [Fact]
         public async Task should_create_category()
