@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +29,9 @@ namespace Peent.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetCategoryQueryValidator>());
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -52,9 +56,6 @@ namespace Peent.Api
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(LoggingBehavior<,>));
-            services.AddScoped(
-                typeof(IPipelineBehavior<,>),
-                typeof(ValidationBehavior<,>));
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(PerformanceBehaviour<,>));

@@ -35,7 +35,6 @@ namespace Peent.IntegrationTests
             _configuration = builder.Build();
             UserAccessor = A.Fake<IUserAccessor>();
 
-            //var startup = new Startup(_configuration);
             var services = new ServiceCollection();
             ConfigureServices(services);
             var provider = services.BuildServiceProvider();
