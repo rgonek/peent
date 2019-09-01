@@ -4,7 +4,9 @@ using Xunit;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Categories.Commands.CreateCategory;
+using Peent.Application.Exceptions;
 using static Peent.IntegrationTests.DatabaseFixture;
+using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Categories
 {
@@ -29,7 +31,7 @@ namespace Peent.IntegrationTests.Categories
         }
 
         [Fact]
-        public async Task when_category_is_created_createdBy_is_set_to_current_user()
+        public async Task when_category_is_created__createdBy_is_set_to_current_user()
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
@@ -46,7 +48,7 @@ namespace Peent.IntegrationTests.Categories
         }
 
         [Fact]
-        public async Task when_category_is_created_workspace_is_set_to_current_user_workspace()
+        public async Task when_category_is_created__workspace_is_set_to_current_user_workspace()
         {
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
@@ -63,6 +65,39 @@ namespace Peent.IntegrationTests.Categories
             category.WorkspaceId.Should().Be(workspace.Id);
             var fetchedWorkspace = await FindAsync<Workspace>(workspace.Id);
             fetchedWorkspace.CreationInfo.CreatedById.Should().Be(user.Id);
+        }
+
+        [Fact]
+        public async Task when_category_with_given_name_exists__throws()
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
+            var command = new CreateCategoryCommand
+            {
+                Name = F.Create<string>(),
+                Description = F.Create<string>()
+            };
+            await SendAsync(command);
+
+            Invoking(async () => await SendAsync(command))
+                .Should().Throw<DuplicateException>();
+        }
+
+        [Fact]
+        public async Task when_categorY_with_given_name_exists_in_antoher_workspace__do_not_throw()
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
+            var command = new CreateCategoryCommand
+            {
+                Name = F.Create<string>(),
+                Description = F.Create<string>()
+            };
+            await SendAsync(command);
+
+            var user2 = await CreateUserAsync();
+            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+            await SendAsync(command);
         }
     }
 }

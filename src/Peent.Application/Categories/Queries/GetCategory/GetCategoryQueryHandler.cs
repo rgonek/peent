@@ -24,12 +24,12 @@ namespace Peent.Application.Categories.Queries.GetCategory
         public async Task<CategoryModel> Handle(GetCategoryQuery query, CancellationToken token)
         {
             var category = await _db.Categories
-                .SingleOrDefaultAsync(x => x.Id == query.Id
-                                           && x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                .SingleOrDefaultAsync(x => x.Id == query.Id &&
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
                     cancellationToken: token);
 
             if (category == null)
-                throw new NotFoundException(nameof(Category), query.Id);
+                throw NotFoundException.Create<Category>(x => x.Id, query.Id);
 
             return new CategoryModel(category);
         }
