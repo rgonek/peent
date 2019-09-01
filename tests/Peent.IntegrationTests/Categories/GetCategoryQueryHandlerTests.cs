@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Peent.Application.Categories.Queries.GetCategory;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Categories.Commands.CreateCategory;
+using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Exceptions;
 using Xunit;
 using static Peent.IntegrationTests.DatabaseFixture;
@@ -18,11 +18,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
 
             var categoryModel = await SendAsync(new GetCategoryQuery { Id = categoryId });
@@ -39,6 +35,19 @@ namespace Peent.IntegrationTests.Categories
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
 
             Invoking(async () => await SendAsync(new GetCategoryQuery { Id = 0 }))
+                .Should().Throw<NotFoundException>();
+        }
+
+        [Fact]
+        public async Task when_category_exists_but_is_deleted__throws()
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
+            var command = F.Create<CreateCategoryCommand>();
+            var categoryId = await SendAsync(command);
+            await SendAsync(new DeleteCategoryCommand {Id = categoryId});
+
+            Invoking(async () => await SendAsync(new GetCategoryQuery { Id = categoryId }))
                 .Should().Throw<NotFoundException>();
         }
 
