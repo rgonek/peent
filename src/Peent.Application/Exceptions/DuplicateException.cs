@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Peent.Common;
 
 namespace Peent.Application.Exceptions
 {
@@ -11,8 +12,8 @@ namespace Peent.Application.Exceptions
 
         public override string Message =>
             string.IsNullOrEmpty(KeyName) ?
-                $"Entity \"{EntityName}\" ({Key}) already exists." :
-                $"Entity \"{EntityName}\" ({KeyName}: {Key}) already exists.";
+                $"Entity \"{EntityName}\" ({Key}) was not found.":
+                $"Entity \"{EntityName}\" ({KeyName}: {Key}) was not found.";
 
         public DuplicateException(string name, object key)
         {
@@ -36,8 +37,7 @@ namespace Peent.Application.Exceptions
         public static DuplicateException Create<TEntity>(Expression<Func<TEntity, object>> expression, object key)
             where TEntity : class
         {
-            var member = (MemberExpression)expression.Body;
-            return new DuplicateException(typeof(TEntity).Name, member.Member.Name, key);
+            return new DuplicateException(typeof(TEntity).Name, expression.GetMemberName(), key);
         }
     }
 }

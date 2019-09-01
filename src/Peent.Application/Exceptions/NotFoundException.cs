@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Peent.Common;
 
 namespace Peent.Application.Exceptions
 {
@@ -36,8 +37,7 @@ namespace Peent.Application.Exceptions
         public static NotFoundException Create<TEntity>(Expression<Func<TEntity, object>> expression, object key)
             where TEntity : class
         {
-            var member = (MemberExpression)expression.Body;
-            return new NotFoundException(typeof(TEntity).Name, member.Member.Name, key);
+            return new NotFoundException(typeof(TEntity).Name, expression.GetMemberName(), key);
         }
     }
 }

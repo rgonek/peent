@@ -84,7 +84,7 @@ namespace Peent.IntegrationTests.Categories
         }
 
         [Fact]
-        public async Task when_categorY_with_given_name_exists_in_antoher_workspace__do_not_throw()
+        public async Task when_category_with_given_name_exists_in_another_workspace__do_not_throw()
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
