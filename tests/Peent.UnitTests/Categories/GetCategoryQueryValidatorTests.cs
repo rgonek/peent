@@ -1,8 +1,6 @@
-﻿using AutoFixture;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
 using Peent.Application.Categories.Queries.GetCategory;
 using Xunit;
-using static Peent.UnitTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Categories
 {
