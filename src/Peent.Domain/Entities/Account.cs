@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Peent.Domain.ValueObjects;
+﻿using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Entities
 {
@@ -11,6 +10,7 @@ namespace Peent.Domain.Entities
         public Workspace Workspace { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public AccountType Type { get; set; }
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
 

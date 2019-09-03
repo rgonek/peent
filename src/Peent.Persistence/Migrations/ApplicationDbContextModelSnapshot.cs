@@ -169,6 +169,9 @@ namespace Peent.Persistence.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasMaxLength(1000);
 
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
+
                     b.Property<int>("WorkspaceId")
                         .HasColumnType("int");
 
