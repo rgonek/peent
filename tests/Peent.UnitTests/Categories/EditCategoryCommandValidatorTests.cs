@@ -29,7 +29,7 @@ namespace Peent.UnitTests.Categories
         }
 
         [Fact]
-        public void when_name_is_greater_than_0__should_not_have_error()
+        public void when_id_is_greater_than_0__should_not_have_error()
         {
             _validator.ShouldNotHaveValidationErrorFor(x => x.Id, 1);
         }
