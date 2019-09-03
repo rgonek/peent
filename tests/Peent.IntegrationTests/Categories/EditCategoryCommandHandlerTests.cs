@@ -23,12 +23,10 @@ namespace Peent.IntegrationTests.Categories
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            var command = new EditCategoryCommand
-            {
-                Id = categoryId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Build<EditCategoryCommand>()
+                .With(x => x.Id, categoryId)
+                .Create();
+
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
@@ -45,12 +43,10 @@ namespace Peent.IntegrationTests.Categories
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, workspace);
-            var command = new EditCategoryCommand
-            {
-                Id = categoryId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Build<EditCategoryCommand>()
+                .With(x => x.Id, categoryId)
+                .Create();
+
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
@@ -63,12 +59,10 @@ namespace Peent.IntegrationTests.Categories
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            var command = new EditCategoryCommand
-            {
-                Id = categoryId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Build<EditCategoryCommand>()
+                .With(x => x.Id, categoryId)
+                .Create();
+
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
@@ -84,12 +78,10 @@ namespace Peent.IntegrationTests.Categories
                 var user = await CreateUserAsync();
                 SetCurrentUser(user, await CreateWorkspaceAsync(user));
                 var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-                var command = new EditCategoryCommand
-                {
-                    Id = categoryId,
-                    Name = F.Create<string>(),
-                    Description = F.Create<string>()
-                };
+                var command = F.Build<EditCategoryCommand>()
+                    .With(x => x.Id, categoryId)
+                    .Create();
+
                 await SendAsync(command);
 
                 var category = await FindAsync<Category>(categoryId);

@@ -40,6 +40,8 @@ namespace Peent.IntegrationTests.Infrastructure
             var provider = services.BuildServiceProvider();
             _scopeFactory = provider.GetService<IServiceScopeFactory>();
             _checkpoint = new Checkpoint();
+
+            F.Configure();
         }
 
         private static void ConfigureServices(IServiceCollection services)

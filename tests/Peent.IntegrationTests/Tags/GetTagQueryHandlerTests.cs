@@ -58,11 +58,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
 
             var user2 = await CreateUserAsync();

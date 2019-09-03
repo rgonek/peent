@@ -21,11 +21,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
 
             var tagId = await SendAsync(command);
 
@@ -40,11 +36,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
 
             var tagId = await SendAsync(command);
 
@@ -60,11 +52,7 @@ namespace Peent.IntegrationTests.Tags
             {
                 var user = await CreateUserAsync();
                 SetCurrentUser(user, await CreateWorkspaceAsync(user));
-                var command = new CreateTagCommand
-                {
-                    Name = F.Create<string>(),
-                    Description = F.Create<string>()
-                };
+                var command = F.Create<CreateTagCommand>();
 
                 var tagId = await SendAsync(command);
 
@@ -79,11 +67,7 @@ namespace Peent.IntegrationTests.Tags
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
 
             var tagId = await SendAsync(command);
 
@@ -98,11 +82,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
             await SendAsync(command);
 
             Invoking(async () => await SendAsync(command))
@@ -114,11 +94,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
             await SendAsync(command);
 
             var user2 = await CreateUserAsync();
@@ -131,11 +107,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateTagCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
             await SendAsync(new DeleteTagCommand {Id = tagId});
 

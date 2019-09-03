@@ -16,13 +16,7 @@ namespace Peent.IntegrationTests.Currencies
         [Fact]
         public async Task when_currency_exists__return_it()
         {
-            var command = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
+            var command = F.Create<CreateCurrencyCommand>();
             var currencyId = await SendAsync(command);
 
             var currencyModel = await SendAsync(new GetCurrencyQuery { Id = currencyId });

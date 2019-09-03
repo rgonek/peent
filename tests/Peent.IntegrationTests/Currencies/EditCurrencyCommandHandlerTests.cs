@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using Peent.Application.Currencies.Commands.CreateCurrency;
 using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
-using Peent.Application.Currencies.Commands.DeleteCurrency;
 using Peent.Application.Currencies.Commands.EditCurrency;
-using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
@@ -20,22 +17,11 @@ namespace Peent.IntegrationTests.Currencies
         [Fact]
         public async Task should_edit_currency()
         {
-            var createCommand = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
-            var currencyId = await SendAsync(createCommand);
-            var command = new EditCurrencyCommand
-            {
-                Id = currencyId,
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
+            var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
+            var command = F.Build<EditCurrencyCommand>()
+                .With(x => x.Id, currencyId)
+                .Create();
+
             await SendAsync(command);
 
             var currency = await FindAsync<Currency>(currencyId);
@@ -48,31 +34,16 @@ namespace Peent.IntegrationTests.Currencies
         [Fact]
         public async Task when_currency_with_given_code_exists__throws()
         {
-            var createCommand = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
-            var currencyId = await SendAsync(createCommand);
-            var createCommand2 = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
-            await SendAsync(createCommand2);
+            var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
+            var createCommand = F.Create<CreateCurrencyCommand>();
+            await SendAsync(createCommand);
 
-            Invoking(async () => await SendAsync(new EditCurrencyCommand
-                {
-                    Id = currencyId,
-                    Code = createCommand2.Code,
-                    Name = F.Create<string>(),
-                    Symbol = F.Create<string>().Substring(0, 12),
-                    DecimalPlaces = F.Create<ushort>()
-                }))
+            var editCommand = F.Build<EditCurrencyCommand>()
+                .With(x => x.Id, currencyId)
+                .With(x => x.Code, createCommand.Code)
+                .Create();
+
+            Invoking(async () => await SendAsync(editCommand))
                 .Should().Throw<DuplicateException>();
         }
     }

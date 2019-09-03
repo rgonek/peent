@@ -16,13 +16,7 @@ namespace Peent.IntegrationTests.Currencies
         [Fact]
         public async Task should_create_currency()
         {
-            var command = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
+            var command = F.Create<CreateCurrencyCommand>();
 
             var currencyId = await SendAsync(command);
 
@@ -36,22 +30,12 @@ namespace Peent.IntegrationTests.Currencies
         [Fact]
         public async Task when_currency_with_given_code_exists__throws()
         {
-            var command = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
+            var command = F.Create<CreateCurrencyCommand>();
             await SendAsync(command);
 
-            command = new CreateCurrencyCommand
-            {
-                Code = command.Code,
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
+            command = F.Build<CreateCurrencyCommand>()
+                .With(x => x.Code, command.Code)
+                .Create();
 
             Invoking(async () => await SendAsync(command))
                 .Should().Throw<DuplicateException>();

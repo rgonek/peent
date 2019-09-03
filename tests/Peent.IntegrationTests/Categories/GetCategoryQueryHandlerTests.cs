@@ -57,11 +57,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
 
             var user2 = await CreateUserAsync();

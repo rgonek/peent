@@ -23,13 +23,10 @@ namespace Peent.IntegrationTests.Tags
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
-            var command = new EditTagCommand
-            {
-                Id = tagId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>(),
-                Date = F.Create<DateTime>()
-            };
+            var command = F.Build<EditTagCommand>()
+                .With(x => x.Id, tagId)
+                .Create();
+
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
@@ -47,12 +44,10 @@ namespace Peent.IntegrationTests.Tags
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, workspace);
-            var command = new EditTagCommand
-            {
-                Id = tagId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Build<EditTagCommand>()
+                .With(x => x.Id, tagId)
+                .Create();
+
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
@@ -65,12 +60,10 @@ namespace Peent.IntegrationTests.Tags
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
-            var command = new EditTagCommand
-            {
-                Id = tagId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Build<EditTagCommand>()
+                .With(x => x.Id, tagId)
+                .Create();
+
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
@@ -86,12 +79,10 @@ namespace Peent.IntegrationTests.Tags
                 var user = await CreateUserAsync();
                 SetCurrentUser(user, await CreateWorkspaceAsync(user));
                 var tagId = await SendAsync(F.Create<CreateTagCommand>());
-                var command = new EditTagCommand
-                {
-                    Id = tagId,
-                    Name = F.Create<string>(),
-                    Description = F.Create<string>()
-                };
+                var command = F.Build<EditTagCommand>()
+                    .With(x => x.Id, tagId)
+                    .Create();
+
                 await SendAsync(command);
 
                 var tag = await FindAsync<Tag>(tagId);

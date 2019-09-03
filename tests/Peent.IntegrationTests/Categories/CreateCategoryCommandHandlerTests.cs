@@ -21,11 +21,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
 
             var categoryId = await SendAsync(command);
 
@@ -39,11 +35,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
 
             var categoryId = await SendAsync(command);
 
@@ -59,11 +51,7 @@ namespace Peent.IntegrationTests.Categories
             {
                 var user = await CreateUserAsync();
                 SetCurrentUser(user, await CreateWorkspaceAsync(user));
-                var command = new CreateCategoryCommand
-                {
-                    Name = F.Create<string>(),
-                    Description = F.Create<string>()
-                };
+                var command = F.Create<CreateCategoryCommand>();
 
                 var categoryId = await SendAsync(command);
 
@@ -78,11 +66,7 @@ namespace Peent.IntegrationTests.Categories
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
 
             var categoryId = await SendAsync(command);
 
@@ -97,11 +81,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
             await SendAsync(command);
 
             Invoking(async () => await SendAsync(command))
@@ -113,11 +93,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
             await SendAsync(command);
 
             var user2 = await CreateUserAsync();
@@ -130,11 +106,7 @@ namespace Peent.IntegrationTests.Categories
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = new CreateCategoryCommand
-            {
-                Name = F.Create<string>(),
-                Description = F.Create<string>()
-            };
+            var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
             await SendAsync(new DeleteCategoryCommand {Id = categoryId});
 

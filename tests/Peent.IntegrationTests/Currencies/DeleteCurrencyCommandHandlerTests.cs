@@ -15,14 +15,7 @@ namespace Peent.IntegrationTests.Currencies
         [Fact]
         public async Task should_delete_currency()
         {
-            var createCommand = new CreateCurrencyCommand
-            {
-                Code = F.Create<string>().Substring(0, 3),
-                Name = F.Create<string>(),
-                Symbol = F.Create<string>().Substring(0, 12),
-                DecimalPlaces = F.Create<ushort>()
-            };
-            var currencyId = await SendAsync(createCommand);
+            var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
             var command = new DeleteCurrencyCommand
             {
                 Id = currencyId
