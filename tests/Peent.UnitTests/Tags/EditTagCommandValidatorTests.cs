@@ -1,6 +1,6 @@
 ﻿using FluentValidation.TestHelper;
 using Peent.Application.Tags.Commands.EditTag;
-using Peent.UnitTests.Infrastructure;
+using Peent.CommonTests.Infrastructure;
 using Xunit;
 using AutoFixture;
 using static Peent.UnitTests.Infrastructure.TestFixture;

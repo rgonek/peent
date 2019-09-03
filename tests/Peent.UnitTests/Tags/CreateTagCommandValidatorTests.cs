@@ -2,7 +2,7 @@
 using Peent.Application.Tags.Commands.CreateTag;
 using Xunit;
 using AutoFixture;
-using Peent.UnitTests.Infrastructure;
+using Peent.CommonTests.Infrastructure;
 using static Peent.UnitTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Tags

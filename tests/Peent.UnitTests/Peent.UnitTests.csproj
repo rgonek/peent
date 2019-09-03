@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Peent.Application\Peent.Application.csproj" />
+    <ProjectReference Include="..\..\test\Peent.CommonTests\Peent.CommonTests.csproj" />
   </ItemGroup>
 
 </Project>

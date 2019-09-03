@@ -2,7 +2,7 @@
 using Peent.Application.Currencies.Commands.CreateCurrency;
 using Xunit;
 using AutoFixture;
-using Peent.UnitTests.Infrastructure;
+using Peent.CommonTests.Infrastructure;
 using static Peent.UnitTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Currencies
