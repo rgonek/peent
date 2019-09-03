@@ -10,7 +10,6 @@ namespace Peent.Application.Tags.Commands.EditTag
                 .NotNull()
                 .GreaterThan(0);
             RuleFor(x => x.Name)
-                .NotNull()
                 .NotEmpty()
                 .MaximumLength(1000);
             RuleFor(x => x.Description)

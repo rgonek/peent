@@ -7,7 +7,6 @@ namespace Peent.Application.Tags.Commands.CreateTag
         public CreateTagCommandValidator()
         {
             RuleFor(x => x.Name)
-                .NotNull()
                 .NotEmpty()
                 .MaximumLength(1000);
             RuleFor(x => x.Description)
