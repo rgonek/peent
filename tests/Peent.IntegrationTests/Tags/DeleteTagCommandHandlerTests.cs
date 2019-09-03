@@ -7,7 +7,8 @@ using Xunit;
 using AutoFixture;
 using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Common.Time;
-using static Peent.IntegrationTests.DatabaseFixture;
+using Peent.IntegrationTests.Infrastructure;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags
 {

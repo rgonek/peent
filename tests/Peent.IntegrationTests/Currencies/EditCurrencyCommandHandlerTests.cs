@@ -9,7 +9,8 @@ using AutoFixture;
 using Peent.Application.Currencies.Commands.DeleteCurrency;
 using Peent.Application.Currencies.Commands.EditCurrency;
 using Peent.Common.Time;
-using static Peent.IntegrationTests.DatabaseFixture;
+using Peent.IntegrationTests.Infrastructure;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Currencies

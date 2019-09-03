@@ -9,7 +9,8 @@ using AutoFixture;
 using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Tags.Commands.EditTag;
 using Peent.Common.Time;
-using static Peent.IntegrationTests.DatabaseFixture;
+using Peent.IntegrationTests.Infrastructure;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags

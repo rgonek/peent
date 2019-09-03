@@ -5,8 +5,9 @@ using FluentAssertions;
 using Peent.Application.Categories.Commands.CreateCategory;
 using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Exceptions;
+using Peent.IntegrationTests.Infrastructure;
 using Xunit;
-using static Peent.IntegrationTests.DatabaseFixture;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Categories

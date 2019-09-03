@@ -3,8 +3,9 @@ using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Currencies.Commands.CreateCurrency;
 using Peent.Application.Currencies.Queries.GetCurrenciesList;
+using Peent.IntegrationTests.Infrastructure;
 using Xunit;
-using static Peent.IntegrationTests.DatabaseFixture;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies
 {

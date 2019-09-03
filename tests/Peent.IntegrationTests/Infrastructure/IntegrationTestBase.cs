@@ -2,7 +2,7 @@
 using Nito.AsyncEx;
 using Xunit;
 
-namespace Peent.IntegrationTests
+namespace Peent.IntegrationTests.Infrastructure
 {
     public abstract class IntegrationTestBase : IAsyncLifetime
     {

@@ -16,7 +16,7 @@ using Peent.Domain.ValueObjects;
 using Peent.Persistence;
 using Respawn;
 
-namespace Peent.IntegrationTests
+namespace Peent.IntegrationTests.Infrastructure
 {
     public class DatabaseFixture
     {

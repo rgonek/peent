@@ -5,8 +5,9 @@ using FluentAssertions;
 using Peent.Application.Tags.Commands.CreateTag;
 using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Exceptions;
+using Peent.IntegrationTests.Infrastructure;
 using Xunit;
-using static Peent.IntegrationTests.DatabaseFixture;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags

@@ -8,7 +8,8 @@ using Peent.Application.Tags.Commands.CreateTag;
 using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Exceptions;
 using Peent.Common.Time;
-using static Peent.IntegrationTests.DatabaseFixture;
+using Peent.IntegrationTests.Infrastructure;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags
