@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Peent.Domain\Peent.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>
