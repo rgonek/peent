@@ -15,6 +15,8 @@ namespace Peent.Persistence.Configurations
                 .IsRequired();
             builder.Property(x => x.Description)
                 .HasMaxLength(2000);
+            builder.Property(x => x.Type)
+                .IsRequired();
 
             builder.HasOne(x => x.Workspace)
                 .WithMany()

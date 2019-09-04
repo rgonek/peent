@@ -293,8 +293,7 @@ namespace Peent.Persistence.Migrations
                         .HasMaxLength(3);
 
                     b.Property<int>("DecimalPlaces")
-                        .HasColumnType("int")
-                        .HasMaxLength(18);
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

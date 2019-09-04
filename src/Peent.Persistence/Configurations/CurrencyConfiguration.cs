@@ -20,7 +20,6 @@ namespace Peent.Persistence.Configurations
                 .HasMaxLength(12)
                 .IsRequired();
             builder.Property(x => x.DecimalPlaces)
-                .HasMaxLength(18)
                 .IsRequired();
         }
     }
