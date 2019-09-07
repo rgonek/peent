@@ -115,10 +115,14 @@ namespace Peent.IntegrationTests.Categories
             var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
             var command2 = F.Create<CreateCategoryCommand>();
-            await SendAsync(command2);
+            var categoryId2 = await SendAsync(command2);
             await SendAsync(new DeleteCategoryCommand { Id = categoryId });
 
-            await SendAsync(command);
+            await SendAsync(new EditCategoryCommand
+            {
+                Id = categoryId2,
+                Name = command.Name
+            });
         }
 
         [Fact]
