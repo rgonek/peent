@@ -9,14 +9,14 @@ namespace Peent.Application.Accounts.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public AccountType Type { get; set; }
-        public CurrencyModel Currency { get; set; }
+        public AccountCurrencyModel Currency { get; set; }
 
         public AccountModel(Account account)
         {
             Id = account.Id;
             Name = account.Name;
             Description = account.Description;
-            Currency = new CurrencyModel(account.Currency);
+            Currency = new AccountCurrencyModel(account.Currency);
         }
     }
 }

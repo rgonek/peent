@@ -2,7 +2,7 @@
 
 namespace Peent.Application.Accounts.Models
 {
-    public class CurrencyModel
+    public class AccountCurrencyModel
     {
         public int Id { get; set; }
 
@@ -11,7 +11,7 @@ namespace Peent.Application.Accounts.Models
         public string Symbol { get; set; }
         public ushort DecimalPlaces { get; set; }
 
-        public CurrencyModel(Currency currency)
+        public AccountCurrencyModel(Currency currency)
         {
             Id = currency.Id;
             Code = currency.Code;

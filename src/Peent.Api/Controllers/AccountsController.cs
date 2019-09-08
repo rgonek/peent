@@ -27,7 +27,7 @@ namespace Peent.Api.Controllers
         [HttpGet]
         [Route("GetAllByTypes")]
         [ProducesResponseType(typeof(List<AccountModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllByTypes(GetAccountsListByAccountTypesQuery query)
+        public async Task<IActionResult> GetAllByTypes([FromQuery] GetAccountsListByAccountTypesQuery query)
         {
             return await Execute(query);
         }
