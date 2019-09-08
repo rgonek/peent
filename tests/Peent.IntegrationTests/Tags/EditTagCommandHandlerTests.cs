@@ -116,10 +116,15 @@ namespace Peent.IntegrationTests.Tags
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
             var command2 = F.Create<CreateTagCommand>();
-            await SendAsync(command2);
-            await SendAsync(new DeleteTagCommand { Id = tagId });
+            var tagId2 = await SendAsync(command2);
+            await SendAsync(new DeleteTagCommand { Id = tagId2 });
 
-            await SendAsync(command);
+
+            await SendAsync(new EditTagCommand
+            {
+                Id = tagId,
+                Name = command2.Name
+            });
         }
 
         [Fact]
