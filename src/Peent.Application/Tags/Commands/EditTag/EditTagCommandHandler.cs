@@ -32,17 +32,6 @@ namespace Peent.Application.Tags.Commands.EditTag
             if (tag == null)
                 throw NotFoundException.Create<Tag>(x => x.Id, command.Id);
 
-            var existingTag = await _db.Tags
-                .SingleOrDefaultAsync(x =>
-                    x.Id != command.Id &&
-                    x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
-                    token);
-
-            if (existingTag != null)
-                throw DuplicateException.Create<Tag>(x => x.Name, command.Name);
-
             tag.Name = command.Name;
             tag.Description = command.Description;
             tag.Date = command.Date;

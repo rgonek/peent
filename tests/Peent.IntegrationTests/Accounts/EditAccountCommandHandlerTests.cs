@@ -96,65 +96,6 @@ namespace Peent.IntegrationTests.Accounts
             }
         }
 
-        [Fact]
-        public async Task when_account_with_given_name_exists__throws()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = GetCreateAccountCommand();
-            var accountId = await SendAsync(command);
-            var command2 = GetCreateAccountCommand();
-            await SendAsync(command2);
-
-            Invoking(async () => await SendAsync(new EditAccountCommand
-                {
-                    Id = accountId,
-                    Name = command2.Name
-                }))
-                .Should().Throw<DuplicateException>();
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_exists_but_is_deleted__do_not_throw()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = GetCreateAccountCommand();
-            var accountId = await SendAsync(command);
-            var command2 = GetCreateAccountCommand();
-            var accountId2 = await SendAsync(command2);
-            await SendAsync(new DeleteAccountCommand { Id = accountId2 });
-
-            await SendAsync(new EditAccountCommand
-            {
-                Id = accountId,
-                Name = command2.Name,
-                CurrencyId = _currencyId.Value
-            });
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_exists_in_another_workspace__do_not_throw()
-        {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
-            var command = GetCreateAccountCommand();
-            var accountId = await SendAsync(command);
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
-            var command2 = GetCreateAccountCommand();
-            await SendAsync(command2);
-            SetCurrentUser(user, workspace);
-
-            await SendAsync(new EditAccountCommand
-            {
-                Id = accountId,
-                Name = command2.Name,
-                CurrencyId = _currencyId.Value
-            });
-        }
-
         private CreateAccountCommand GetCreateAccountCommand()
         {
             return F.Build<CreateAccountCommand>()

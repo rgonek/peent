@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
@@ -23,16 +21,6 @@ namespace Peent.Application.Tags.Commands.CreateTag
 
         public async Task<int> Handle(CreateTagCommand command, CancellationToken token)
         {
-            var existingTag = await _db.Tags
-                .SingleOrDefaultAsync(x =>
-                    x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
-                    token);
-
-            if (existingTag != null)
-                throw DuplicateException.Create<Tag>(x => x.Name, command.Name);
-
             var tag = new Tag
             {
                 Name = command.Name,

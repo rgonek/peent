@@ -79,43 +79,6 @@ namespace Peent.IntegrationTests.Accounts
             fetchedWorkspace.CreationInfo.CreatedById.Should().Be(user.Id);
         }
 
-        [Fact]
-        public async Task when_account_with_given_name_exists__throws()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = GetCreateAccountCommand();
-            await SendAsync(command);
-
-            Invoking(async () => await SendAsync(command))
-                .Should().Throw<DuplicateException>();
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_exists_in_another_workspace__do_not_throw()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = GetCreateAccountCommand();
-            await SendAsync(command);
-
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
-            await SendAsync(command);
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_exists_but_is_deleted__do_not_throw()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = GetCreateAccountCommand();
-            var accountId = await SendAsync(command);
-            await SendAsync(new DeleteAccountCommand { Id = accountId });
-
-            await SendAsync(command);
-        }
-
         private CreateAccountCommand GetCreateAccountCommand()
         {
             return F.Build<CreateAccountCommand>()

@@ -12,6 +12,7 @@ using Peent.Api.Infrastructure;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
+using Peent.Application.Services;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 
@@ -43,6 +44,8 @@ namespace Peent.Api
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            services.AddScoped<IUniqueChecker, UniqueChecker>();
 
             services.AddSwaggerGen(c =>
             {

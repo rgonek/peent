@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
 using FakeItEasy;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
+using Peent.Application.Services;
 using Peent.Domain.Entities;
 using Peent.Domain.ValueObjects;
 using Peent.Persistence;
@@ -24,7 +26,7 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly Checkpoint _checkpoint;
         private static readonly IConfigurationRoot _configuration;
         private static readonly IServiceScopeFactory _scopeFactory;
-        public static readonly IUserAccessor UserAccessor;
+        private static readonly IUserAccessor _userAccessor;
 
         static DatabaseFixture()
         {
@@ -33,7 +35,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
             _configuration = builder.Build();
-            UserAccessor = A.Fake<IUserAccessor>();
+            _userAccessor = A.Fake<IUserAccessor>();
 
             var services = new ServiceCollection();
             ConfigureServices(services);
@@ -51,7 +53,11 @@ namespace Peent.IntegrationTests.Infrastructure
                     _configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped(sp => UserAccessor);
+            services.AddValidatorsFromAssemblyContaining<GetCategoryQueryValidator>();
+            services.AddScoped(sp => _userAccessor);
+
+            services.AddScoped<IUniqueChecker, UniqueChecker>();
+            services.AddScoped<IUniqueChecker, UniqueChecker>();
 
             services.AddMediatR(typeof(GetCategoryQueryHandler));
         }
@@ -220,6 +226,18 @@ namespace Peent.IntegrationTests.Infrastructure
             });
         }
 
+        public static ValueTask ValidateAsync<T>(Action<T> action) where T : IValidator
+        {
+            return ExecuteScopeAsync(sp =>
+            {
+                var validator = sp.GetService<T>();
+
+                action(validator);
+
+                return new ValueTask();
+            });
+        }
+
         public static async Task<ApplicationUser> CreateUserAsync()
         {
             var user = F.Create<ApplicationUser>();
@@ -247,7 +265,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(KnownClaims.WorkspaceId, workspace.Id.ToString()),
             }, "mock"));
-            A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
+            A.CallTo(() => _userAccessor.User).Returns(claimsPrincipal);
 
             return claimsPrincipal;
         }

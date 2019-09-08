@@ -1,7 +1,10 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Threading;
+using FluentValidation.TestHelper;
 using Peent.Application.Accounts.Commands.CreateAccount;
 using Xunit;
 using AutoFixture;
+using FakeItEasy;
+using Peent.Application.Interfaces;
 using Peent.CommonTests.Infrastructure;
 using Peent.Domain.Entities;
 using static Peent.UnitTests.Infrastructure.TestFixture;
@@ -14,7 +17,13 @@ namespace Peent.UnitTests.Accounts
 
         public CreateAccountCommandValidatorTests()
         {
-            _validator = new CreateAccountCommandValidator();
+            var uniqueChecker = A.Fake<IUniqueChecker>();
+            A.CallTo(() => uniqueChecker.IsUniqueAsync<Account>(null, CancellationToken.None))
+                .WithAnyArguments()
+                .Returns(true);
+            _validator = new CreateAccountCommandValidator(
+                uniqueChecker,
+                A.Fake<IUserAccessor>());
         }
 
         [Fact]

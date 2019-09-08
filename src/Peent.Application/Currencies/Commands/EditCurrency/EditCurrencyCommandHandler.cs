@@ -27,15 +27,6 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
             if (currency == null)
                 throw NotFoundException.Create<Currency>(x => x.Id, command.Id);
 
-            var existingCurrency = await _db.Currencies
-                .SingleOrDefaultAsync(x =>
-                    x.Id != command.Id &&
-                    x.Code == command.Code,
-                    token);
-
-            if (existingCurrency != null)
-                throw DuplicateException.Create<Currency>(x => x.Code, command.Code);
-
             currency.Code = command.Code;
             currency.Name = command.Name;
             currency.Symbol = command.Symbol;

@@ -32,17 +32,6 @@ namespace Peent.Application.Categories.Commands.EditCategory
             if (category == null)
                 throw NotFoundException.Create<Category>(x => x.Id, command.Id);
 
-            var existingCategory = await _db.Categories
-                .SingleOrDefaultAsync(x =>
-                    x.Id != command.Id &&
-                    x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
-                    token);
-
-            if (existingCategory != null)
-                throw DuplicateException.Create<Category>(x => x.Name, command.Name);
-
             category.Name = command.Name;
             category.Description = command.Description;
             category.ModificationInfo = new ModificationInfo(_userAccessor.User.GetUserId());

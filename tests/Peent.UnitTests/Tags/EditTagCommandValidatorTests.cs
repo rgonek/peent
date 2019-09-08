@@ -1,8 +1,12 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Threading;
+using FluentValidation.TestHelper;
 using Peent.Application.Tags.Commands.EditTag;
 using Peent.CommonTests.Infrastructure;
 using Xunit;
 using AutoFixture;
+using FakeItEasy;
+using Peent.Application.Interfaces;
+using Peent.Domain.Entities;
 using static Peent.UnitTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Tags
@@ -13,7 +17,13 @@ namespace Peent.UnitTests.Tags
 
         public EditTagCommandValidatorTests()
         {
-            _validator = new EditTagCommandValidator();
+            var uniqueChecker = A.Fake<IUniqueChecker>();
+            A.CallTo(() => uniqueChecker.IsUniqueAsync<Tag>(null, CancellationToken.None))
+                .WithAnyArguments()
+                .Returns(true);
+            _validator = new EditTagCommandValidator(
+                uniqueChecker,
+                A.Fake<IUserAccessor>());
         }
 
         [Fact]

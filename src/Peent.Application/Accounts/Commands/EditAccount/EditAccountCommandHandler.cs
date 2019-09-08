@@ -32,17 +32,6 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             if (account == null)
                 throw NotFoundException.Create<Account>(x => x.Id, command.Id);
 
-            var existingAccount = await _db.Accounts
-                .SingleOrDefaultAsync(x =>
-                    x.Id != command.Id &&
-                    x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
-                    token);
-
-            if (existingAccount != null)
-                throw DuplicateException.Create<Account>(x => x.Name, command.Name);
-
             account.Name = command.Name;
             account.Description = command.Description;
             account.Type = command.Type;

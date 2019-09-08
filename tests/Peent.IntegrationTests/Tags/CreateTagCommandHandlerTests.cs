@@ -76,42 +76,5 @@ namespace Peent.IntegrationTests.Tags
             var fetchedWorkspace = await FindAsync<Workspace>(workspace.Id);
             fetchedWorkspace.CreationInfo.CreatedById.Should().Be(user.Id);
         }
-
-        [Fact]
-        public async Task when_tag_with_given_name_exists__throws()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateTagCommand>();
-            await SendAsync(command);
-
-            Invoking(async () => await SendAsync(command))
-                .Should().Throw<DuplicateException>();
-        }
-
-        [Fact]
-        public async Task when_tag_with_given_name_exists_in_another_workspace__do_not_throw()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateTagCommand>();
-            await SendAsync(command);
-
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
-            await SendAsync(command);
-        }
-
-        [Fact]
-        public async Task when_tag_with_given_name_exists_but_is_deleted__do_not_throw()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateTagCommand>();
-            var tagId = await SendAsync(command);
-            await SendAsync(new DeleteTagCommand {Id = tagId});
-
-            await SendAsync(command);
-        }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
@@ -23,16 +21,6 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
 
         public async Task<int> Handle(CreateAccountCommand command, CancellationToken token)
         {
-            var existingAccount = await _db.Accounts
-                .SingleOrDefaultAsync(x =>
-                    x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
-                    token);
-
-            if (existingAccount != null)
-                throw DuplicateException.Create<Account>(x => x.Name, command.Name);
-
             var account = new Account
             {
                 Name = command.Name,

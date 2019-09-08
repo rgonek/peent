@@ -1,8 +1,12 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Threading;
+using FluentValidation.TestHelper;
 using Peent.Application.Categories.Commands.EditCategory;
 using Peent.CommonTests.Infrastructure;
 using Xunit;
 using AutoFixture;
+using FakeItEasy;
+using Peent.Application.Interfaces;
+using Peent.Domain.Entities;
 using static Peent.UnitTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Categories
@@ -13,7 +17,13 @@ namespace Peent.UnitTests.Categories
 
         public EditCategoryCommandValidatorTests()
         {
-            _validator = new EditCategoryCommandValidator();
+            var uniqueChecker = A.Fake<IUniqueChecker>();
+            A.CallTo(() => uniqueChecker.IsUniqueAsync<Category>(null, CancellationToken.None))
+                .WithAnyArguments()
+                .Returns(true);
+            _validator = new EditCategoryCommandValidator(
+                uniqueChecker,
+                A.Fake<IUserAccessor>());
         }
 
         [Fact]

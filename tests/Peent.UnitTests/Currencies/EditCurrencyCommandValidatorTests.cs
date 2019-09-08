@@ -1,8 +1,12 @@
-﻿using FluentValidation.TestHelper;
+﻿using System.Threading;
+using FluentValidation.TestHelper;
 using Peent.Application.Currencies.Commands.EditCurrency;
 using Peent.CommonTests.Infrastructure;
 using Xunit;
 using AutoFixture;
+using FakeItEasy;
+using Peent.Application.Interfaces;
+using Peent.Domain.Entities;
 using static Peent.UnitTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Currencies
@@ -13,7 +17,12 @@ namespace Peent.UnitTests.Currencies
 
         public EditCurrencyCommandValidatorTests()
         {
-            _validator = new EditCurrencyCommandValidator();
+            var uniqueChecker = A.Fake<IUniqueChecker>();
+            A.CallTo(() => uniqueChecker.IsUniqueAsync<Currency>(null, CancellationToken.None))
+                .WithAnyArguments()
+                .Returns(true);
+            _validator = new EditCurrencyCommandValidator(
+                uniqueChecker);
         }
 
         [Fact]
