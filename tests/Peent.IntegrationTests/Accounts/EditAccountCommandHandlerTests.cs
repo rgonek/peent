@@ -2,17 +2,14 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Peent.Application.Accounts.Commands.CreateAccount;
-using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
-using Peent.Application.Accounts.Commands.DeleteAccount;
 using Peent.Application.Accounts.Commands.EditAccount;
 using Peent.Application.Currencies.Commands.CreateCurrency;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
-using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Accounts
 {

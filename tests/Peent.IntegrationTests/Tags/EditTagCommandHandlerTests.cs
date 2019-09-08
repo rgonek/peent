@@ -2,16 +2,13 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Peent.Application.Tags.Commands.CreateTag;
-using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
-using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Tags.Commands.EditTag;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
-using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags
 {

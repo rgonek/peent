@@ -4,10 +4,8 @@ using Xunit;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Currencies.Commands.CreateCurrency;
-using Peent.Application.Exceptions;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
-using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Currencies
 {

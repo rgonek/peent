@@ -2,16 +2,13 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Peent.Application.Categories.Commands.CreateCategory;
-using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
-using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Categories.Commands.EditCategory;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
-using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Categories
 {
