@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Peent.Application.Accounts.Queries.GetAccount;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Accounts.Commands.CreateAccount;

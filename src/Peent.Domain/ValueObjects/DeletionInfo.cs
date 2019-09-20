@@ -10,16 +10,16 @@ namespace Peent.Domain.ValueObjects
     {
         protected DeletionInfo() { }
 
-        public DeletionInfo(ApplicationUser lastModifiedBy)
+        public DeletionInfo(ApplicationUser deletedBy)
         {
             DeletionDate = Clock.UtcNow;
-            DeletedBy = lastModifiedBy;
+            DeletedBy = deletedBy;
         }
 
-        public DeletionInfo(string lastModifiedById)
+        public DeletionInfo(string deletedById)
         {
             DeletionDate = Clock.UtcNow;
-            DeletedById = lastModifiedById;
+            DeletedById = deletedById;
         }
 
         public virtual DateTime? DeletionDate { get; protected internal set; }

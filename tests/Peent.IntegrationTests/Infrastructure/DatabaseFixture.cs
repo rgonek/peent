@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -9,6 +12,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
@@ -41,7 +45,13 @@ namespace Peent.IntegrationTests.Infrastructure
             ConfigureServices(services);
             var provider = services.BuildServiceProvider();
             _scopeFactory = provider.GetService<IServiceScopeFactory>();
-            _checkpoint = new Checkpoint();
+            _checkpoint = new Checkpoint
+            {
+                TablesToIgnore = new[]
+                {
+                    "__EFMigrationsHistory"
+                }
+            };
 
             F.Configure();
         }
@@ -204,6 +214,12 @@ namespace Peent.IntegrationTests.Infrastructure
             where T : class
         {
             return ExecuteDbContextAsync(db => db.Set<T>().FindAsync(id));
+        }
+
+        public static ValueTask<List<T>> GetAsync<T>(Expression<Func<T, bool>> expr)
+            where T : class
+        {
+            return ExecuteDbContextAsync(db => new ValueTask<List<T>>(db.Set<T>().Where(expr).ToList()));
         }
 
         public static ValueTask<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

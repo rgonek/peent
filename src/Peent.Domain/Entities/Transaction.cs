@@ -14,6 +14,9 @@ namespace Peent.Domain.Entities
 
         public long Id { get; set; }
 
+        public int WorkspaceId { get; set; }
+        public Workspace Workspace { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
@@ -26,5 +29,23 @@ namespace Peent.Domain.Entities
         public CreationInfo CreationInfo { get; set; }
         public ModificationInfo ModificationInfo { get; set; }
         public DeletionInfo DeletionInfo { get; set; }
+
+        public void MarkAsDeleted(string deletedById)
+        {
+            DeletionInfo = new DeletionInfo(deletedById);
+            foreach (var entry in Entries)
+            {
+                entry.DeletionInfo = new DeletionInfo(deletedById);
+            }
+        }
+
+        public void MarkAsModified(string modifiedById)
+        {
+            ModificationInfo = new ModificationInfo(modifiedById);
+            foreach (var entry in Entries)
+            {
+                entry.ModificationInfo = new ModificationInfo(modifiedById);
+            }
+        }
     }
 }

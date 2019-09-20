@@ -10,6 +10,12 @@ namespace Peent.Persistence.Configurations
         {
             builder.HasKey(x => x.Id);
 
+            builder.HasOne(x => x.Workspace)
+                .WithMany()
+                .HasForeignKey(x => x.WorkspaceId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(x => x.Title)
                 .HasMaxLength(1000)
                 .IsRequired();

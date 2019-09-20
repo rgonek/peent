@@ -2,7 +2,6 @@
 using AutoFixture;
 using FluentValidation.TestHelper;
 using Peent.Application.Currencies.Commands.CreateCurrency;
-using Peent.CommonTests.Infrastructure;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;

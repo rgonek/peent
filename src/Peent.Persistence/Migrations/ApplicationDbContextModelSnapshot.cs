@@ -369,9 +369,14 @@ namespace Peent.Persistence.Migrations
                     b.Property<short>("Type")
                         .HasColumnType("smallint");
 
+                    b.Property<int>("WorkspaceId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("WorkspaceId");
 
                     b.ToTable("Transactions");
                 });
@@ -395,7 +400,7 @@ namespace Peent.Persistence.Migrations
                     b.Property<decimal?>("ForeignAmount")
                         .HasColumnType("decimal(38,18)");
 
-                    b.Property<int>("ForeignCurrencyId")
+                    b.Property<int?>("ForeignCurrencyId")
                         .HasColumnType("int");
 
                     b.Property<long>("TransactionId")
@@ -803,6 +808,12 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
+                        .WithMany()
+                        .HasForeignKey("WorkspaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.OwnsOne("Peent.Domain.ValueObjects.CreationInfo", "CreationInfo", b1 =>
                         {
                             b1.Property<long>("TransactionId")
@@ -913,8 +924,7 @@ namespace Peent.Persistence.Migrations
                     b.HasOne("Peent.Domain.Entities.Currency", "ForeignCurrency")
                         .WithMany()
                         .HasForeignKey("ForeignCurrencyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Peent.Domain.Entities.Transaction", "Transaction")
                         .WithMany()
