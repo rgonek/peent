@@ -264,10 +264,8 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user)
         {
-            var workspace = new Workspace
-            {
-                CreationInfo = new CreationInfo(user.Id)
-            };
+            var workspace = new Workspace();
+            workspace.SetCreatedBy(user.Id);
             await InsertAsync(workspace);
 
             return workspace;

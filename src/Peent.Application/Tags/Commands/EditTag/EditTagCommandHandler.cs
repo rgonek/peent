@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Tags.Commands.EditTag
 {
@@ -35,7 +34,7 @@ namespace Peent.Application.Tags.Commands.EditTag
             tag.Name = command.Name;
             tag.Description = command.Description;
             tag.Date = command.Date;
-            tag.ModificationInfo = new ModificationInfo(_userAccessor.User.GetUserId());
+            tag.SetModifiedBy(_userAccessor.User.GetUserId());
 
             _db.Update(tag);
             await _db.SaveChangesAsync(token);

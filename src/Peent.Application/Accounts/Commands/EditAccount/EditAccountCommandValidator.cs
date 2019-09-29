@@ -41,7 +41,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
                     x.Id != command.Id &&
                     x.Name == name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                 cancellationToken);
         }
     }

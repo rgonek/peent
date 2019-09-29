@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Accounts.Commands.EditAccount
 {
@@ -36,7 +35,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             account.Description = command.Description;
             account.Type = command.Type;
             account.CurrencyId = command.CurrencyId;
-            account.ModificationInfo = new ModificationInfo(_userAccessor.User.GetUserId());
+            account.SetModifiedBy(_userAccessor.User.GetUserId());
 
             _db.Update(account);
             await _db.SaveChangesAsync(token);

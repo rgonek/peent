@@ -32,7 +32,7 @@ namespace Peent.Application.Categories.Commands.CreateCategory
             return await _uniqueChecker.IsUniqueAsync<Category>(x =>
                     x.Name == name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                 cancellationToken);
         }
     }

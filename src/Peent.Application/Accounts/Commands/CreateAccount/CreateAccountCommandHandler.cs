@@ -4,7 +4,6 @@ using MediatR;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Accounts.Commands.CreateAccount
 {
@@ -27,9 +26,9 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                 Description = command.Description,
                 Type = command.Type,
                 CurrencyId = command.CurrencyId,
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId()),
                 WorkspaceId = _userAccessor.User.GetWorkspaceId()
             };
+            account.SetCreatedBy(_userAccessor.User.GetUserId());
 
             _db.Accounts.Add(account);
 

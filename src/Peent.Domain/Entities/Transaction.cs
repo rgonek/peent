@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Entities
 {
-    public class Transaction : IHaveAuditInfo
+    public class Transaction : AuditInfoOwner
     {
         public Transaction()
         {
@@ -26,25 +25,21 @@ namespace Peent.Domain.Entities
         public ICollection<TransactionEntry> Entries { get; }
         public TransactionType Type { get; set; }
 
-        public CreationInfo CreationInfo { get; set; }
-        public ModificationInfo ModificationInfo { get; set; }
-        public DeletionInfo DeletionInfo { get; set; }
-
         public void MarkAsDeleted(string deletedById)
         {
-            DeletionInfo = new DeletionInfo(deletedById);
+            SetDeletedBy(deletedById);
             foreach (var entry in Entries)
             {
-                entry.DeletionInfo = new DeletionInfo(deletedById);
+                entry.SetDeletedBy(deletedById);
             }
         }
 
         public void MarkAsModified(string modifiedById)
         {
-            ModificationInfo = new ModificationInfo(modifiedById);
+            SetModifiedBy(modifiedById);
             foreach (var entry in Entries)
             {
-                entry.ModificationInfo = new ModificationInfo(modifiedById);
+                entry.SetModifiedBy(modifiedById);
             }
         }
     }

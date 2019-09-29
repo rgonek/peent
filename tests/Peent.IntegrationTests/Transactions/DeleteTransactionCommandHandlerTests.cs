@@ -38,12 +38,12 @@ namespace Peent.IntegrationTests.Transactions
             await SendAsync(new DeleteTransactionCommand { Id = transactionId });
 
             var transaction = await FindAsync<Transaction>(transactionId);
-            transaction.DeletionInfo.DeletionDate.Should().NotBeNull();
+            transaction.DeletionDate.Should().NotBeNull();
 
             var entries = await GetAsync<TransactionEntry>(x => x.TransactionId == transactionId);
             foreach (var entry in entries)
             {
-                entry.DeletionInfo.DeletionDate.Should().NotBeNull();
+                entry.DeletionDate.Should().NotBeNull();
             }
         }
 
@@ -71,12 +71,12 @@ namespace Peent.IntegrationTests.Transactions
             await SendAsync(new DeleteTransactionCommand { Id = transactionId });
 
             var transaction = await FindAsync<Transaction>(transactionId);
-            transaction.DeletionInfo.DeletionDate.Should().NotBeNull();
+            transaction.DeletionDate.Should().NotBeNull();
 
             var entries = await GetAsync<TransactionEntry>(x => x.TransactionId == transactionId);
             foreach (var entry in entries)
             {
-                entry.DeletionInfo.DeletionDate.Should().NotBeNull();
+                entry.DeletionDate.Should().NotBeNull();
             }
         }
 
@@ -101,12 +101,12 @@ namespace Peent.IntegrationTests.Transactions
             await SendAsync(new DeleteTransactionCommand { Id = transactionId });
 
             var transaction = await FindAsync<Transaction>(transactionId);
-            transaction.DeletionInfo.DeletedById.Should().Be(user.Id);
+            transaction.DeletedById.Should().Be(user.Id);
 
             var entries = await GetAsync<TransactionEntry>(x => x.TransactionId == transactionId);
             foreach (var entry in entries)
             {
-                entry.DeletionInfo.DeletedById.Should().Be(user.Id);
+                entry.DeletedById.Should().Be(user.Id);
             }
         }
 
@@ -134,12 +134,12 @@ namespace Peent.IntegrationTests.Transactions
                 await SendAsync(new DeleteTransactionCommand { Id = transactionId });
 
                 var transaction = await FindAsync<Transaction>(transactionId);
-                transaction.DeletionInfo.DeletionDate.Should().Be(utcNow);
+                transaction.DeletionDate.Should().Be(utcNow);
 
                 var entries = await GetAsync<TransactionEntry>(x => x.TransactionId == transactionId);
                 foreach (var entry in entries)
                 {
-                    entry.DeletionInfo.DeletionDate.Should().Be(utcNow);
+                    entry.DeletionDate.Should().Be(utcNow);
                 }
             }
         }

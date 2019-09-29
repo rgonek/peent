@@ -98,11 +98,11 @@ namespace Peent.IntegrationTests.Transactions
             var transactionId = await SendAsync(command);
 
             var transaction = await FindAsync<Transaction>(transactionId);
-            transaction.CreationInfo.CreatedById.Should().Be(user.Id);
+            transaction.CreatedById.Should().Be(user.Id);
             var entries = await GetAsync<TransactionEntry>(x => x.TransactionId == transactionId);
             foreach (var entry in entries)
             {
-                entry.CreationInfo.CreatedById.Should().Be(user.Id);
+                entry.CreatedById.Should().Be(user.Id);
             }
         }
 
@@ -129,11 +129,11 @@ namespace Peent.IntegrationTests.Transactions
                 var transactionId = await SendAsync(command);
 
                 var transaction = await FindAsync<Transaction>(transactionId);
-                transaction.CreationInfo.CreationDate.Should().Be(utcNow);
+                transaction.CreationDate.Should().Be(utcNow);
                 var entries = await GetAsync<TransactionEntry>(x => x.TransactionId == transactionId);
                 foreach (var entry in entries)
                 {
-                    entry.CreationInfo.CreationDate.Should().Be(utcNow);
+                    entry.CreationDate.Should().Be(utcNow);
                 }
             }
         }

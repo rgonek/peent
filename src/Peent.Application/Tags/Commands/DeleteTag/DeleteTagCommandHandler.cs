@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Tags.Commands.DeleteTag
 {
@@ -32,7 +31,7 @@ namespace Peent.Application.Tags.Commands.DeleteTag
             if (tag == null)
                 throw NotFoundException.Create<Tag>(x => x.Id, command.Id);
 
-            tag.DeletionInfo = new DeletionInfo(_userAccessor.User.GetUserId());
+            tag.SetDeletedBy(_userAccessor.User.GetUserId());
 
             _db.Update(tag);
             await _db.SaveChangesAsync(token);

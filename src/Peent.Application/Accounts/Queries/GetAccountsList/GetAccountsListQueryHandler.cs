@@ -26,7 +26,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
             var accounts = await _db.Accounts
                 .Include(x => x.Currency)
                 .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                            x.DeletionInfo.DeletionDate.HasValue == false)
+                            x.DeletionDate.HasValue == false)
                 .ToListAsync(token);
 
             return accounts.Select(x => new AccountModel(x)).ToList();

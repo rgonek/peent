@@ -38,7 +38,7 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
             return await _uniqueChecker.IsUniqueAsync<Account>(x =>
                     x.Name == name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                 cancellationToken);
         }
     }

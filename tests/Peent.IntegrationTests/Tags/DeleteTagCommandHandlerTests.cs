@@ -27,7 +27,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.DeletionInfo.DeletionDate.Should().NotBeNull();
+            tag.DeletionDate.Should().NotBeNull();
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.DeletionInfo.DeletionDate.Should().NotBeNull();
+            tag.DeletionDate.Should().NotBeNull();
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.DeletionInfo.DeletedById.Should().Be(user.Id);
+            tag.DeletedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Peent.IntegrationTests.Tags
                 await SendAsync(command);
 
                 var tag = await FindAsync<Tag>(tagId);
-                tag.DeletionInfo.DeletionDate.Should().Be(utcNow);
+                tag.DeletionDate.Should().Be(utcNow);
             }
         }
     }

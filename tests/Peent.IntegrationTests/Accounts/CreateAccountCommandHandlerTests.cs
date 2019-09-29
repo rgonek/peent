@@ -40,7 +40,7 @@ namespace Peent.IntegrationTests.Accounts
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.CreationInfo.CreatedById.Should().Be(user.Id);
+            account.CreatedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Peent.IntegrationTests.Accounts
                 var accountId = await SendAsync(command);
 
                 var account = await FindAsync<Account>(accountId);
-                account.CreationInfo.CreationDate.Should().Be(utcNow);
+                account.CreationDate.Should().Be(utcNow);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Peent.IntegrationTests.Accounts
             var account = await FindAsync<Account>(accountId);
             account.WorkspaceId.Should().Be(workspace.Id);
             var fetchedWorkspace = await FindAsync<Workspace>(workspace.Id);
-            fetchedWorkspace.CreationInfo.CreatedById.Should().Be(user.Id);
+            fetchedWorkspace.CreatedById.Should().Be(user.Id);
         }
 
         private CreateAccountCommand GetCreateAccountCommand()

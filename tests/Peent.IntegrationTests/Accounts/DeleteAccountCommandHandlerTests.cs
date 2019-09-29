@@ -28,7 +28,7 @@ namespace Peent.IntegrationTests.Accounts
             await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.DeletionInfo.DeletionDate.Should().NotBeNull();
+            account.DeletionDate.Should().NotBeNull();
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Peent.IntegrationTests.Accounts
             await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.DeletionInfo.DeletionDate.Should().NotBeNull();
+            account.DeletionDate.Should().NotBeNull();
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace Peent.IntegrationTests.Accounts
             await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.DeletionInfo.DeletedById.Should().Be(user.Id);
+            account.DeletedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Peent.IntegrationTests.Accounts
                 await SendAsync(command);
 
                 var account = await FindAsync<Account>(accountId);
-                account.DeletionInfo.DeletionDate.Should().Be(utcNow);
+                account.DeletionDate.Should().Be(utcNow);
             }
         }
 

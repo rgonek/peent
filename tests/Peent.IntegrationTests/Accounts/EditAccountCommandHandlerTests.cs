@@ -52,7 +52,7 @@ namespace Peent.IntegrationTests.Accounts
             await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.ModificationInfo.LastModifiedById.Should().Be(user2.Id);
+            account.LastModifiedById.Should().Be(user2.Id);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Peent.IntegrationTests.Accounts
             await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.ModificationInfo.LastModifiedById.Should().Be(user.Id);
+            account.LastModifiedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace Peent.IntegrationTests.Accounts
                 await SendAsync(command);
 
                 var account = await FindAsync<Account>(accountId);
-                account.ModificationInfo.LastModificationDate.Should().Be(utcNow);
+                account.LastModificationDate.Should().Be(utcNow);
             }
         }
 

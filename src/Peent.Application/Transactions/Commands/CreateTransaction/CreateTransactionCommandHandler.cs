@@ -4,7 +4,6 @@ using MediatR;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Transactions.Commands.CreateTransaction
 {
@@ -29,8 +28,8 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
                 Description = command.Description,
                 Type = command.Type,
                 WorkspaceId =  _userAccessor.User.GetWorkspaceId(),
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId())
             };
+            transaction.SetCreatedBy(_userAccessor.User.GetUserId());
             var chargedEntry = new TransactionEntry
             {
                 Amount = -command.Amount,
@@ -38,9 +37,9 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
                 CurrencyId = command.CurrencyId,
                 ForeignCurrencyId = command.ForeignCurrencyId,
                 AccountId = command.FromAccountId,
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId()),
                 Transaction = transaction
             };
+            chargedEntry.SetCreatedBy(_userAccessor.User.GetUserId());
             var depositEntry = new TransactionEntry
             {
                 Amount = command.Amount,
@@ -48,9 +47,9 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
                 CurrencyId = command.CurrencyId,
                 ForeignCurrencyId = command.ForeignCurrencyId,
                 AccountId = command.ToAccountId,
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId()),
                 Transaction = transaction
             };
+            depositEntry.SetCreatedBy(_userAccessor.User.GetUserId());
 
             transaction.Entries.Add(chargedEntry);
             transaction.Entries.Add(depositEntry);

@@ -4,7 +4,6 @@ using MediatR;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Tags.Commands.CreateTag
 {
@@ -26,9 +25,9 @@ namespace Peent.Application.Tags.Commands.CreateTag
                 Name = command.Name,
                 Description = command.Description,
                 Date = command.Date,
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId()),
                 WorkspaceId = _userAccessor.User.GetWorkspaceId()
             };
+            tag.SetCreatedBy(_userAccessor.User.GetUserId());
 
             _db.Tags.Add(tag);
 

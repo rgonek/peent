@@ -25,7 +25,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
         {
             var categories = await _db.Tags
                 .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false)
+                    x.DeletionDate.HasValue == false)
                 .ToListAsync(token);
 
             return categories.Select(x => new TagModel(x)).ToList();

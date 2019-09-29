@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Categories.Commands.EditCategory
 {
@@ -34,7 +33,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
 
             category.Name = command.Name;
             category.Description = command.Description;
-            category.ModificationInfo = new ModificationInfo(_userAccessor.User.GetUserId());
+            category.SetModifiedBy(_userAccessor.User.GetUserId());
 
             _db.Update(category);
             await _db.SaveChangesAsync(token);

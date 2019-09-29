@@ -27,7 +27,7 @@ namespace Peent.IntegrationTests.Categories
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.DeletionInfo.DeletionDate.Should().NotBeNull();
+            category.DeletionDate.Should().NotBeNull();
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Peent.IntegrationTests.Categories
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.DeletionInfo.DeletionDate.Should().NotBeNull();
+            category.DeletionDate.Should().NotBeNull();
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace Peent.IntegrationTests.Categories
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.DeletionInfo.DeletedById.Should().Be(user.Id);
+            category.DeletedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Peent.IntegrationTests.Categories
                 await SendAsync(command);
 
                 var category = await FindAsync<Category>(categoryId);
-                category.DeletionInfo.DeletionDate.Should().Be(utcNow);
+                category.DeletionDate.Should().Be(utcNow);
             }
         }
     }

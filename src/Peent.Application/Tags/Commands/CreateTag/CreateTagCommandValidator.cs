@@ -32,7 +32,7 @@ namespace Peent.Application.Tags.Commands.CreateTag
             return await _uniqueChecker.IsUniqueAsync<Tag>(x =>
                     x.Name == name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                 cancellationToken);
         }
     }

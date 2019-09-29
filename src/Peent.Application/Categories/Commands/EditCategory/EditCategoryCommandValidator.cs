@@ -36,7 +36,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
                     x.Id != command.Id &&
                     x.Name == name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                 cancellationToken);
         }
     }

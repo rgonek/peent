@@ -26,7 +26,7 @@ namespace Peent.Application.Tags.Queries.GetTag
             var tag = await _db.Tags
                 .SingleOrDefaultAsync(x => x.Id == query.Id &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                     cancellationToken: token);
 
             if (tag == null)

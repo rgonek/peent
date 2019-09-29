@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Accounts.Commands.DeleteAccount
 {
@@ -32,7 +31,7 @@ namespace Peent.Application.Accounts.Commands.DeleteAccount
             if (account == null)
                 throw NotFoundException.Create<Account>(x => x.Id, command.Id);
 
-            account.DeletionInfo = new DeletionInfo(_userAccessor.User.GetUserId());
+            account.SetDeletedBy(_userAccessor.User.GetUserId());
 
             _db.Update(account);
             await _db.SaveChangesAsync(token);

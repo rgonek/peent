@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Categories.Commands.DeleteCategory
 {
@@ -32,7 +31,7 @@ namespace Peent.Application.Categories.Commands.DeleteCategory
             if (category == null)
                 throw NotFoundException.Create<Category>(x => x.Id, command.Id);
 
-            category.DeletionInfo = new DeletionInfo(_userAccessor.User.GetUserId());
+            category.SetDeletedBy(_userAccessor.User.GetUserId());
 
             _db.Update(category);
             await _db.SaveChangesAsync(token);
