@@ -42,7 +42,8 @@ namespace Peent.Api
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
             services.AddHttpContextAccessor();
-            services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IUserAccessor, FakeUserAccessor>();
+            //services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddSwaggerGen(c =>
             {
