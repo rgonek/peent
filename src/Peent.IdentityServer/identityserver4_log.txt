@@ -1,0 +1,8 @@
+2019-10-02 20:06:10.202 +02:00 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-02 20:06:10.340 +02:00 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-02 20:06:10.419 +02:00 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-02 20:06:10.437 +02:00 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-02 20:06:10.446 +02:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-02 20:06:10.454 +02:00 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-02 20:06:10.458 +02:00 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-02 20:06:10.466 +02:00 [DBG] Using idsrv as default ASP.NET Core scheme for forbid

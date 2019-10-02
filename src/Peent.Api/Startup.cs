@@ -31,8 +31,30 @@ namespace Peent.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetCategoryQueryValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetCategoryQueryValidator>())
+                .AddNewtonsoftJson();
 
+            services.AddAuthorization();
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+
+                    options.Audience = "peentapi";
+                });
+
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5003")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -71,6 +93,9 @@ namespace Peent.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("default");
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 
