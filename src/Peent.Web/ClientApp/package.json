@@ -1,0 +1,50 @@
+{
+  "name": "peent",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "react": "^16.10.1",
+    "react-bootstrap": "^1.0.0-beta.14",
+    "react-dom": "^16.10.1",
+    "react-icons": "^3.7.0",
+    "react-redux": "^7.1.1",
+    "react-router": "^5.1.2",
+    "react-router-bootstrap": "^0.25.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/preset-flow": "^7.0.0",
+    "empty": "^0.10.1",
+    "flow-bin": "^0.109.0",
+    "flow-typed": "^2.6.1",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0"
+  }
+}

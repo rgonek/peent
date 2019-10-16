@@ -14,7 +14,7 @@ namespace Peent.Api.Infrastructure
                 {
                     new Claim(ClaimTypes.Name, "test"),
                     new Claim(ClaimTypes.NameIdentifier, "test"),
-                    new Claim(KnownClaims.WorkspaceId, "1"),
+                    new Claim(KnownClaims.WorkspaceId, "1")
                 }, "mock"));
             }
         }

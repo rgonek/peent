@@ -4,4 +4,15 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ClientApp\peent\**" />
+    <Content Remove="ClientApp\peent\**" />
+    <EmbeddedResource Remove="ClientApp\peent\**" />
+    <None Remove="ClientApp\peent\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
+  </ItemGroup>
+
 </Project>

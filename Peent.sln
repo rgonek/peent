@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.IntegrationTests", "t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.UnitTests", "tests\Peent.UnitTests\Peent.UnitTests.csproj", "{2AA19E0E-1096-4A77-B2E3-6D30C94187AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peent.CommonTests", "test\Peent.CommonTests\Peent.CommonTests.csproj", "{F688DCAD-6860-4200-8E91-A0381FE6ADB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Peent.CommonTests", "test\Peent.CommonTests\Peent.CommonTests.csproj", "{F688DCAD-6860-4200-8E91-A0381FE6ADB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
