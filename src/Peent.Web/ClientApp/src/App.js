@@ -1,10 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css';
-import Layout from './components/Layout'
-import Dashboard from './components/Dashboard'
-import Categories from './components/Categories'
-import Tags from './components/Tags'
+import Layout from './pages/Layout'
+import Dashboard from './pages/Dashboard'
+import Categories from './pages/Categories'
+import Tags from './pages/tags/Tags'
+import TagsEdit from './pages/tags/TagsEdit'
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,8 +17,9 @@ function App() {
     <Router>
       <Layout>
         <Switch>
-          <Route exact path='/categories' component={Categories} />
-          <Route exact path='/tags' component={Tags} />
+          <Route path='/categories' component={Categories} />
+          <Route path='/tags/new' component={TagsEdit} />
+          <Route path='/tags' component={Tags} />
           <Route exact path='/' component={Dashboard} />
         </Switch>
       </Layout>

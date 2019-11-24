@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import ContentHeader from './ContentHeader';
+import ContentHeader from '../components/ContentHeader';
 
 function Categories() {
   return (

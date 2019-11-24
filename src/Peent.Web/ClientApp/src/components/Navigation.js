@@ -5,9 +5,9 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 function Navigation() {
       return (
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-              <Nav as="ul" class="nav flex-column">
+        <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+            <div className="sidebar-sticky">
+              <Nav as="ul" className="nav flex-column">
                 <Nav.Item as="li">
                   <LinkContainer to='/'>
                     <Nav.Link>

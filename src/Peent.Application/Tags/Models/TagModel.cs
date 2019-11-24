@@ -9,7 +9,7 @@ namespace Peent.Application.Tags.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
 
         public TagModel(Tag tag)
         {

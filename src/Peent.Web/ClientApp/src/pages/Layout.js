@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Container, Row } from 'react-bootstrap';
-import Header from './Header'
-import Navigation from './Navigation'
+import Header from '../components/Header'
+import Navigation from '../components/Navigation'
+import "../../node_modules/noty/lib/noty.css";
+import "../../node_modules/noty/lib/themes/mint.css";
 
 type Props = {
     children?: React.Node
@@ -14,7 +16,7 @@ function Layout(props: Props) {
             <Container fluid="true">
                 <Row>
                     <Navigation />
-                    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                         {props.children}
                     </main>
                 </Row>
