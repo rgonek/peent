@@ -8810,12 +8810,10 @@ react-overlays@^1.2.0:
     uncontrollable "^6.0.0"
     warning "^4.0.2"
 
-react-paginate@^6.3.2:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-6.3.2.tgz#4e18cbdb2654d308566775fa14df11e820188391"
-  integrity sha512-Ch++Njfv8UHpLtIMiQouAPeJQA5Ki86kIYfCer6c1B96Rvn3UF27se+goCilCP8oHNXNsA2R2kxvzanY1YIkyg==
-  dependencies:
-    prop-types "^15.6.1"
+react-pagination-hook@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/react-pagination-hook/-/react-pagination-hook-0.0.1.tgz#7cfe3b28b3bdef6908fcf250f7f94bf21cd21257"
+  integrity sha512-0MqmKyR0I3GU0KHFCwxYYS5yFECCoUUyy6qC961bnOB4ZOsnJZ8bs72RE3638oRKL/iE73Scgso7aSqp4BmYdg==
 
 react-popper@^1.3.2:
   version "1.3.4"

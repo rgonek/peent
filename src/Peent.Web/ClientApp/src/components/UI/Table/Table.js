@@ -1,9 +1,9 @@
 import React from 'react'
 import BootstrapTable from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
-import ReactPaginate from 'react-paginate';
 import { useTable, usePagination, useSortBy } from 'react-table'
 import Spinner from '../Spinner/Spinner'
+import Pagination from '../Pagination/Pagination'
 import './Table.css';
 
 function Table({
@@ -34,9 +34,9 @@ function Table({
       {
         columns,
         data,
-        initialState: { pageIndex: 0 },
+        initialState: { pageIndex: 1 },
         manualPagination: true,
-        pageCount: controlledPageCount,
+        pageCount: controlledPageCount + 1,
         manualSorting: true
       },
       useSortBy,
@@ -44,14 +44,11 @@ function Table({
     )
   
     React.useEffect(() => {
-      console.log('fetch data');
-      console.log(pageIndex + 1);
-      console.log(sortBy);
-      fetchData(pageIndex + 1, pageSize)
+      fetchData(pageIndex, pageSize, sortBy)
     }, [fetchData, pageIndex, pageSize, sortBy]);
 
-    const handlePageClick = data => {
-      gotoPage(data.selected);
+    const handlePageClick = pageNumber => {
+      gotoPage(pageNumber);
     };
 
     const renderColumn = column => {
@@ -90,25 +87,10 @@ function Table({
           </tbody>
         </BootstrapTable>
         <div className="table-footer form-inline">
-          <ReactPaginate
-            previousLabel={'previous'}
-            nextLabel={'next'}
-            breakLabel={'...'}
+          <Pagination
+            pageIndex={pageIndex}
             pageCount={controlledPageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            pageClassName={'page-item'}
-            nextClassName={'page-item'}
-            previousClassName={'page-item'}
-            breakClassName={'page-item'}
-            pageLinkClassName={'page-link'}
-            nextLinkClassName={'page-link'}
-            previousLinkClassName={'page-link'}
-            breakLinkClassName={'page-link'}
-            activeClassName={'active'}
-          />
+            onPageChange={handlePageClick} />
           {loading ? ('') : (
               <div>Showing {page.length} of {rowCount}{' '}
               results</div>
@@ -116,7 +98,8 @@ function Table({
           <Form.Control as="select"
             value={pageSize}
             onChange={e => {
-              setPageSize(Number(e.target.value))
+              setPageSize(Number(e.target.value));
+              gotoPage(1);
             }}
           >
             {[1,2,5,10, 20, 30, 40, 50].map(pageSize => (
