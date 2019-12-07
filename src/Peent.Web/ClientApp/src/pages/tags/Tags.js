@@ -1,10 +1,39 @@
-// @flow
-import React from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import ContentHeader from '../../components/ContentHeader';
 import { LinkContainer } from 'react-router-bootstrap';
 import { ButtonToolbar, Button } from 'react-bootstrap';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Table from '../../components/UI/Table/Table'
+import axios from '../../axios-peent';
 
-function Tags() {
+function Tags(props) {
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'name',
+        sortable: true
+      },
+      {
+        Header: 'Description',
+        accessor: 'description',
+        sortable: true
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+        sortable: true
+      }
+    ],
+    []
+  );
+
+  const fetchData = useCallback((pageIndex, pageSize) => {
+    props.onFetchTags(pageIndex, pageSize);
+  }, []);
+
   return (
     <div>
       <ContentHeader>
@@ -15,9 +44,35 @@ function Tags() {
           </LinkContainer>
         </ButtonToolbar>
       </ContentHeader>
-      data
+      <Table
+        columns={columns}
+        data={props.tags}
+        fetchData={fetchData}
+        loading={props.loading}
+        pageCount={props.pageCount}
+        rowCount={props.rowCount}
+      />
     </div>
   );
 }
-  
-export default Tags;
+
+const mapStateToProps = state => {
+  return {
+    tags: state.tag.tags,
+    loading: state.tag.loading,
+    pageCount: state.tag.pageCount,
+    rowCount: state.tag.rowCount
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchTags: (pageIndex, pageSize) =>
+      dispatch(actions.fetchTags(pageIndex, pageSize))
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withErrorHandler(Tags, axios));

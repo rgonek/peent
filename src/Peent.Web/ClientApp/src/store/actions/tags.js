@@ -4,7 +4,6 @@ import { convertEmptyStringsToNulls } from '../../shared/utility'
 
 export const addTag = ( tagData ) => {
     return dispatch => {
-        console.log('addTag');
         tagData = convertEmptyStringsToNulls(tagData);
         dispatch( addTagStart() );
         axios.post( '/tags', tagData )
@@ -37,3 +36,46 @@ export const addTagFail = ( error ) => {
         error: error
     };
 }
+
+export const fetchTagsSuccess = ( tags, pageCount, rowCount ) => {
+    return {
+        type: actionTypes.FETCH_TAGS_SUCCESS,
+        tags: tags,
+        pageCount: pageCount,
+        rowCount: rowCount
+    };
+};
+
+export const fetchTagsFail = ( error ) => {
+    return {
+        type: actionTypes.FETCH_TAGS_FAIL,
+        error: error
+    };
+};
+
+export const fetchTagsStart = () => {
+    return {
+        type: actionTypes.FETCH_TAGS_START
+    };
+};
+
+export const fetchTags = (pageIndex, pageSize) => {
+    return dispatch => {
+        dispatch(fetchTagsStart());
+        const queryParams = '?pageSize=' + pageSize + '&pageIndex=' + pageIndex;
+        axios.get('/tags/GetAll' + queryParams)
+            .then( res => {
+                const fetchedTags = [];
+                for ( let key in res.data.results ) {
+                    fetchedTags.push( {
+                        ...res.data.results[key],
+                        id: key
+                    } );
+                }
+                dispatch(fetchTagsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));
+            } )
+            .catch( err => {
+                dispatch(fetchTagsFail(err));
+            } );
+    };
+};
