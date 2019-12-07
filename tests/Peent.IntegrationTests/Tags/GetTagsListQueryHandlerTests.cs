@@ -1,15 +1,12 @@
 ﻿using System.Threading.Tasks;
-using Peent.Application.Tags.Queries.GetTag;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Tags.Commands.CreateTag;
 using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Tags.Queries.GetTagsList;
-using Peent.Application.Exceptions;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
-using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags
 {
@@ -24,9 +21,9 @@ namespace Peent.IntegrationTests.Tags
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
 
-            var tags = await SendAsync(new GetTagsListQuery());
+            var tagsPaged = await SendAsync(new GetTagsListQuery());
 
-            tags.Should()
+            tagsPaged.Results.Should()
                 .Contain(x => x.Id == tagId1)
                 .And.Contain(x => x.Id == tagId2)
                 .And.Contain(x => x.Id == tagId3);
@@ -47,9 +44,9 @@ namespace Peent.IntegrationTests.Tags
             var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
 
             SetCurrentUser(user, workspace);
-            var tags = await SendAsync(new GetTagsListQuery());
+            var tagsPaged = await SendAsync(new GetTagsListQuery());
 
-            tags.Should()
+            tagsPaged.Results.Should()
                 .Contain(x => x.Id == tagId1)
                 .And.Contain(x => x.Id == tagId2)
                 .And.Contain(x => x.Id == tagId3)
@@ -67,17 +64,31 @@ namespace Peent.IntegrationTests.Tags
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
-            await SendAsync(new DeleteTagCommand {Id = tagId4});
-            await SendAsync(new DeleteTagCommand {Id = tagId5});
+            await SendAsync(new DeleteTagCommand { Id = tagId4 });
+            await SendAsync(new DeleteTagCommand { Id = tagId5 });
 
-            var tags = await SendAsync(new GetTagsListQuery());
+            var tagsPaged = await SendAsync(new GetTagsListQuery());
 
-            tags.Should()
+            tagsPaged.Results.Should()
                 .Contain(x => x.Id == tagId1)
                 .And.Contain(x => x.Id == tagId2)
                 .And.Contain(x => x.Id == tagId3)
                 .And.NotContain(x => x.Id == tagId4)
                 .And.NotContain(x => x.Id == tagId5);
+        }
+
+        [Fact]
+        public async Task test()
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user, await CreateWorkspaceAsync(user));
+            var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
+            var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
+            var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
+            var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
+            var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
+
+            var tagsPaged = await SendAsync(new GetTagsListQuery{PageIndex = 1, PageSize = 2});
         }
     }
 }

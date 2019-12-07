@@ -6,7 +6,6 @@ using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Categories.Commands.CreateCategory
 {
@@ -27,7 +26,7 @@ namespace Peent.Application.Categories.Commands.CreateCategory
                 .SingleOrDefaultAsync(x =>
                     x.Name == command.Name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                     token);
 
             if (existingCategory != null)
@@ -37,7 +36,6 @@ namespace Peent.Application.Categories.Commands.CreateCategory
             {
                 Name = command.Name,
                 Description = command.Description,
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId()),
                 WorkspaceId = _userAccessor.User.GetWorkspaceId()
             };
 

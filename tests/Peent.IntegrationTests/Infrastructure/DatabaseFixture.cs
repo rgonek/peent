@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
+using Peent.Common.Time;
 using Peent.Domain.Entities;
 using Peent.Domain.ValueObjects;
 using Peent.Persistence;
@@ -232,7 +233,8 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             var workspace = new Workspace
             {
-                CreationInfo = new CreationInfo(user.Id)
+                CreationDate = Clock.UtcNow,
+                CreatedById = user.Id
             };
             await InsertAsync(workspace);
 

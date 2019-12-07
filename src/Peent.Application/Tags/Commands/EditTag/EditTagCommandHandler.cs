@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
+using Peent.Common.Time;
 using Peent.Domain.Entities;
 using Peent.Domain.ValueObjects;
 
@@ -37,7 +38,7 @@ namespace Peent.Application.Tags.Commands.EditTag
                     x.Id != command.Id &&
                     x.Name == command.Name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                     token);
 
             if (existingTag != null)
@@ -46,7 +47,8 @@ namespace Peent.Application.Tags.Commands.EditTag
             tag.Name = command.Name;
             tag.Description = command.Description;
             tag.Date = command.Date;
-            tag.ModificationInfo = new ModificationInfo(_userAccessor.User.GetUserId());
+            tag.LastModificationDate = Clock.UtcNow;
+            tag.LastModifiedById = _userAccessor.User.GetUserId();
 
             _db.Update(tag);
             await _db.SaveChangesAsync(token);

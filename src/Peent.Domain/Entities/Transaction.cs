@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Peent.Domain.ValueObjects;
+using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Transaction : IHaveAuditInfo
+    public class Transaction : AuditableEntity
     {
         public Transaction()
         {
@@ -22,9 +22,5 @@ namespace Peent.Domain.Entities
         public ICollection<Tag> Tags { get; }
         public ICollection<TransactionEntry> Entries { get; }
         public TransactionType Type { get; set; }
-
-        public CreationInfo CreationInfo { get; set; }
-        public ModificationInfo ModificationInfo { get; set; }
-        public DeletionInfo DeletionInfo { get; set; }
     }
 }

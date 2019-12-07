@@ -1,8 +1,8 @@
-﻿using Peent.Domain.ValueObjects;
+﻿using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Account : IHaveAuditInfo
+    public class Account : AuditableEntity
     {
         public int Id { get; set; }
 
@@ -13,9 +13,5 @@ namespace Peent.Domain.Entities
         public AccountType Type { get; set; }
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
-
-        public CreationInfo CreationInfo { get; set; }
-        public ModificationInfo ModificationInfo { get; set; }
-        public DeletionInfo DeletionInfo { get; set; }
     }
 }

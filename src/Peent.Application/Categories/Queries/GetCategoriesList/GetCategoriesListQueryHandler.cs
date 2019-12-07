@@ -25,7 +25,7 @@ namespace Peent.Application.Categories.Queries.GetCategoriesList
         {
             var categories = await _db.Categories
                 .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false)
+                    x.DeletionDate.HasValue == false)
                 .ToListAsync(token);
 
             return categories.Select(x => new CategoryModel(x)).ToList();

@@ -1,8 +1,8 @@
-﻿using Peent.Domain.ValueObjects;
+﻿using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Category : IHaveAuditInfo
+    public class Category : AuditableEntity
     {
         public int Id { get; set; }
 
@@ -10,9 +10,5 @@ namespace Peent.Domain.Entities
         public string Description { get; set; }
         public int WorkspaceId { get; set; }
         public Workspace Workspace { get; set; }
-
-        public CreationInfo CreationInfo { get; set; }
-        public ModificationInfo ModificationInfo { get; set; }
-        public DeletionInfo DeletionInfo { get; set; }
     }
 }

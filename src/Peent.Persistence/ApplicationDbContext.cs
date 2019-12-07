@@ -1,9 +1,13 @@
 ﻿using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
+using Peent.Common.Time;
+using Peent.Domain.Common;
 using Peent.Domain.Entities;
 
 namespace Peent.Persistence
@@ -11,13 +15,14 @@ namespace Peent.Persistence
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         private IDbContextTransaction _currentTransaction;
+        private readonly IUserAccessor _userAccessor;
 
-        public ApplicationDbContext()
-        {
-        }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options,
+            IUserAccessor userAccessor)
             : base(options)
         {
+            _userAccessor = userAccessor;
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -33,6 +38,33 @@ namespace Peent.Persistence
             base.OnModelCreating(builder);
 
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        if (string.IsNullOrEmpty(entry.Entity.CreatedById))
+                        {
+                            entry.Entity.CreatedById = _userAccessor.User.GetUserId();
+                            entry.Entity.CreationDate = Clock.UtcNow;
+                        }
+                        break;
+                    //case EntityState.Modified:
+                    //    entry.Entity.LastModifiedById = _userAccessor.User.GetUserId();
+                    //    entry.Entity.LastModificationDate = Clock.UtcNow;
+                    //    break;
+                    //case EntityState.Deleted:
+                    //    entry.Entity.DeletedById = _userAccessor.User.GetUserId();
+                    //    entry.Entity.DeletionDate = Clock.UtcNow;
+                    //    break;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
 
         public async Task BeginTransactionAsync()

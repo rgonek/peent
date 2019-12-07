@@ -18,9 +18,9 @@ namespace Peent.Api.Controllers
         [HttpGet]
         [Route("GetAll")]
         [ProducesResponseType(typeof(List<TagModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GetTagsListQuery query)
         {
-            return await Execute(new GetTagsListQuery());
+            return await Execute(query);
         }
 
         [HttpGet]

@@ -26,7 +26,7 @@ namespace Peent.Application.Categories.Queries.GetCategory
             var category = await _db.Categories
                 .SingleOrDefaultAsync(x => x.Id == query.Id &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                     cancellationToken: token);
 
             if (category == null)

@@ -1,9 +1,9 @@
 ﻿using System;
-using Peent.Domain.ValueObjects;
+using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Tag : IHaveAuditInfo
+    public class Tag : AuditableEntity
     {
         public int Id { get; set; }
 
@@ -12,9 +12,5 @@ namespace Peent.Domain.Entities
         public DateTime? Date { get; set; }
         public int WorkspaceId { get; set; }
         public Workspace Workspace { get; set; }
-
-        public CreationInfo CreationInfo { get; set; }
-        public ModificationInfo ModificationInfo { get; set; }
-        public DeletionInfo DeletionInfo { get; set; }
     }
 }

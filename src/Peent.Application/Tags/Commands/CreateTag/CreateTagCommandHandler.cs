@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
+using Peent.Common.Time;
 using Peent.Domain.Entities;
 using Peent.Domain.ValueObjects;
 
@@ -27,7 +28,7 @@ namespace Peent.Application.Tags.Commands.CreateTag
                 .SingleOrDefaultAsync(x =>
                     x.Name == command.Name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionInfo.DeletionDate.HasValue == false,
+                    x.DeletionDate.HasValue == false,
                     token);
 
             if (existingTag != null)
@@ -38,7 +39,6 @@ namespace Peent.Application.Tags.Commands.CreateTag
                 Name = command.Name,
                 Description = command.Description,
                 Date = command.Date,
-                CreationInfo = new CreationInfo(_userAccessor.User.GetUserId()),
                 WorkspaceId = _userAccessor.User.GetWorkspaceId()
             };
 

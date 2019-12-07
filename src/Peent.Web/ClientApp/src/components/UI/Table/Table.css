@@ -1,0 +1,29 @@
+.table-footer > * {
+    margin-right: 10px;
+}
+th.sortable {
+    cursor: pointer;
+    position: relative;
+}
+th.sortable:before, 
+th.sortable:after {
+    position: absolute;
+    bottom: 0.9em;
+    display: block;
+    opacity: 0.3;
+}
+th.sortable:before {
+    right: 1em;
+    content: "\2191";
+}
+th.sortable:after {
+    right: 0.5em;
+    content: "\2193";
+}
+th.sortable.desc:before, th.sortable.asc:after {
+    opacity: 1;
+}
+
+.pagination .page-link {
+    cursor: pointer;
+}
