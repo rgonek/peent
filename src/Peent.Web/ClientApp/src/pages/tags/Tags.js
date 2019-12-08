@@ -30,8 +30,8 @@ function Tags(props) {
     []
   );
 
-  const fetchData = useCallback((pageIndex, pageSize) => {
-    props.onFetchTags(pageIndex, pageSize);
+  const fetchData = useCallback((pageIndex, pageSize, sortBy) => {
+    props.onFetchTags(pageIndex, pageSize, sortBy);
   }, []);
 
   return (
@@ -67,8 +67,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchTags: (pageIndex, pageSize) =>
-      dispatch(actions.fetchTags(pageIndex, pageSize))
+    onFetchTags: (pageIndex, pageSize, sortBy) =>
+      dispatch(actions.fetchTags(pageIndex, pageSize, sortBy))
   };
 };
 

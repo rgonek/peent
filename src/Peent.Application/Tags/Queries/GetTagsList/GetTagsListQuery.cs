@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
 using Peent.Application.Common;
 using Peent.Application.Tags.Models;
 
@@ -9,5 +10,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
         public int PageSize { get; set; } = 1;
 
         public int PageIndex { get; set; } = 10;
+
+        public IList<SortInfo> Sort { get; set; } = new List<SortInfo>();
     }
 }

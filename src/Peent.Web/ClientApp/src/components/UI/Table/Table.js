@@ -44,8 +44,13 @@ function Table({
     )
   
     React.useEffect(() => {
-      fetchData(pageIndex, pageSize, sortBy)
-    }, [fetchData, pageIndex, pageSize, sortBy]);
+      if(pageIndex === 0) {
+        gotoPage(1);
+      }
+      else {
+        fetchData(pageIndex, pageSize, sortBy);
+      }
+    }, [fetchData, pageIndex, pageSize]);
 
     const handlePageClick = pageNumber => {
       gotoPage(pageNumber);

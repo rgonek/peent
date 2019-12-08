@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,22 @@ namespace Peent.Application.Infrastructure.Extensions
                 PageCount = pagedResult.PageCount,
                 Results = pagedResult.Results.Select(map).ToList()
             };
+        }
+
+        public static IOrderedQueryable<TSource> SortBy<TSource, TKey>(
+            this IOrderedQueryable<TSource> source,
+            Expression<Func<TSource, TKey>> keySelector,
+            SortDirection direction,
+            int sortIndex)
+        {
+            if (sortIndex == 0)
+                return direction == SortDirection.Asc
+                    ? source.OrderBy(keySelector)
+                    : source.OrderByDescending(keySelector);
+
+            return direction == SortDirection.Asc
+                ? source.ThenBy(keySelector)
+                : source.ThenByDescending(keySelector);
         }
     }
 }

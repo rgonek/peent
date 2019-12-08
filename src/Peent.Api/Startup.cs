@@ -1,4 +1,5 @@
-using FluentValidation;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -42,9 +43,13 @@ namespace Peent.Api
 
             services.AddControllers(options =>
                 {
-                    options.ModelMetadataDetailsProviders.Insert(0,new DateTimeBinderProvider());
+                    options.ModelMetadataDetailsProviders.Insert(0, new DateTimeBinderProvider());
                 })
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetCategoryQueryValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetCategoryQueryValidator>())
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+                });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

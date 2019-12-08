@@ -59,11 +59,24 @@ export const fetchTagsStart = () => {
     };
 };
 
-export const fetchTags = (pageIndex, pageSize) => {
+export const fetchTags = (pageIndex, pageSize, sortBy) => {
     return dispatch => {
         dispatch(fetchTagsStart());
-        const queryParams = '?pageSize=' + pageSize + '&pageIndex=' + pageIndex;
-        axios.get('/tags/GetAll' + queryParams)
+        const sortModel = [];
+        sortBy.map((item, index) => {
+            sortModel[index] = {
+                field: item.id,
+                direction: item.desc ? 'desc' : 'asc'
+            };
+        });
+
+        const query = {
+            pageIndex,
+            pageSize,
+            sort: sortModel
+        };
+        
+        axios.post('/tags/GetAll', query)
             .then( res => {
                 const fetchedTags = [];
                 for ( let key in res.data.results ) {
