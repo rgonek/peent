@@ -8,7 +8,7 @@ function Pagination({
     pageIndex = 1,
     maxButtons = 5
 }) {
-  const { activePage, visiblePieces, goToPage } = usePagination({
+  const { activePage, visiblePieces } = usePagination({
     initialPage: pageIndex,
     numberOfPages: pageCount,
     maxButtons: maxButtons

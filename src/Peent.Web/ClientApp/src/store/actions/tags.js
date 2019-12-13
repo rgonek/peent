@@ -59,7 +59,7 @@ export const fetchTagsStart = () => {
     };
 };
 
-export const fetchTags = (pageIndex, pageSize, sortBy) => {
+export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
     return dispatch => {
         dispatch(fetchTagsStart());
         const sortModel = [];
@@ -69,11 +69,19 @@ export const fetchTags = (pageIndex, pageSize, sortBy) => {
                 direction: item.desc ? 'desc' : 'asc'
             };
         });
+        const filterModel = Object.keys(filters)
+            .map(key => {
+                return {
+                    field: key,
+                    values: [filters[key]]
+                }
+            });
 
         const query = {
             pageIndex,
             pageSize,
-            sort: sortModel
+            sort: sortModel,
+            filters: filterModel
         };
         
         axios.post('/tags/GetAll', query)

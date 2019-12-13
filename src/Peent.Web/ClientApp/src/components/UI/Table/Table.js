@@ -1,9 +1,10 @@
 import React from 'react'
 import BootstrapTable from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
-import { useTable, usePagination, useSortBy } from 'react-table'
+import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 import Spinner from '../Spinner/Spinner'
 import Pagination from '../Pagination/Pagination'
+import { defaultColumnFilter } from './Filters'
 import './Table.css';
 
 function Table({
@@ -14,22 +15,22 @@ function Table({
     pageCount: controlledPageCount,
     rowCount
   }) {
+    const defaultColumn = React.useMemo(
+      () => ({
+        Filter: defaultColumnFilter,
+      }),
+      []
+    );
+
     const {
       getTableProps,
       getTableBodyProps,
       headerGroups,
       prepareRow,
       page,
-      canPreviousPage,
-      canNextPage,
-      pageOptions,
-      pageCount,
       gotoPage,
-      nextPage,
-      previousPage,
       setPageSize,
-      rows,
-      state: { pageIndex, pageSize, sortBy },
+      state: { pageIndex, pageSize, sortBy, filters },
     } = useTable(
       {
         columns,
@@ -37,8 +38,11 @@ function Table({
         initialState: { pageIndex: 1 },
         manualPagination: true,
         pageCount: controlledPageCount + 1,
-        manualSorting: true
+        manualSorting: true,
+        manualFilters: true,
+        defaultColumn
       },
+      useFilters,
       useSortBy,
       usePagination
     )
@@ -48,7 +52,7 @@ function Table({
         gotoPage(1);
       }
       else {
-        fetchData(pageIndex, pageSize, sortBy);
+        fetchData(pageIndex, pageSize, sortBy, filters);
       }
     }, [fetchData, pageIndex, pageSize]);
 
@@ -65,12 +69,26 @@ function Table({
           classes.push('asc');
       return (<th className={classes.join(' ')} {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render('Header')}</th>);
     };
+    
+    const renderFilterRow = headerGroup => {
 
-    const headers = headerGroups.map(headerGroup => (
-      <tr {...headerGroup.getHeaderGroupProps()}>
-        {headerGroup.headers.map(column => renderColumn(column))}
-      </tr>
-    ));
+      console.log(headerGroup);
+      if (headerGroup.headers.some(x => x.canFilter) === false)
+        return null;
+      return (
+        <tr className="row-filter" key={"filter-" + headerGroup.id}>
+          {headerGroup.headers.map(column => <th key={column.id + "-filter"}>{column.canFilter ? column.render('Filter') : null}</th>)}
+        </tr>)
+    }
+
+    const headers = headerGroups.map(headerGroup => [
+      (
+        <tr {...headerGroup.getHeaderGroupProps()}>
+          {headerGroup.headers.map(column => renderColumn(column))}
+        </tr>
+      ),
+      renderFilterRow(headerGroup)
+    ]);
   
     return (
       <>

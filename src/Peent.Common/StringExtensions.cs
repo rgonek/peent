@@ -12,5 +12,10 @@
 
             return text.ToUpper();
         }
+
+        public static bool HasValue(this string text)
+        {
+            return string.IsNullOrEmpty(text) == false;
+        }
     }
 }

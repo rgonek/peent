@@ -22,14 +22,15 @@ function Tags(props) {
       {
         Header: 'Date',
         accessor: 'date',
-        sortable: true
+        sortable: true,
+        disableFilters: true
       }
     ],
     []
   );
 
-  const fetchData = useCallback((pageIndex, pageSize, sortBy) => {
-    props.onFetchTags(pageIndex, pageSize, sortBy);
+  const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
+    props.onFetchTags(pageIndex, pageSize, sortBy, filters);
   }, []);
 
   return (
