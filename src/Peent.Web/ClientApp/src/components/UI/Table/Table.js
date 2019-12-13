@@ -61,12 +61,15 @@ function Table({
     };
 
     const renderColumn = column => {
-      const classes = ['sortable'];
-      if(column.isSorted)
-        if(column.isSortedDesc)
-          classes.push('desc');
-        else
-          classes.push('asc');
+      const classes = [];
+      if (column.canSort) {
+        classes.push('sortable');
+        if(column.isSorted)
+          if(column.isSortedDesc)
+            classes.push('desc');
+          else
+            classes.push('asc');
+      }
       return (<th className={classes.join(' ')} {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render('Header')}</th>);
     };
     
