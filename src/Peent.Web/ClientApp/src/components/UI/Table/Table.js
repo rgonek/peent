@@ -71,10 +71,9 @@ function Table({
     };
     
     const renderFilterRow = headerGroup => {
-
-      console.log(headerGroup);
       if (headerGroup.headers.some(x => x.canFilter) === false)
         return null;
+
       return (
         <tr className="row-filter" key={"filter-" + headerGroup.id}>
           {headerGroup.headers.map(column => <th key={column.id + "-filter"}>{column.canFilter ? column.render('Filter') : null}</th>)}
@@ -102,7 +101,7 @@ function Table({
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    return <td {...cell.getCellProps()}>{cell.value ? cell.render('Cell') : null}</td>
                   })}
                 </tr>
               )
