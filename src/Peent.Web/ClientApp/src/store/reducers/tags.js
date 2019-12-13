@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
-import Noty from 'noty';
+import toast from '../../services/toast'
 
 const initialState = {
     tags: [],
@@ -14,11 +14,7 @@ const addTagStart = ( state, action ) => {
 };
 
 const addTagSuccess = ( state, action ) => {
-    new Noty({
-        type: 'success',
-        text: 'Tag added',
-        timeout: 5000
-    }).show();
+    toast.success('Tag added');
     const newTag = updateObject( action.tagData, { id: action.tagId } );
     return updateObject( state, {
         loading: false,

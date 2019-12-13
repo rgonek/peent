@@ -5,7 +5,6 @@ import * as yup from 'yup';
 import ContentHeader from '../../components/ContentHeader';
 import { Form, Button } from 'react-bootstrap';
 import * as actions from '../../store/actions/index';
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-peent';
 
 const tagsEdit = props => {
@@ -93,4 +92,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     null,
     mapDispatchToProps
-  )(withErrorHandler(tagsEdit, axios));
+  )(tagsEdit);

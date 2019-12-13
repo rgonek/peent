@@ -1,12 +1,10 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import ContentHeader from '../../components/ContentHeader';
 import { LinkContainer } from 'react-router-bootstrap';
 import { ButtonToolbar, Button } from 'react-bootstrap';
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Table from '../../components/UI/Table/Table'
-import axios from '../../axios-peent';
 
 function Tags(props) {
   const columns = useMemo(
@@ -67,12 +65,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchTags: (pageIndex, pageSize, sortBy) =>
-      dispatch(actions.fetchTags(pageIndex, pageSize, sortBy))
+    onFetchTags: (pageIndex, pageSize, sortBy, filters) =>
+      dispatch(actions.fetchTags(pageIndex, pageSize, sortBy, filters))
   };
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withErrorHandler(Tags, axios));
+  )(Tags);
