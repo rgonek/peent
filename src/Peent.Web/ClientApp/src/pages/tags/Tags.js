@@ -50,6 +50,9 @@ function Tags(props) {
         loading={props.loading}
         pageCount={props.pageCount}
         rowCount={props.rowCount}
+        onRowClick={data=>{
+          console.log(data);
+        }}
       />
     </div>
   );

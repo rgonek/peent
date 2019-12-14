@@ -89,8 +89,7 @@ export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
                 const fetchedTags = [];
                 for ( let key in res.data.results ) {
                     fetchedTags.push( {
-                        ...res.data.results[key],
-                        id: key
+                        ...res.data.results[key]
                     } );
                 }
                 dispatch(fetchTagsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));

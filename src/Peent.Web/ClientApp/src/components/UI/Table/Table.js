@@ -13,7 +13,8 @@ function Table({
     fetchData,
     loading,
     pageCount: controlledPageCount,
-    rowCount
+    rowCount,
+    onRowClick
   }) {
     const defaultColumn = React.useMemo(
       () => ({
@@ -100,9 +101,17 @@ function Table({
           </thead>
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {
-              prepareRow(row)
+              prepareRow(row);
+              let rowProps = null;
+              if (onRowClick) {
+                rowProps = {
+                  style: {'cursor':'pointer'},
+                  onClick: () => onRowClick(row.original)
+                }
+              }
+
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} {...rowProps}>
                   {row.cells.map(cell => {
                     return <td {...cell.getCellProps()}>{cell.value ? cell.render('Cell') : null}</td>
                   })}
