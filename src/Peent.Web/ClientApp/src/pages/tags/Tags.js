@@ -5,8 +5,10 @@ import ContentHeader from '../../components/ContentHeader';
 import { LinkContainer } from 'react-router-bootstrap';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 import Table from '../../components/UI/Table/Table'
+import { useHistory } from "react-router-dom";
 
 function Tags(props) {
+  let history = useHistory();
   const columns = useMemo(
     () => [
       {
@@ -50,8 +52,8 @@ function Tags(props) {
         loading={props.loading}
         pageCount={props.pageCount}
         rowCount={props.rowCount}
-        onRowClick={data=>{
-          console.log(data);
+        onRowClick={data => {
+          history.push('tags/' + data.id);
         }}
       />
     </div>

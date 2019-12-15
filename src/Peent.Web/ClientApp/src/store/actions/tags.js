@@ -35,7 +35,41 @@ export const addTagFail = ( error ) => {
         type: actionTypes.ADD_TAG_FAIL,
         error: error
     };
-}
+};
+
+export const updateTag = ( id, tagData ) => {
+    return dispatch => {
+        tagData = convertEmptyStringsToNulls(tagData);
+        dispatch( updateTagStart() );
+        axios.put( '/tags/' + id, tagData )
+            .then( response => {
+                dispatch( updateTagSuccess( tagData ) );
+            } )
+            .catch( error => {
+                dispatch( updateTagFail( error ) );
+            } );
+    };
+};
+
+export const updateTagStart = () => {
+    return {
+        type: actionTypes.UPDATE_TAG_START
+    };
+};
+
+export const updateTagSuccess = ( tagData ) => {
+    return {
+        type: actionTypes.UPDATE_TAG_SUCCESS,
+        tagData: tagData
+    };
+};
+
+export const updateTagFail = ( error ) => {
+    return {
+        type: actionTypes.UPDATE_TAG_FAIL,
+        error: error
+    };
+};
 
 export const fetchTagsSuccess = ( tags, pageCount, rowCount ) => {
     return {
@@ -62,9 +96,8 @@ export const fetchTagsStart = () => {
 export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
     return dispatch => {
         dispatch(fetchTagsStart());
-        const sortModel = [];
-        sortBy.map((item, index) => {
-            sortModel[index] = {
+        const sortModel = sortBy.map((item, index) => {
+            return {
                 field: item.id,
                 direction: item.desc ? 'desc' : 'asc'
             };
@@ -96,6 +129,43 @@ export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
             } )
             .catch( err => {
                 dispatch(fetchTagsFail(err));
+            } );
+    };
+};
+
+export const fetchTagSuccess = ( tag ) => {
+    return {
+        type: actionTypes.FETCH_TAG_SUCCESS,
+        tag: tag
+    };
+};
+
+export const fetchTagFail = ( error ) => {
+    return {
+        type: actionTypes.FETCH_TAG_FAIL,
+        error: error
+    };
+};
+
+export const fetchTagStart = () => {
+    return {
+        type: actionTypes.FETCH_TAG_START
+    };
+};
+
+export const fetchTag = (id) => {
+    return dispatch => {
+        dispatch(fetchTagStart());
+
+        axios.get('/tags/' + id, {transformResponse: [].concat(
+            axios.defaults.transformResponse
+            )
+          })
+            .then( res => {
+                dispatch(fetchTagSuccess(res.data));
+            } )
+            .catch( err => {
+                dispatch(fetchTagFail(err));
             } );
     };
 };

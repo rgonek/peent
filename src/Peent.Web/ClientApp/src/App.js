@@ -5,16 +5,15 @@ import Layout from './pages/Layout'
 import Dashboard from './pages/Dashboard'
 import Categories from './pages/Categories'
 import Tags from './pages/tags/Tags'
+import TagsNew from './pages/tags/TagsNew'
 import TagsEdit from './pages/tags/TagsEdit'
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
-
-window.axios = require('axios');
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-require('./services/errorHandler');
+import './services/errorHandler'
+import './services/transformResponse'
 
 function App() {
   return (
@@ -22,7 +21,8 @@ function App() {
       <Layout>
         <Switch>
           <Route path='/categories' component={Categories} />
-          <Route path='/tags/new' component={TagsEdit} />
+          <Route path='/tags/new' component={TagsNew} />
+          <Route path='/tags/:id' component={TagsEdit} />
           <Route path='/tags' component={Tags} />
           <Route exact path='/' component={Dashboard} />
         </Switch>

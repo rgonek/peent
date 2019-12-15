@@ -45,6 +45,7 @@ namespace Peent.Api
                 {
                     options.ModelMetadataDetailsProviders.Insert(0, new DateTimeBinderProvider());
                 })
+                .AddHybridModelBinder()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetCategoryQueryValidator>())
                 .AddJsonOptions(options =>
                 {

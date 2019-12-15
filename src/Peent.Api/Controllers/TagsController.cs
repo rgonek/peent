@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HybridModelBinding;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Peent.Application.Tags.Commands.CreateTag;
@@ -24,9 +25,10 @@ namespace Peent.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{id:int}")]
         [ProducesResponseType(typeof(TagModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get([FromQuery] GetTagQuery query)
+        public async Task<IActionResult> Get([FromRoute] GetTagQuery query)
         {
             return await Execute(query);
         }
@@ -40,18 +42,20 @@ namespace Peent.Api.Controllers
         }
 
         [HttpPut]
+        [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> Edit([FromBody] EditTagCommand command)
+        public async Task<IActionResult> Edit([FromHybrid] EditTagCommand command)
         {
             return await Execute(command);
         }
 
         [HttpDelete]
+        [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete([FromBody] DeleteTagCommand command)
+        public async Task<IActionResult> Delete([FromRoute] DeleteTagCommand command)
         {
             return await Execute(command);
         }

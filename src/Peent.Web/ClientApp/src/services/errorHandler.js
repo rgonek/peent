@@ -1,7 +1,7 @@
 import axios from '../axios-peent';
 import toast from './toast'
 
-function errorResponseHandler(error) {
+const errorResponseHandler = error => {
     if (error.config.hasOwnProperty('errorHandle') && 
         error.config.errorHandle === false) {
         return Promise.reject(error);
@@ -11,6 +11,8 @@ function errorResponseHandler(error) {
         error.response.data : 
         error.message;
     toast.error(message);
+
+    return Promise.reject(error);
 }
 
 axios.interceptors.response.use(

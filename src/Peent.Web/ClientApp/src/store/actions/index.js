@@ -1,4 +1,6 @@
 export {
     addTag,
-    fetchTags
+    updateTag,
+    fetchTags,
+    fetchTag
 } from './tags';

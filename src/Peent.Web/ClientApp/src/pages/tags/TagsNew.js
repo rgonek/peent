@@ -1,19 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import ContentHeader from '../../components/ContentHeader';
 import { Form, Button } from 'react-bootstrap';
 import * as actions from '../../store/actions/index';
-import { useParams } from "react-router-dom";
-import Spinner from '../../components/UI/Spinner/Spinner'
 
-function TagsEdit(props) {
-    const { id } = useParams();
-    useEffect(() => {
-        props.onFetchTag(id);
-    }, [id]);
-
+function TagsNew(props) {
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
         description: yup.string().max(2000),
@@ -21,21 +14,17 @@ function TagsEdit(props) {
       });
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
-        props.onSubmitTag(id, values);
+        props.onSubmitTag(values);
         actions.setSubmitting(false);
     };
-
-    if(props.tag == null || props.loading) {
-        return <Spinner />
-    }
-
+    
     return (
         <div>
             <ContentHeader>
-                <h1 className="h2">Edit Tag</h1>
+                <h1 className="h2">New Tag</h1>
             </ContentHeader>
             <Formik
-                initialValues={props.tag}
+                initialValues={{ name: '', description: '', date: '' }}
                 validationSchema={formSchema}
                 onSubmit={handleSubmit}>
                 {({
@@ -95,19 +84,19 @@ function TagsEdit(props) {
 
 const mapStateToProps = state => {
     return {
-      tag: state.tag.tag,
+      tags: state.tag.tags,
       loading: state.tag.loading
     };
   };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmitTag: (id, tagData) => dispatch(actions.updateTag(id, tagData)),
-    onFetchTag: (id) => dispatch( actions.fetchTag(id) )
+    onSubmitTag: (tagData) =>
+      dispatch(actions.addTag(tagData))
   };
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(TagsEdit);
+  )(TagsNew);
