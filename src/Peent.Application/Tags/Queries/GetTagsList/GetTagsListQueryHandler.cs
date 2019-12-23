@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentValidation.Internal;
 using MediatR;
 using Peent.Application.Common;
 using Peent.Application.Tags.Models;
@@ -76,7 +72,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
                     nameof(Tag.Name) => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault())),
                     nameof(Tag.Description) => tagsQuery.Where(x =>
                         x.Description.Contains(filter.Values.FirstOrDefault())),
-                    "_" => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
+                    FilterInfo.Global => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
                                                 x.Description.Contains(filter.Values.FirstOrDefault())),
                     _ => tagsQuery
                 };
