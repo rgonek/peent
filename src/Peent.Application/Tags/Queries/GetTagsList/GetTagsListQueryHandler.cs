@@ -76,6 +76,8 @@ namespace Peent.Application.Tags.Queries.GetTagsList
                     nameof(Tag.Name) => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault())),
                     nameof(Tag.Description) => tagsQuery.Where(x =>
                         x.Description.Contains(filter.Values.FirstOrDefault())),
+                    "_" => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
+                                                x.Description.Contains(filter.Values.FirstOrDefault())),
                     _ => tagsQuery
                 };
             }

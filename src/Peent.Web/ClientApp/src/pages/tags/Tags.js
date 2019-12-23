@@ -33,6 +33,7 @@ function Tags(props) {
   );
 
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
+    console.log('fetch');
     props.onFetchTags(pageIndex, pageSize, sortBy, filters);
   }, []);
 

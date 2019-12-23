@@ -58,11 +58,14 @@ th.sortable.desc:before, th.sortable.asc:after {
     margin-bottom: 0;
 }
 
-.card-table select.form-control{
+.card-table > .card-footer select.form-control {
     height: 35px;
     line-height: 35px;
     padding: .275rem .75rem;
 }
-.card-table > .card-footer{
+.card-table > .card-footer {
     line-height: 35px;
+}
+
+.card-table > .card-header input.form-control {
 }

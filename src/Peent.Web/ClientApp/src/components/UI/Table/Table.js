@@ -9,6 +9,8 @@ import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import InputGroup from 'react-bootstrap/InputGroup'
+import { FaSearch } from "react-icons/fa";
 import './Table.css';
 
 function Table({
@@ -66,6 +68,11 @@ function Table({
       gotoPage(pageNumber);
     };
 
+    const handleSearchChange = e => {
+      filters['_'] = e.target.value;
+      fetchData(pageIndex, pageSize, sortBy, filters);
+    };
+
     const renderColumn = column => {
       const classes = [];
       if (column.canSort) {
@@ -101,7 +108,22 @@ function Table({
     return (
       <Card className='card-table'>
         <Card.Header>
-          {title}
+          <Row>
+            <Col xs={10}>{title}</Col>
+            <Col>
+              <InputGroup size="sm">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="inputGroupPrepend"><FaSearch /></InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  placeholder="Search..."
+                  aria-describedby="inputGroupPrepend"
+                  onChange={handleSearchChange}
+                />
+              </InputGroup>
+            </Col>
+          </Row>
         </Card.Header>
         <Card.Body>
           <BootstrapTable striped bordered hover {...getTableProps()}>
