@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import ContentHeader from '../../components/ContentHeader';
 import { Form, Button } from 'react-bootstrap';
 import * as actions from '../../store/actions/index';
+import { Redirect } from 'react-router-dom';
 
 function TagsNew(props) {
     const formSchema = yup.object({
@@ -17,6 +18,9 @@ function TagsNew(props) {
         props.onSubmitTag(values);
         actions.setSubmitting(false);
     };
+
+    if(props.added)
+        return (<Redirect to="/tags" />);
     
     return (
         <div>
@@ -85,7 +89,8 @@ function TagsNew(props) {
 const mapStateToProps = state => {
     return {
       tags: state.tag.tags,
-      loading: state.tag.loading
+      loading: state.tag.loading,
+      added: state.tag.submitted
     };
   };
 

@@ -71,6 +71,38 @@ export const updateTagFail = ( error ) => {
     };
 };
 
+export const deleteTag = ( id ) => {
+    return dispatch => {
+        dispatch( deleteTagStart() );
+        axios.delete( '/tags/' + id )
+            .then( response => {
+                dispatch( deleteTagSuccess() );
+            } )
+            .catch( error => {
+                dispatch( deleteTagFail( error ) );
+            } );
+    };
+};
+
+export const deleteTagStart = () => {
+    return {
+        type: actionTypes.DELETE_TAG_START
+    };
+};
+
+export const deleteTagSuccess = () => {
+    return {
+        type: actionTypes.DELETE_TAG_SUCCESS
+    };
+};
+
+export const deleteTagFail = ( error ) => {
+    return {
+        type: actionTypes.DELETE_TAG_FAIL,
+        error: error
+    };
+};
+
 export const fetchTagsSuccess = ( tags, pageCount, rowCount ) => {
     return {
         type: actionTypes.FETCH_TAGS_SUCCESS,

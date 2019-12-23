@@ -7,6 +7,8 @@ import Categories from './pages/Categories'
 import Tags from './pages/tags/Tags'
 import TagsNew from './pages/tags/TagsNew'
 import TagsEdit from './pages/tags/TagsEdit'
+import TagDetails from './pages/tags/TagDetails'
+import TagsDelete from './pages/tags/TagsDelete'
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,6 +24,8 @@ function App() {
         <Switch>
           <Route path='/categories' component={Categories} />
           <Route path='/tags/new' component={TagsNew} />
+          <Route path='/tags/:id/details' component={TagDetails} />
+          <Route path='/tags/:id/delete' component={TagsDelete} />
           <Route path='/tags/:id' component={TagsEdit} />
           <Route path='/tags' component={Tags} />
           <Route exact path='/' component={Dashboard} />

@@ -10,8 +10,29 @@ import Card from 'react-bootstrap/Card'
 
 function Tags(props) {
   let history = useHistory();
+  const onEditClick = (e, id) => {
+    history.push('tags/' + id);
+    e.stopPropagation();
+  };
+  const onDeleteClick = (e, id) => {
+    history.push('tags/' + id + '/delete');
+    e.stopPropagation();
+  };
   const columns = useMemo(
     () => [
+      {
+        Header: '',
+        accessor: 'id',
+        id: '_actions',
+        sortable: false,
+        disableFilters: true,
+        Cell: ({ cell: { value } }) => {
+          return (<>
+            <Button variant="primary" size="sm" onClick={e => onEditClick(e, value)}>Edit</Button>{" "}
+            <Button variant="danger" size="sm" onClick={e => onDeleteClick(e, value)}>Delete</Button>
+          </>)
+        }
+      },
       {
         Header: 'Name',
         accessor: 'name',
@@ -33,7 +54,6 @@ function Tags(props) {
   );
 
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-    console.log('fetch');
     props.onFetchTags(pageIndex, pageSize, sortBy, filters);
   }, []);
 
@@ -56,7 +76,7 @@ function Tags(props) {
         pageCount={props.pageCount}
         rowCount={props.rowCount}
         onRowClick={data => {
-          history.push('tags/' + data.id);
+          history.push('tags/' + data.id + '/details');
         }}
       />
     </div>

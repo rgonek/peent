@@ -7,7 +7,8 @@ const initialState = {
     loading: false,
     pageCount: 0,
     rowCount: 0,
-    tag: null
+    tag: null,
+    submitted: false
 };
 
 const addTagStart = ( state, action ) => {
@@ -16,7 +17,7 @@ const addTagStart = ( state, action ) => {
 
 const addTagSuccess = ( state, action ) => {
     toast.success('Tag added');
-    return updateObject( state, { loading: false } );
+    return updateObject( state, { loading: false, submitted: true } );
 };
 
 const addTagFail = ( state, action ) => {
@@ -31,7 +32,8 @@ const updateTagSuccess = ( state, action ) => {
     toast.success('Tag updated');
     return updateObject( state, {
         loading: false,
-        tag: action.tagData
+        tag: action.tagData,
+        submitted: true
     } );
 };
 
@@ -39,8 +41,24 @@ const updateTagFail = ( state, action ) => {
     return updateObject( state, { loading: false } );
 };
 
-const fetchTagsStart = ( state, action ) => {
+const deleteTagStart = ( state, action ) => {
     return updateObject( state, { loading: true } );
+};
+
+const deleteTagSuccess = ( state, action ) => {
+    toast.success('Tag deleted');
+    return updateObject( state, {
+        loading: false,
+        submitted: true
+    } );
+};
+
+const deleteTagFail = ( state, action ) => {
+    return updateObject( state, { loading: false } );
+};
+
+const fetchTagsStart = ( state, action ) => {
+    return updateObject( state, { loading: true, submitted: false } );
 };
 
 const fetchTagsSuccess = ( state, action ) => {
@@ -57,7 +75,7 @@ const fetchTagsFail = ( state, action ) => {
 };
 
 const fetchTagStart = ( state, action ) => {
-    return updateObject( state, { loading: true } );
+    return updateObject( state, { loading: true, submitted: false } );
 };
 
 const fetchTagSuccess = ( state, action ) => {
@@ -80,6 +98,10 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.UPDATE_TAG_START: return updateTagStart( state, action );
         case actionTypes.UPDATE_TAG_SUCCESS: return updateTagSuccess( state, action );
         case actionTypes.UPDATE_TAG_FAIL: return updateTagFail( state, action );
+
+        case actionTypes.DELETE_TAG_START: return deleteTagStart( state, action );
+        case actionTypes.DELETE_TAG_SUCCESS: return deleteTagSuccess( state, action );
+        case actionTypes.DELETE_TAG_FAIL: return deleteTagFail( state, action );
 
         case actionTypes.FETCH_TAGS_START: return fetchTagsStart( state, action );
         case actionTypes.FETCH_TAGS_SUCCESS: return fetchTagsSuccess( state, action );
