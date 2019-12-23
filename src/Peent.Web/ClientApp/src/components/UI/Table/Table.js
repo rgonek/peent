@@ -5,9 +5,14 @@ import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 import Spinner from '../Spinner/Spinner'
 import Pagination from '../Pagination/Pagination'
 import { defaultColumnFilter } from './Filters'
+import Card from 'react-bootstrap/Card'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import './Table.css';
 
 function Table({
+    title,
     columns,
     data,
     fetchData,
@@ -94,57 +99,69 @@ function Table({
     ]);
   
     return (
-      <>
-        <BootstrapTable striped bordered hover {...getTableProps()}>
-          <thead>
-            {headers}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row, i) => {
-              prepareRow(row);
-              let rowProps = null;
-              if (onRowClick) {
-                rowProps = {
-                  style: {'cursor':'pointer'},
-                  onClick: () => onRowClick(row.original)
+      <Card className='card-table'>
+        <Card.Header>
+          {title}
+        </Card.Header>
+        <Card.Body>
+          <BootstrapTable striped bordered hover {...getTableProps()}>
+            <thead>
+              {headers}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((row, i) => {
+                prepareRow(row);
+                let rowProps = null;
+                if (onRowClick) {
+                  rowProps = {
+                    style: {'cursor':'pointer'},
+                    onClick: () => onRowClick(row.original)
+                  }
                 }
-              }
 
-              return (
-                <tr {...row.getRowProps()} {...rowProps}>
-                  {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.value ? cell.render('Cell') : null}</td>
-                  })}
-                </tr>
-              )
-            })}
-          </tbody>
-        </BootstrapTable>
-        <div className="table-footer form-inline">
-          <Pagination
-            pageIndex={pageIndex}
-            pageCount={controlledPageCount}
-            onPageChange={handlePageClick} />
-          {loading ? ('') : (
-              <div>Showing {page.length} of {rowCount}{' '}
-              results</div>
-          )}
-          <Form.Control as="select"
-            value={pageSize}
-            onChange={e => {
-              setPageSize(Number(e.target.value));
-              gotoPage(1);
-            }}
-          >
-            {[1,2,5,10, 20, 30, 40, 50].map(pageSize => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </Form.Control>
-          {loading ? (<Spinner />) : ('')}
-        </div>
-      </>
+                return (
+                  <tr {...row.getRowProps()} {...rowProps}>
+                    {row.cells.map(cell => {
+                      return <td {...cell.getCellProps()}>{cell.value ? cell.render('Cell') : null}</td>
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </BootstrapTable>
+        </Card.Body>
+        <Card.Footer>
+            <Row>
+              <Col md="auto">
+                <Form.Control as="select"
+                  value={pageSize}
+                  onChange={e => {
+                    setPageSize(Number(e.target.value));
+                    gotoPage(1);
+                  }}
+                >
+                  {[1,2,5,10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                      Show {pageSize}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Col>
+              <Col>
+                {loading ? (<Spinner />) : (
+                    <div>Showing {page.length} of {rowCount}{' '}
+                    results</div>
+                )}
+              </Col>
+              <Col>
+                <Pagination
+                  pageIndex={pageIndex}
+                  pageCount={controlledPageCount}
+                  onPageChange={handlePageClick} />
+              </Col>
+            </Row>
+        </Card.Footer>
+      </Card>
     )
 }
   

@@ -6,6 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 import Table from '../../components/UI/Table/Table'
 import { useHistory } from "react-router-dom";
+import Card from 'react-bootstrap/Card'
 
 function Tags(props) {
   let history = useHistory();
@@ -46,6 +47,7 @@ function Tags(props) {
         </ButtonToolbar>
       </ContentHeader>
       <Table
+        title='Tags'
         columns={columns}
         data={props.tags}
         fetchData={fetchData}
