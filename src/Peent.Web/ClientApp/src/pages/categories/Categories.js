@@ -8,14 +8,14 @@ import Table from '../../components/UI/Table/Table'
 import { useHistory } from "react-router-dom";
 import Card from 'react-bootstrap/Card'
 
-function Tags(props) {
+function Categories(props) {
   let history = useHistory();
   const onEditClick = (e, id) => {
-    history.push('tags/' + id);
+    history.push('categories/' + id);
     e.stopPropagation();
   };
   const onDeleteClick = (e, id) => {
-    history.push('tags/' + id + '/delete');
+    history.push('categories/' + id + '/delete');
     e.stopPropagation();
   };
   const columns = useMemo(
@@ -42,41 +42,35 @@ function Tags(props) {
         Header: 'Description',
         accessor: 'description',
         sortable: true
-      },
-      {
-        Header: 'Date',
-        accessor: 'date',
-        sortable: true,
-        disableFilters: true
       }
     ],
     []
   );
 
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-    props.onFetchTags(pageIndex, pageSize, sortBy, filters);
+    props.onFetchCategories(pageIndex, pageSize, sortBy, filters);
   }, []);
 
-    return (
+  return (
     <div>
       <ContentHeader>
-        <h1 className="h2">Tags</h1>
+        <h1 className="h2">Categories</h1>
         <ButtonToolbar>
-          <LinkContainer to='/tags/new'>
-            <Button variant="outline-secondary" size="sm">Add tag</Button>
+          <LinkContainer to='/categories/new'>
+            <Button variant="outline-secondary" size="sm">Add category</Button>
           </LinkContainer>
         </ButtonToolbar>
       </ContentHeader>
       <Table
-        title='Tags'
+        title='Categories'
         columns={columns}
-        data={props.tags}
+        data={props.categories}
         fetchData={fetchData}
         loading={props.loading}
         pageCount={props.pageCount}
         rowCount={props.rowCount}
         onRowClick={data => {
-          history.push('tags/' + data.id + '/details');
+          history.push('categories/' + data.id + '/details');
         }}
       />
     </div>
@@ -85,21 +79,21 @@ function Tags(props) {
 
 const mapStateToProps = state => {
   return {
-    tags: state.tag.tags,
-    loading: state.tag.loading,
-    pageCount: state.tag.pageCount,
-    rowCount: state.tag.rowCount
+    categories: state.category.categories,
+    loading: state.category.loading,
+    pageCount: state.category.pageCount,
+    rowCount: state.category.rowCount
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchTags: (pageIndex, pageSize, sortBy, filters) =>
-      dispatch(actions.fetchTags(pageIndex, pageSize, sortBy, filters))
+    onFetchCategories: (pageIndex, pageSize, sortBy, filters) =>
+      dispatch(actions.fetchCategories(pageIndex, pageSize, sortBy, filters))
   };
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(Tags);
+  )(Categories);

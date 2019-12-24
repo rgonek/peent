@@ -65,7 +65,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
 
         private IQueryable<Tag> Filter(IQueryable<Tag> tagsQuery, IList<FilterInfo> filters)
         {
-            foreach (var filter in filters.Where(x => x.Values.Any(x => x.HasValue())))
+            foreach (var filter in filters.Where(x => x.Values.Any(y => y.HasValue())))
             {
                 tagsQuery = filter.Field.FirstUp() switch
                 {

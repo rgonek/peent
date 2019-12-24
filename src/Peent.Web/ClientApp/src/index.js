@@ -6,11 +6,13 @@ import thunk from 'redux-thunk';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import tagReducer from './store/reducers/tags';
+import categoryReducer from './store/reducers/categories';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
-    tag: tagReducer
+    tag: tagReducer,
+    category: categoryReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

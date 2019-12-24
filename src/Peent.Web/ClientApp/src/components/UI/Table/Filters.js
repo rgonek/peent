@@ -7,6 +7,7 @@ export function defaultColumnFilter({
     return (
         <Form.Control 
             type="text" 
+            size="sm"
             placeholder={`Search...`}
             value={filterValue || ''}
             onChange={e => {
