@@ -26,7 +26,7 @@ namespace Peent.IntegrationTests.Categories
 
             var categories = await SendAsync(new GetCategoriesListQuery());
 
-            categories.Should()
+            categories.Results.Should()
                 .Contain(x => x.Id == categoryId1)
                 .And.Contain(x => x.Id == categoryId2)
                 .And.Contain(x => x.Id == categoryId3);
@@ -49,7 +49,7 @@ namespace Peent.IntegrationTests.Categories
             SetCurrentUser(user, workspace);
             var categories = await SendAsync(new GetCategoriesListQuery());
 
-            categories.Should()
+            categories.Results.Should()
                 .Contain(x => x.Id == categoryId1)
                 .And.Contain(x => x.Id == categoryId2)
                 .And.Contain(x => x.Id == categoryId3)
@@ -72,7 +72,7 @@ namespace Peent.IntegrationTests.Categories
 
             var categories = await SendAsync(new GetCategoriesListQuery());
 
-            categories.Should()
+            categories.Results.Should()
                 .Contain(x => x.Id == categoryId1)
                 .And.Contain(x => x.Id == categoryId2)
                 .And.Contain(x => x.Id == categoryId3)
