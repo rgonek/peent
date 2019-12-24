@@ -7,12 +7,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import tagReducer from './store/reducers/tags';
 import categoryReducer from './store/reducers/categories';
+import accountReducer from './store/reducers/accounts';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
     tag: tagReducer,
-    category: categoryReducer
+    category: categoryReducer,
+    account: accountReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

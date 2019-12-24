@@ -13,3 +13,11 @@ export {
     fetchCategories,
     fetchCategory
 } from './categories';
+
+export {
+    addAccount,
+    updateAccount,
+    deleteAccount,
+    fetchAccounts,
+    fetchAccount
+} from './accounts';

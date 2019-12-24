@@ -13,6 +13,11 @@ import TagsNew from './pages/tags/TagsNew'
 import TagsEdit from './pages/tags/TagsEdit'
 import TagDetails from './pages/tags/TagDetails'
 import TagsDelete from './pages/tags/TagsDelete'
+import Accounts from './pages/accounts/Accounts'
+import AccountsNew from './pages/accounts/AccountsNew'
+import AccountsEdit from './pages/accounts/AccountsEdit'
+import AccountDetails from './pages/accounts/AccountDetails'
+import AccountsDelete from './pages/accounts/AccountsDelete'
 import {
   BrowserRouter as Router,
   Switch,
@@ -36,6 +41,11 @@ function App() {
           <Route path='/tags/:id/delete' component={TagsDelete} />
           <Route path='/tags/:id' component={TagsEdit} />
           <Route path='/tags' component={Tags} />
+          <Route path='/accounts/new' component={AccountsNew} />
+          <Route path='/accounts/:id/details' component={AccountDetails} />
+          <Route path='/accounts/:id/delete' component={AccountsDelete} />
+          <Route path='/accounts/:id' component={AccountsEdit} />
+          <Route path='/accounts' component={Accounts} />
           <Route exact path='/' component={Dashboard} />
         </Switch>
       </Layout>
