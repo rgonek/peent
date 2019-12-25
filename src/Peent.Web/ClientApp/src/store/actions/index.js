@@ -21,3 +21,7 @@ export {
     fetchAccounts,
     fetchAccount
 } from './accounts';
+
+export {
+    fetchCurrencies
+} from './currencies';

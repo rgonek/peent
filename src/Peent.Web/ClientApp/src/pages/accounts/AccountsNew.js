@@ -1,34 +1,43 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import ContentHeader from '../../components/ContentHeader';
 import { Form, Button } from 'react-bootstrap';
-import * as actions from '../../store/actions/index';
 import { Redirect } from 'react-router-dom';
+import Spinner from '../../components/UI/Spinner/Spinner'
 
-function AccountsNew(props) {
+function AccountsNew({
+    added,
+    url,
+    handleSubmit,
+    onFetchCurrencies,
+    currencies,
+    loading
+}) {
+    
+    useEffect(() => {
+        onFetchCurrencies();
+    }, []);
+
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
         description: yup.string().max(2000),
-        date: yup.date()
+        currencyId: yup.number().positive().required().integer()
       });
-    const handleSubmit = (values, actions) => {
-        actions.setSubmitting(true);
-        props.onSubmitAccount(values);
-        actions.setSubmitting(false);
-    };
 
-    if(props.added)
-        return (<Redirect to="/accounts" />);
-    
+    if(added)
+        return <Redirect to={url} />;
+
+    if(currencies == null || loading)
+        return <Spinner />;
+
     return (
         <div>
             <ContentHeader>
                 <h1 className="h2">New Account</h1>
             </ContentHeader>
             <Formik
-                initialValues={{ name: '', description: '', date: '' }}
+                initialValues={{ name: '', description: '', currencyId: 0 }}
                 validationSchema={formSchema}
                 onSubmit={handleSubmit}>
                 {({
@@ -67,15 +76,22 @@ function AccountsNew(props) {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Date</Form.Label>
+                        <Form.Label>Currency</Form.Label>
                         <Form.Control
-                            type="date"
-                            name="date"
-                            value={values.date ? values.date : ''}
+                            as="select"
+                            name="currencyId"
+                            value={values.currencyId}
                             onChange={handleChange}
-                            isInvalid={!!errors.date} />
+                            isInvalid={!!errors.currencyId}>
+                            <option />
+                            {currencies.map(option => (
+                                <option key={option.id} value={option.id}>
+                                    {option.name} ({option.symbol})
+                                </option>
+                            ))}
+                        </Form.Control>
                         <Form.Control.Feedback type="invalid">
-                            {errors.date}
+                            {errors.currencyId}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Button type="submit" variant="primary" disabled={isSubmitting}>Submit</Button>
@@ -86,22 +102,4 @@ function AccountsNew(props) {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-      accounts: state.account.accounts,
-      loading: state.account.loading,
-      added: state.account.submitted
-    };
-  };
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSubmitAccount: (accountData) =>
-      dispatch(actions.addAccount(accountData))
-  };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AccountsNew);
+export default AccountsNew;

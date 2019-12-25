@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-peent';
 import { convertEmptyStringsToNulls } from '../../shared/utility'
+import { convertToSortModel, convertToFilterModel } from '../../shared/utility';
 
 export const addAccount = ( accountData ) => {
     return dispatch => {
@@ -128,20 +129,8 @@ export const fetchAccountsStart = () => {
 export const fetchAccounts = (pageIndex, pageSize, sortBy, filters) => {
     return dispatch => {
         dispatch(fetchAccountsStart());
-        const sortModel = sortBy.map((item, index) => {
-            return {
-                field: item.id,
-                direction: item.desc ? 'desc' : 'asc'
-            };
-        });
-        const filterModel = Object.keys(filters)
-            .map(key => {
-                return {
-                    field: key,
-                    values: [filters[key]]
-                }
-            });
-
+        const sortModel = convertToSortModel(sortBy);
+        const filterModel = convertToFilterModel(filters);
         const query = {
             pageIndex,
             pageSize,

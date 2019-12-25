@@ -88,7 +88,6 @@ function TagsNew(props) {
 
 const mapStateToProps = state => {
     return {
-      tags: state.tag.tags,
       loading: state.tag.loading,
       added: state.tag.submitted
     };

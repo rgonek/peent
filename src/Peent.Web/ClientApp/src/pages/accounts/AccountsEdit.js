@@ -12,22 +12,22 @@ function AccountsEdit(props) {
     const { id } = useParams();
     useEffect(() => {
         props.onFetchAccount(id);
+        props.onFetchCurrencies();
     }, [id]);
 
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
         description: yup.string().max(2000),
-        date: yup.date()
+        currencyId: yup.number().positive().required().integer()
       });
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
-        props.onSubmitAccount(id, values);
+        props.onSubmitAccount(id, {...values, currencyId: parseInt(values.currencyId)});
         actions.setSubmitting(false);
     };
 
-    if(props.account == null || props.loading) {
-        return <Spinner />
-    }
+    if(props.account == null || props.currencies == null || props.loading)
+        return <Spinner />;
 
     return (
         <div>
@@ -74,15 +74,22 @@ function AccountsEdit(props) {
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Date</Form.Label>
+                        <Form.Label>Currency</Form.Label>
                         <Form.Control
-                            type="date"
-                            name="date"
-                            value={values.date ? values.date : ''}
+                            as="select"
+                            name="currencyId"
+                            value={values.currencyId}
                             onChange={handleChange}
-                            isInvalid={!!errors.date} />
+                            isInvalid={!!errors.currencyId}>
+                            <option />
+                            {props.currencies.map(option => (
+                                <option key={option.id} value={option.id}>
+                                    {option.name} ({option.symbol})
+                                </option>
+                            ))}
+                        </Form.Control>
                         <Form.Control.Feedback type="invalid">
-                            {errors.date}
+                            {errors.currencyId}
                         </Form.Control.Feedback>
                     </Form.Group>
                     <Button type="submit" variant="primary" disabled={isSubmitting}>Submit</Button>
@@ -96,14 +103,16 @@ function AccountsEdit(props) {
 const mapStateToProps = state => {
     return {
       account: state.account.account,
-      loading: state.account.loading
+      loading: state.account.loading || state.currency.loading,
+      currencies: state.currency.currencies
     };
   };
 
 const mapDispatchToProps = dispatch => {
   return {
     onSubmitAccount: (id, accountData) => dispatch(actions.updateAccount(id, accountData)),
-    onFetchAccount: (id) => dispatch( actions.fetchAccount(id) )
+    onFetchAccount: (id) => dispatch( actions.fetchAccount(id) ),
+    onFetchCurrencies: () => dispatch(actions.fetchCurrencies())
   };
 };
 

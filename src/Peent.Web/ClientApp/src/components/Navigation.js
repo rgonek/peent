@@ -16,9 +16,9 @@ function Navigation() {
                   </LinkContainer>
                 </Nav.Item>
                 <Nav.Item as="li">
-                  <LinkContainer to='/accounts'>
+                  <LinkContainer to='/accounts/expense'>
                     <Nav.Link>
-                      <FiCreditCard className="feather" /> Accounts
+                      <FiCreditCard className="feather" /> Accounts Expense
                     </Nav.Link>
                   </LinkContainer>
                 </Nav.Item>

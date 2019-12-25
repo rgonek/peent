@@ -1,5 +1,4 @@
-﻿using System;
-using Peent.Domain.Entities;
+﻿using Peent.Domain.Entities;
 
 namespace Peent.Application.Currencies.Models
 {

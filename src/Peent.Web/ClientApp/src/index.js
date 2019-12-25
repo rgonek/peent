@@ -8,13 +8,15 @@ import * as serviceWorker from './serviceWorker';
 import tagReducer from './store/reducers/tags';
 import categoryReducer from './store/reducers/categories';
 import accountReducer from './store/reducers/accounts';
+import currencyReducer from './store/reducers/currencies';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
     tag: tagReducer,
     category: categoryReducer,
-    account: accountReducer
+    account: accountReducer,
+    currency: currencyReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

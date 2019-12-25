@@ -1,21 +1,26 @@
-import React, { useMemo, useCallback } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index';
+import React, { useMemo } from 'react';
 import ContentHeader from '../../components/ContentHeader';
 import { LinkContainer } from 'react-router-bootstrap';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 import Table from '../../components/UI/Table/Table'
 import { useHistory } from "react-router-dom";
-import Card from 'react-bootstrap/Card'
 
-function Accounts(props) {
+function Accounts({
+  title,
+  url,
+  accounts,
+  pageCount,
+  rowCount,
+  loading,
+  fetchData
+}) {
   let history = useHistory();
   const onEditClick = (e, id) => {
-    history.push('accounts/' + id);
+    history.push('/accounts/' + id);
     e.stopPropagation();
   };
   const onDeleteClick = (e, id) => {
-    history.push('accounts/' + id + '/delete');
+    history.push('/accounts/' + id + '/delete');
     e.stopPropagation();
   };
   const columns = useMemo(
@@ -44,62 +49,38 @@ function Accounts(props) {
         sortable: true
       },
       {
-        Header: 'Date',
-        accessor: 'date',
-        sortable: true,
-        disableFilters: true
+        Header: 'Currency',
+        accessor: 'currency.name',
+        sortable: true
       }
     ],
     []
   );
 
-  const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-    props.onFetchAccounts(pageIndex, pageSize, sortBy, filters);
-  }, []);
-
-    return (
+  return (
     <div>
       <ContentHeader>
-        <h1 className="h2">Accounts</h1>
+        <h1 className="h2">{title}</h1>
         <ButtonToolbar>
-          <LinkContainer to='/accounts/new'>
+          <LinkContainer to={url + 'new'}>
             <Button variant="outline-secondary" size="sm">Add account</Button>
           </LinkContainer>
         </ButtonToolbar>
       </ContentHeader>
       <Table
-        title='Accounts'
+        title={title}
         columns={columns}
-        data={props.accounts}
+        data={accounts}
         fetchData={fetchData}
-        loading={props.loading}
-        pageCount={props.pageCount}
-        rowCount={props.rowCount}
+        loading={loading}
+        pageCount={pageCount}
+        rowCount={rowCount}
         onRowClick={data => {
-          history.push('accounts/' + data.id + '/details');
+          history.push('/accounts/' + data.id + '/details');
         }}
       />
     </div>
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    accounts: state.account.accounts,
-    loading: state.account.loading,
-    pageCount: state.account.pageCount,
-    rowCount: state.account.rowCount
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onFetchAccounts: (pageIndex, pageSize, sortBy, filters) =>
-      dispatch(actions.fetchAccounts(pageIndex, pageSize, sortBy, filters))
-  };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Accounts);
+export default Accounts;
