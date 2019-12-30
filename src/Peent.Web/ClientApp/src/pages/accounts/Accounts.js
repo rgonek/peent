@@ -29,7 +29,7 @@ function Accounts({
         Header: '',
         accessor: 'id',
         id: '_actions',
-        sortable: false,
+        disableSortBy: true,
         disableFilters: true,
         Cell: ({ cell: { value } }) => {
           return (<>
@@ -40,18 +40,15 @@ function Accounts({
       },
       {
         Header: 'Name',
-        accessor: 'name',
-        sortable: true
+        accessor: 'name'
       },
       {
         Header: 'Description',
-        accessor: 'description',
-        sortable: true
+        accessor: 'description'
       },
       {
         Header: 'Currency',
-        accessor: 'currency.name',
-        sortable: true
+        accessor: 'currency.name'
       }
     ],
     []

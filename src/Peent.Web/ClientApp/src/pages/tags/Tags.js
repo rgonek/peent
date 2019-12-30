@@ -24,7 +24,7 @@ function Tags(props) {
         Header: '',
         accessor: 'id',
         id: '_actions',
-        sortable: false,
+        disableSortBy: true,
         disableFilters: true,
         Cell: ({ cell: { value } }) => {
           return (<>
@@ -35,18 +35,15 @@ function Tags(props) {
       },
       {
         Header: 'Name',
-        accessor: 'name',
-        sortable: true
+        accessor: 'name'
       },
       {
         Header: 'Description',
-        accessor: 'description',
-        sortable: true
+        accessor: 'description'
       },
       {
         Header: 'Date',
         accessor: 'date',
-        sortable: true,
         disableFilters: true
       }
     ],
