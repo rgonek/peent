@@ -17,6 +17,10 @@ import AccountsExpense from './pages/accounts/AccountsExpense'
 import AccountsExpenseNew from './pages/accounts/AccountsExpenseNew'
 import AccountsRevenue from './pages/accounts/AccountsRevenue'
 import AccountsRevenueNew from './pages/accounts/AccountsRevenueNew'
+import AccountsAsset from './pages/accounts/AccountsAsset'
+import AccountsAssetNew from './pages/accounts/AccountsAssetNew'
+import AccountsLiabilities from './pages/accounts/AccountsLiabilities'
+import AccountsLiabilitiesNew from './pages/accounts/AccountsLiabilitiesNew'
 import AccountsEdit from './pages/accounts/AccountsEdit'
 import AccountDetails from './pages/accounts/AccountDetails'
 import AccountsDelete from './pages/accounts/AccountsDelete'
@@ -47,6 +51,10 @@ function App() {
           <Route exact path='/accounts/expense' component={AccountsExpense} />
           <Route exact path='/accounts/revenue/new' component={AccountsRevenueNew} />
           <Route exact path='/accounts/revenue' component={AccountsRevenue} />
+          <Route exact path='/accounts/asset/new' component={AccountsAssetNew} />
+          <Route exact path='/accounts/asset' component={AccountsAsset} />
+          <Route exact path='/accounts/liabilities/new' component={AccountsLiabilitiesNew} />
+          <Route exact path='/accounts/liabilities' component={AccountsLiabilities} />
           <Route path='/accounts/:id/details' component={AccountDetails} />
           <Route path='/accounts/:id/delete' component={AccountsDelete} />
           <Route path='/accounts/:id' component={AccountsEdit} />

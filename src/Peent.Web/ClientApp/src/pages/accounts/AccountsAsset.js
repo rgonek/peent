@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import Accounts from './Accounts'
 
-function AccountsExpense(props) {
-
+function AccountsRevenue(props) {
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
     const filtersExpense = {
       ...filters,
-      type: [2]
+      type: [1]
     }
     props.onFetchAccounts(pageIndex, pageSize, sortBy, filtersExpense);
   }, []);
 
   return (
     <Accounts 
-      title='Expense accounts'
-      url='/accounts/expense/'
+      title='Asset accounts'
+      url='/accounts/asset/'
       loading={props.loading}
       pageCount={props.pageCount}
       rowCount={props.rowCount}
@@ -44,4 +43,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(AccountsExpense);
+  )(AccountsRevenue);

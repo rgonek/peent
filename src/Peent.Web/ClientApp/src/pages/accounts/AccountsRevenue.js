@@ -14,7 +14,7 @@ function AccountsRevenue(props) {
 
   return (
     <Accounts 
-      title='Accounts revenue'
+      title='Revenue accounts'
       url='/accounts/revenue/'
       loading={props.loading}
       pageCount={props.pageCount}

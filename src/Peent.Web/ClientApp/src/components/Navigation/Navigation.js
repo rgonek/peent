@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
-import { FiHome, FiCreditCard, FiBookmark, FiTag, FiDollarSign, FiChevronLeft, FiLogIn, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiCreditCard, FiBookmark, FiTag, FiDollarSign, FiChevronLeft, FiLogIn, FiLogOut, FiDatabase, FiLifeBuoy } from 'react-icons/fi';
 import { LinkContainer } from 'react-router-bootstrap';
 import Collapse from 'react-bootstrap/Collapse'
 import './Navigation.css'
@@ -31,6 +31,13 @@ function Navigation() {
                 <div>
                   <Nav as="ul" className="flex-column">
                     <Nav.Item as="li">
+                      <LinkContainer to='/accounts/asset'>
+                        <Nav.Link>
+                          <FiDatabase className="feather" /> Asset accounts 
+                        </Nav.Link>
+                      </LinkContainer>
+                    </Nav.Item>
+                    <Nav.Item as="li">
                       <LinkContainer to='/accounts/revenue'>
                         <Nav.Link>
                           <FiLogIn className="feather" /> Revenue accounts 
@@ -41,6 +48,13 @@ function Navigation() {
                       <LinkContainer to='/accounts/expense'>
                         <Nav.Link>
                           <FiLogOut className="feather" /> Expense accounts
+                        </Nav.Link>
+                      </LinkContainer>
+                    </Nav.Item>
+                    <Nav.Item as="li">
+                      <LinkContainer to='/accounts/liabilities'>
+                        <Nav.Link>
+                          <FiLifeBuoy className="feather" /> Liabilities accounts
                         </Nav.Link>
                       </LinkContainer>
                     </Nav.Item>
