@@ -37,7 +37,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
                 .SingleOrDefaultAsync(x =>
                     x.Id != command.Id &&
                     x.Name == command.Name &&
-                    x.Type != account.Type &&
+                    x.Type == account.Type &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
                     x.DeletionDate.HasValue == false,
                     token);
