@@ -8,7 +8,7 @@ function AccountsExpense(props) {
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
     const filtersExpense = {
       ...filters,
-      type: [3]
+      type: [2]
     }
     props.onFetchAccounts(pageIndex, pageSize, sortBy, filtersExpense);
   }, []);

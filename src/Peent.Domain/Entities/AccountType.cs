@@ -4,13 +4,10 @@
     {
         Unknown = 0,
         Asset = 1,
-        Cash = 2,
-        Expense = 3,
-        Revenue = 4,
-        Debt = 5,
-        Loan = 6,
-        Mortgage = 7,
-        InitialBalance = 8,
-        Reconciliation = 9
+        Expense = 2,
+        Revenue = 3,
+        Liabilities = 4,
+        InitialBalance = 5,
+        Reconciliation = 6
     }
 }

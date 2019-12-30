@@ -6,7 +6,7 @@ import AccountsNew from './AccountsNew';
 function AccountsExpenseNew(props) {
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
-        props.onSubmitAccount({...values, type: 3, currencyId: parseInt(values.currencyId)});
+        props.onSubmitAccount({...values, type: 2, currencyId: parseInt(values.currencyId)});
         actions.setSubmitting(false);
     };
     
