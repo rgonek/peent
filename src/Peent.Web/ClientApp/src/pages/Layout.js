@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container, Row } from 'react-bootstrap';
 import Header from '../components/Header'
-import Navigation from '../components/Navigation'
+import Navigation from '../components/Navigation/Navigation'
 import "../../node_modules/noty/lib/noty.css";
 import "../../node_modules/noty/lib/themes/mint.css";
 

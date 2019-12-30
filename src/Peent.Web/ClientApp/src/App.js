@@ -15,6 +15,8 @@ import TagDetails from './pages/tags/TagDetails'
 import TagsDelete from './pages/tags/TagsDelete'
 import AccountsExpense from './pages/accounts/AccountsExpense'
 import AccountsExpenseNew from './pages/accounts/AccountsExpenseNew'
+import AccountsRevenue from './pages/accounts/AccountsRevenue'
+import AccountsRevenueNew from './pages/accounts/AccountsRevenueNew'
 import AccountsEdit from './pages/accounts/AccountsEdit'
 import AccountDetails from './pages/accounts/AccountDetails'
 import AccountsDelete from './pages/accounts/AccountsDelete'
@@ -43,6 +45,8 @@ function App() {
           <Route path='/tags' component={Tags} />
           <Route exact path='/accounts/expense/new' component={AccountsExpenseNew} />
           <Route exact path='/accounts/expense' component={AccountsExpense} />
+          <Route exact path='/accounts/revenue/new' component={AccountsRevenueNew} />
+          <Route exact path='/accounts/revenue' component={AccountsRevenue} />
           <Route path='/accounts/:id/details' component={AccountDetails} />
           <Route path='/accounts/:id/delete' component={AccountsDelete} />
           <Route path='/accounts/:id' component={AccountsEdit} />
