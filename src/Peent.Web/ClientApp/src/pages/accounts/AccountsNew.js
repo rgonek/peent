@@ -37,7 +37,7 @@ function AccountsNew({
                 <h1 className="h2">New Account</h1>
             </ContentHeader>
             <Formik
-                initialValues={{ name: '', description: '', currencyId: 0 }}
+                initialValues={{ name: '', description: '', currencyId: 1 }}
                 validationSchema={formSchema}
                 onSubmit={handleSubmit}>
                 {({
