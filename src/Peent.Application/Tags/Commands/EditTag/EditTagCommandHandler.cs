@@ -37,8 +37,7 @@ namespace Peent.Application.Tags.Commands.EditTag
                 .SingleOrDefaultAsync(x =>
                     x.Id != command.Id &&
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionDate.HasValue == false,
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingTag != null)
@@ -47,8 +46,6 @@ namespace Peent.Application.Tags.Commands.EditTag
             tag.Name = command.Name;
             tag.Description = command.Description;
             tag.Date = command.Date;
-            tag.LastModificationDate = Clock.UtcNow;
-            tag.LastModifiedById = _userAccessor.User.GetUserId();
 
             _db.Update(tag);
             await _db.SaveChangesAsync(token);

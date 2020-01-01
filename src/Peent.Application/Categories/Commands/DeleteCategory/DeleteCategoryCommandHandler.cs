@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
-using Peent.Common.Time;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Categories.Commands.DeleteCategory
@@ -32,10 +31,7 @@ namespace Peent.Application.Categories.Commands.DeleteCategory
             if (category == null)
                 throw NotFoundException.Create<Category>(x => x.Id, command.Id);
 
-            category.DeletedById = _userAccessor.User.GetUserId();
-            category.DeletionDate = Clock.UtcNow;
-
-            _db.Update(category);
+            _db.Remove(category);
             await _db.SaveChangesAsync(token);
 
             return default;

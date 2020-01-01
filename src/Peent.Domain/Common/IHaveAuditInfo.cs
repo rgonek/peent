@@ -12,9 +12,5 @@ namespace Peent.Domain.Common
         DateTime? LastModificationDate { get; set; }
         string LastModifiedById { get; set; }
         ApplicationUser LastModifiedBy { get; set; }
-
-        DateTime? DeletionDate { get; set; }
-        string DeletedById { get; set; }
-        ApplicationUser DeletedBy { get; set; }
     }
 }

@@ -26,8 +26,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
         public async Task<PagedResult<TagModel>> Handle(GetTagsListQuery query, CancellationToken token)
         {
             dynamic tagsQuery = _db.Tags
-                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                            x.DeletionDate.HasValue == false)
+                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
                 .OrderBy(x => x.CreationDate);
 
             if (query.Sort.Any())

@@ -53,14 +53,13 @@ namespace Peent.Persistence
                             entry.Entity.CreationDate = Clock.UtcNow;
                         }
                         break;
-                    //case EntityState.Modified:
-                    //    entry.Entity.LastModifiedById = _userAccessor.User.GetUserId();
-                    //    entry.Entity.LastModificationDate = Clock.UtcNow;
-                    //    break;
-                    //case EntityState.Deleted:
-                    //    entry.Entity.DeletedById = _userAccessor.User.GetUserId();
-                    //    entry.Entity.DeletionDate = Clock.UtcNow;
-                    //    break;
+                    case EntityState.Modified:
+                        if (string.IsNullOrEmpty(entry.Entity.LastModifiedById))
+                        {
+                            entry.Entity.LastModifiedById = _userAccessor.User.GetUserId();
+                            entry.Entity.LastModificationDate = Clock.UtcNow;
+                        }
+                        break;
                 }
             }
 

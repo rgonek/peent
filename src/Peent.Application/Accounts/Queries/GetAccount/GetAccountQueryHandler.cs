@@ -26,8 +26,7 @@ namespace Peent.Application.Accounts.Queries.GetAccount
             var account = await _db.Accounts
                 .Include(x => x.Currency)
                 .SingleOrDefaultAsync(x => x.Id == query.Id &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionDate.HasValue == false,
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
                     cancellationToken: token);
 
             if (account == null)

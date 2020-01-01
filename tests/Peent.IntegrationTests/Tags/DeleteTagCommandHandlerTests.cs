@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using System.Threading.Tasks;
 using Peent.Application.Tags.Commands.CreateTag;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
+using FluentAssertions;
 using Peent.Application.Tags.Commands.DeleteTag;
-using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
@@ -27,7 +25,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.DeletionDate.Should().NotBeNull();
+            tag.Should().BeNull();
         }
 
         [Fact]
@@ -46,43 +44,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.DeletionDate.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task when_tag_is_deleted__deletedBy_is_set_to_current_user()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var tagId = await SendAsync(F.Create<CreateTagCommand>());
-            var command = new DeleteTagCommand
-            {
-                Id = tagId
-            };
-            await SendAsync(command);
-
-            var tag = await FindAsync<Tag>(tagId);
-            tag.DeletedById.Should().Be(user.Id);
-        }
-
-        [Fact]
-        public async Task when_tag_is_deleted__deletionDate_is_set_to_utc_now()
-        {
-            var utcNow = new DateTime(2019, 02, 02, 11, 28, 32);
-            using (new ClockOverride(() => utcNow, () => utcNow.AddHours(2)))
-            {
-                var user = await CreateUserAsync();
-                SetCurrentUser(user, await CreateWorkspaceAsync(user));
-                var tagId = await SendAsync(F.Create<CreateTagCommand>());
-                var command = new DeleteTagCommand
-                {
-                    Id = tagId
-                };
-                await SendAsync(command);
-
-                var tag = await FindAsync<Tag>(tagId);
-                tag.DeletionDate.Should().Be(utcNow);
-            }
+            tag.Should().BeNull();
         }
     }
 }

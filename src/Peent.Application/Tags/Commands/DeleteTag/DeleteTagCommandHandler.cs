@@ -5,9 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
-using Peent.Common.Time;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Tags.Commands.DeleteTag
 {
@@ -33,10 +31,7 @@ namespace Peent.Application.Tags.Commands.DeleteTag
             if (tag == null)
                 throw NotFoundException.Create<Tag>(x => x.Id, command.Id);
 
-            tag.DeletionDate = Clock.UtcNow;
-            tag.DeletedById = _userAccessor.User.GetUserId();
-
-            _db.Update(tag);
+            _db.Remove(tag);
             await _db.SaveChangesAsync(token);
 
             return default;

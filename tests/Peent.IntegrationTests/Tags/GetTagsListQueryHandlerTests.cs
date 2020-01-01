@@ -76,19 +76,5 @@ namespace Peent.IntegrationTests.Tags
                 .And.NotContain(x => x.Id == tagId4)
                 .And.NotContain(x => x.Id == tagId5);
         }
-
-        [Fact]
-        public async Task test()
-        {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
-
-            var tagsPaged = await SendAsync(new GetTagsListQuery{PageIndex = 1, PageSize = 2});
-        }
     }
 }

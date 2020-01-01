@@ -5,9 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
-using Peent.Common.Time;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Categories.Commands.EditCategory
 {
@@ -37,8 +35,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
                 .SingleOrDefaultAsync(x =>
                     x.Id != command.Id &&
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionDate.HasValue == false,
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingCategory != null)
@@ -46,8 +43,6 @@ namespace Peent.Application.Categories.Commands.EditCategory
 
             category.Name = command.Name;
             category.Description = command.Description;
-            category.LastModifiedById = _userAccessor.User.GetUserId();
-            category.LastModificationDate = Clock.UtcNow;
 
             _db.Update(category);
             await _db.SaveChangesAsync(token);

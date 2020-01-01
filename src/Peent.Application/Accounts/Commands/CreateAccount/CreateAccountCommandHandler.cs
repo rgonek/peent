@@ -26,8 +26,7 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                 .SingleOrDefaultAsync(x =>
                     x.Name == command.Name &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.Type == command.Type &&
-                    x.DeletionDate.HasValue == false,
+                    x.Type == command.Type,
                     token);
 
             if (existingAccount != null)

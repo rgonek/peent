@@ -5,9 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
-using Peent.Common.Time;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Application.Accounts.Commands.EditAccount
 {
@@ -38,8 +36,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
                     x.Id != command.Id &&
                     x.Name == command.Name &&
                     x.Type == account.Type &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                    x.DeletionDate.HasValue == false,
+                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingAccount != null)
@@ -48,8 +45,6 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             account.Name = command.Name;
             account.Description = command.Description;
             account.CurrencyId = command.CurrencyId;
-            account.LastModificationDate = Clock.UtcNow;
-            account.LastModifiedById = _userAccessor.User.GetUserId();
 
             _db.Update(account);
             await _db.SaveChangesAsync(token);

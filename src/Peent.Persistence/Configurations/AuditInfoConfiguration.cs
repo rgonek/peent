@@ -29,15 +29,6 @@ namespace Peent.Persistence.Configurations
                 .WithMany()
                 .HasForeignKey(y => y.LastModifiedById)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Property(y => y.DeletionDate)
-                .HasColumnName(nameof(DeletionInfo.DeletionDate));
-            builder.Property(y => y.DeletedById)
-                .HasColumnName(nameof(DeletionInfo.DeletedById));
-            builder.HasOne(y => y.DeletedBy)
-                .WithMany()
-                .HasForeignKey(y => y.DeletedById)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

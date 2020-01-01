@@ -169,14 +169,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DeletedById")
-                        .HasColumnName("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnName("DeletionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
@@ -205,8 +197,6 @@ namespace Peent.Persistence.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("CurrencyId");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastModifiedById");
 
@@ -301,14 +291,6 @@ namespace Peent.Persistence.Migrations
                         .HasColumnName("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeletedById")
-                        .HasColumnName("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnName("DeletionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
@@ -332,8 +314,6 @@ namespace Peent.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastModifiedById");
 
@@ -392,14 +372,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeletedById")
-                        .HasColumnName("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnName("DeletionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
@@ -423,8 +395,6 @@ namespace Peent.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastModifiedById");
 
@@ -455,14 +425,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeletedById")
-                        .HasColumnName("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnName("DeletionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
@@ -488,8 +450,6 @@ namespace Peent.Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastModifiedById");
 
@@ -521,14 +481,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DeletedById")
-                        .HasColumnName("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnName("DeletionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<decimal?>("ForeignAmount")
                         .HasColumnType("decimal(38,18)");
 
@@ -556,8 +508,6 @@ namespace Peent.Persistence.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("CurrencyId");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("ForeignCurrencyId");
 
@@ -601,14 +551,6 @@ namespace Peent.Persistence.Migrations
                         .HasColumnName("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeletedById")
-                        .HasColumnName("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnName("DeletionDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("LastModificationDate")
                         .HasColumnName("LastModificationDate")
                         .HasColumnType("datetime2");
@@ -620,8 +562,6 @@ namespace Peent.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastModifiedById");
 
@@ -693,11 +633,6 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
                         .WithMany()
                         .HasForeignKey("LastModifiedById")
@@ -718,11 +653,6 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
                         .WithMany()
                         .HasForeignKey("LastModifiedById")
@@ -742,11 +672,6 @@ namespace Peent.Persistence.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
                         .WithMany()
@@ -774,11 +699,6 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
                         .WithMany()
                         .HasForeignKey("LastModifiedById")
@@ -804,11 +724,6 @@ namespace Peent.Persistence.Migrations
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Peent.Domain.Entities.Currency", "ForeignCurrency")
                         .WithMany()
@@ -853,11 +768,6 @@ namespace Peent.Persistence.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
                         .WithMany()

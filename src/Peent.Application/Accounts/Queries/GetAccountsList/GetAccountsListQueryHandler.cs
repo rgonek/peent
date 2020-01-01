@@ -28,8 +28,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
         {
             dynamic accountsQuery = _db.Accounts
                 .Include(x => x.Currency)
-                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
-                            x.DeletionDate.HasValue == false)
+                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
                 .OrderBy(x => x.CreationDate);
 
             if (query.Sort.Any())
