@@ -21,6 +21,11 @@ namespace Peent.Persistence.Configurations
                 .HasForeignKey(x => x.WorkspaceId)
                 .IsRequired();
 
+            builder.HasMany(x => x.TransactionTags)
+                .WithOne()
+                .HasForeignKey(x => x.TagId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.ConfigureAuditInfo();
         }
     }

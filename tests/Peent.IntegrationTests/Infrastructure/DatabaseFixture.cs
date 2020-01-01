@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -13,7 +14,6 @@ using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
 using Peent.Common.Time;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 using Peent.Persistence;
 using Respawn;
 
@@ -34,7 +34,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
             _configuration = builder.Build();
-            UserAccessor = A.Fake<IUserAccessor>();
+            UserAccessor = FakeItEasy.A.Fake<IUserAccessor>();
 
             var services = new ServiceCollection();
             ConfigureServices(services);
@@ -189,6 +189,7 @@ namespace Peent.IntegrationTests.Infrastructure
             return ExecuteDbContextAsync(db => db.Set<T>().FindAsync(id));
         }
 
+
         public static ValueTask<T> FindAsync<T>(long id)
             where T : class
         {
@@ -249,7 +250,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(KnownClaims.WorkspaceId, workspace.Id.ToString()),
             }, "mock"));
-            A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
+            FakeItEasy.A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
 
             return claimsPrincipal;
         }

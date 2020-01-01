@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
     public class Tag : AuditableEntity
     {
+        public Tag()
+        {
+            TransactionTags = new HashSet<TransactionTag>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -12,5 +18,7 @@ namespace Peent.Domain.Entities
         public DateTime? Date { get; set; }
         public int WorkspaceId { get; set; }
         public Workspace Workspace { get; set; }
+
+        public ICollection<TransactionTag> TransactionTags { get; }
     }
 }

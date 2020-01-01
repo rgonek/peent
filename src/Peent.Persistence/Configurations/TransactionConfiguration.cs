@@ -23,6 +23,16 @@ namespace Peent.Persistence.Configurations
                 .HasForeignKey(x => x.CategoryId)
                 .IsRequired();
 
+            builder.HasMany(x => x.Entries)
+                .WithOne()
+                .HasForeignKey(x => x.TransactionId)
+                .IsRequired();
+
+            builder.HasMany(x => x.TransactionTags)
+                .WithOne()
+                .HasForeignKey(x => x.TransactionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.ConfigureAuditInfo();
         }
     }

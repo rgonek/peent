@@ -12,8 +12,8 @@ namespace Peent.Domain.Entities
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
         public decimal? ForeignAmount { get; set; }
-        public int ForeignCurrencyId { get; set; }
-        public Currency ForeignCurrency { get; set; }
+        public int? ForeignCurrencyId { get; set; }
+        public Currency? ForeignCurrency { get; set; }
         public int AccountId { get; set; }
         public Account Account { get; set; }
     }
