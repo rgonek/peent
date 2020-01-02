@@ -21,7 +21,7 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
+            var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
@@ -37,7 +37,7 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
+            var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
@@ -53,7 +53,7 @@ namespace Peent.IntegrationTests.Accounts
             {
                 var user = await CreateUserAsync();
                 SetCurrentUser(user, await CreateWorkspaceAsync(user));
-                var command = F.Create<CreateAccountCommand>();
+                var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
                 var accountId = await SendAsync(command);
 
@@ -68,7 +68,7 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var command = F.Create<CreateAccountCommand>();
+            var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
@@ -83,7 +83,8 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
+            var command = An.Account.WithCurrency(A.Currency).AsCommand();
+
             await SendAsync(command);
 
             Invoking(async () => await SendAsync(command))
@@ -95,7 +96,8 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
+            var command = An.Account.WithCurrency(A.Currency).AsCommand();
+
             await SendAsync(command);
 
             var user2 = await CreateUserAsync();
@@ -108,7 +110,7 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
+            var command = An.Account.WithCurrency(A.Currency).AsCommand();
             var accountId = await SendAsync(command);
             await SendAsync(new DeleteAccountCommand {Id = accountId});
 

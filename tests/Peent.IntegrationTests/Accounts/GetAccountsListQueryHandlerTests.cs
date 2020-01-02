@@ -4,7 +4,6 @@ using FluentAssertions;
 using Peent.Application.Accounts.Commands.CreateAccount;
 using Peent.Application.Accounts.Commands.DeleteAccount;
 using Peent.Application.Accounts.Queries.GetAccountsList;
-using Peent.Application.Currencies.Commands.CreateCurrency;
 using Peent.Domain.Entities;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
@@ -19,18 +18,17 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-
-            var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
-            var accountId1 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId2 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId3 = await SendAsync(CreateAccountCommand(currencyId));
+            Currency currency = A.Currency;
+            Account account1 = An.Account.WithCurrency(currency);
+            Account account2 = An.Account.WithCurrency(currency);
+            Account account3 = An.Account.WithCurrency(currency);
 
             var accountsPaged = await SendAsync(new GetAccountsListQuery());
 
             accountsPaged.Results.Should()
-                .Contain(x => x.Id == accountId1)
-                .And.Contain(x => x.Id == accountId2)
-                .And.Contain(x => x.Id == accountId3);
+                .Contain(x => x.Id == account1.Id)
+                .And.Contain(x => x.Id == account2.Id)
+                .And.Contain(x => x.Id == account3.Id);
         }
 
         [Fact]
@@ -39,24 +37,25 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
-            var accountId1 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId2 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId3 = await SendAsync(CreateAccountCommand(currencyId));
+
+            Currency currency = A.Currency;
+            Account account1 = An.Account.WithCurrency(currency);
+            Account account2 = An.Account.WithCurrency(currency);
+            Account account3 = An.Account.WithCurrency(currency);
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
-            var accountId4 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId5 = await SendAsync(CreateAccountCommand(currencyId));
+            Account account4 = An.Account.WithCurrency(currency);
+            Account account5 = An.Account.WithCurrency(currency);
 
             SetCurrentUser(user, workspace);
             var accountsPaged = await SendAsync(new GetAccountsListQuery());
 
             accountsPaged.Results.Should()
-                .Contain(x => x.Id == accountId1)
-                .And.Contain(x => x.Id == accountId2)
-                .And.Contain(x => x.Id == accountId3)
-                .And.NotContain(x => x.Id == accountId4)
-                .And.NotContain(x => x.Id == accountId5);
+                .Contain(x => x.Id == account1.Id)
+                .And.Contain(x => x.Id == account2.Id)
+                .And.Contain(x => x.Id == account3.Id)
+                .And.NotContain(x => x.Id == account4.Id)
+                .And.NotContain(x => x.Id == account5.Id);
         }
 
         [Fact]
@@ -64,34 +63,23 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
-            var accountId1 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId2 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId3 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId4 = await SendAsync(CreateAccountCommand(currencyId));
-            var accountId5 = await SendAsync(CreateAccountCommand(currencyId));
-            await SendAsync(new DeleteAccountCommand { Id = accountId4 });
-            await SendAsync(new DeleteAccountCommand { Id = accountId5 });
+            Currency currency = A.Currency;
+            Account account1 = An.Account.WithCurrency(currency);
+            Account account2 = An.Account.WithCurrency(currency);
+            Account account3 = An.Account.WithCurrency(currency);
+            Account account4 = An.Account.WithCurrency(currency);
+            Account account5 = An.Account.WithCurrency(currency);
+            await SendAsync(new DeleteAccountCommand { Id = account4.Id });
+            await SendAsync(new DeleteAccountCommand { Id = account5.Id });
 
             var accountsPaged = await SendAsync(new GetAccountsListQuery());
 
             accountsPaged.Results.Should()
-                .Contain(x => x.Id == accountId1)
-                .And.Contain(x => x.Id == accountId2)
-                .And.Contain(x => x.Id == accountId3)
-                .And.NotContain(x => x.Id == accountId4)
-                .And.NotContain(x => x.Id == accountId5);
-        }
-
-        private CreateAccountCommand CreateAccountCommand(int currencyId)
-        {
-            return new CreateAccountCommand
-            {
-                CurrencyId = currencyId,
-                Name = F.Create<string>(),
-                Description = F.Create<string>(),
-                Type = F.Create<AccountType>()
-            };
+                .Contain(x => x.Id == account1.Id)
+                .And.Contain(x => x.Id == account2.Id)
+                .And.Contain(x => x.Id == account3.Id)
+                .And.NotContain(x => x.Id == account4.Id)
+                .And.NotContain(x => x.Id == account5.Id);
         }
     }
 }

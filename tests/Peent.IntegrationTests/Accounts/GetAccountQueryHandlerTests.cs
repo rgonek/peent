@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Peent.Application.Accounts.Queries.GetAccount;
-using AutoFixture;
 using FluentAssertions;
-using Peent.Application.Accounts.Commands.CreateAccount;
 using Peent.Application.Accounts.Commands.DeleteAccount;
 using Peent.Application.Exceptions;
+using Peent.Domain.Entities;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
@@ -19,16 +18,15 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
-            var accountId = await SendAsync(command);
+            Account account = An.Account;
 
-            var accountModel = await SendAsync(new GetAccountQuery { Id = accountId });
+            var accountModel = await SendAsync(new GetAccountQuery { Id = account.Id });
 
-            accountModel.Id.Should().Be(accountId);
-            accountModel.Name.Should().Be(command.Name);
-            accountModel.Description.Should().Be(command.Description);
-            accountModel.Type.Should().Be(command.Type);
-            accountModel.Currency.Id.Should().Be(command.CurrencyId);
+            accountModel.Id.Should().Be(account.Id);
+            accountModel.Name.Should().Be(account.Name);
+            accountModel.Description.Should().Be(account.Description);
+            accountModel.Type.Should().Be(account.Type);
+            accountModel.Currency.Id.Should().Be(account.CurrencyId);
         }
 
         [Fact]
@@ -46,11 +44,10 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
-            var accountId = await SendAsync(command);
-            await SendAsync(new DeleteAccountCommand {Id = accountId});
+            Account account = An.Account;
+            await SendAsync(new DeleteAccountCommand {Id = account.Id});
 
-            Invoking(async () => await SendAsync(new GetAccountQuery { Id = accountId }))
+            Invoking(async () => await SendAsync(new GetAccountQuery { Id = account.Id }))
                 .Should().Throw<NotFoundException>();
         }
 
@@ -59,13 +56,12 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
-            var accountId = await SendAsync(command);
+            Account account = An.Account;
 
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
 
-            Invoking(async () => await SendAsync(new GetAccountQuery { Id = accountId }))
+            Invoking(async () => await SendAsync(new GetAccountQuery { Id = account.Id }))
                 .Should().Throw<NotFoundException>();
         }
     }

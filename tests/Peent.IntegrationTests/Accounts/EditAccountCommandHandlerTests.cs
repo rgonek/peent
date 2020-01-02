@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Peent.Application.Accounts.Commands.CreateAccount;
 using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Xunit;
@@ -22,14 +21,15 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var accountId = await SendAsync(F.Create<CreateAccountCommand>());
+            Account account = An.Account;
             var command = F.Build<EditAccountCommand>()
-                .With(x => x.Id, accountId)
+                .With(x => x.Id, account.Id)
+                .With(x => x.CurrencyId, account.CurrencyId)
                 .Create();
 
             await SendAsync(command);
 
-            var account = await FindAsync<Account>(accountId);
+            account = await FindAsync<Account>(account.Id);
             account.Name.Should().Be(command.Name);
             account.Description.Should().Be(command.Description);
             account.CurrencyId.Should().Be(command.CurrencyId);
@@ -41,16 +41,17 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var accountId = await SendAsync(F.Create<CreateAccountCommand>());
+            Account account = An.Account;
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, workspace);
             var command = F.Build<EditAccountCommand>()
-                .With(x => x.Id, accountId)
+                .With(x => x.Id, account.Id)
+                .With(x => x.CurrencyId, account.CurrencyId)
                 .Create();
 
             await SendAsync(command);
 
-            var account = await FindAsync<Account>(accountId);
+            account = await FindAsync<Account>(account.Id);
             account.LastModifiedById.Should().Be(user2.Id);
         }
 
@@ -59,14 +60,15 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var accountId = await SendAsync(F.Create<CreateAccountCommand>());
+            Account account = An.Account;
             var command = F.Build<EditAccountCommand>()
-                .With(x => x.Id, accountId)
+                .With(x => x.Id, account.Id)
+                .With(x => x.CurrencyId, account.CurrencyId)
                 .Create();
 
             await SendAsync(command);
 
-            var account = await FindAsync<Account>(accountId);
+            account = await FindAsync<Account>(account.Id);
             account.LastModifiedById.Should().Be(user.Id);
         }
 
@@ -78,14 +80,15 @@ namespace Peent.IntegrationTests.Accounts
             {
                 var user = await CreateUserAsync();
                 SetCurrentUser(user, await CreateWorkspaceAsync(user));
-                var accountId = await SendAsync(F.Create<CreateAccountCommand>());
+                Account account = An.Account;
                 var command = F.Build<EditAccountCommand>()
-                    .With(x => x.Id, accountId)
+                    .With(x => x.Id, account.Id)
+                    .With(x => x.CurrencyId, account.CurrencyId)
                     .Create();
 
                 await SendAsync(command);
 
-                var account = await FindAsync<Account>(accountId);
+                account = await FindAsync<Account>(account.Id);
                 account.LastModificationDate.Should().Be(utcNow);
             }
         }
@@ -95,17 +98,15 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
-            var accountId = await SendAsync(command);
-            var command2 = F.Create<CreateAccountCommand>();
-            await SendAsync(command2);
+            Account account = An.Account.OfAssetType();
+            Account account2 = An.Account.OfAssetType();
 
             Invoking(async () => await SendAsync(new EditAccountCommand
-                {
-                    Id = accountId,
-                    Name = command2.Name
-                }))
-                .Should().Throw<DuplicateException>();
+            {
+                Id = account.Id,
+                Name = account2.Name,
+                CurrencyId = account.CurrencyId
+            })).Should().Throw<DuplicateException>();
         }
 
         [Fact]
@@ -113,13 +114,16 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var command = F.Create<CreateAccountCommand>();
-            var accountId = await SendAsync(command);
-            var command2 = F.Create<CreateAccountCommand>();
-            await SendAsync(command2);
-            await SendAsync(new DeleteAccountCommand { Id = accountId });
+            Account account = An.Account;
+            Account account2 = An.Account;
+            await SendAsync(new DeleteAccountCommand { Id = account.Id });
 
-            await SendAsync(command);
+            await SendAsync(new EditAccountCommand
+            {
+                Id = account2.Id,
+                Name = account.Name,
+                CurrencyId = account2.CurrencyId
+            });
         }
 
         [Fact]
@@ -128,19 +132,18 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var command = F.Create<CreateAccountCommand>();
-            var accountId = await SendAsync(command);
+            Account account = An.Account;
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
-            var command2 = F.Create<CreateAccountCommand>();
-            await SendAsync(command2);
+            Account account2 = An.Account;
             SetCurrentUser(user, workspace);
 
             await SendAsync(new EditAccountCommand
-                {
-                    Id = accountId,
-                    Name = command2.Name
-                });
+            {
+                Id = account.Id,
+                Name = account2.Name,
+                CurrencyId = account.CurrencyId
+            });
         }
     }
 }

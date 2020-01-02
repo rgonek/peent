@@ -17,15 +17,14 @@ namespace Peent.IntegrationTests.Accounts
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
-            var accountId = await SendAsync(F.Create<CreateAccountCommand>());
+            Account account = An.Account.WithCurrency(A.Currency);
             var command = new DeleteAccountCommand
             {
-                Id = accountId
+                Id = account.Id
             };
             await SendAsync(command);
 
-            var account = await FindAsync<Account>(accountId);
-            account.Should().BeNull();
+            (await FindAsync<Account>(account.Id)).Should().BeNull();
         }
 
         [Fact]
@@ -34,17 +33,16 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             var workspace = await CreateWorkspaceAsync(user);
             SetCurrentUser(user, workspace);
-            var accountId = await SendAsync(F.Create<CreateAccountCommand>());
+            Account account = An.Account.WithCurrency(A.Currency);
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, workspace);
             var command = new DeleteAccountCommand
             {
-                Id = accountId
+                Id = account.Id
             };
             await SendAsync(command);
 
-            var account = await FindAsync<Account>(accountId);
-            account.Should().BeNull();
+            (await FindAsync<Account>(account.Id)).Should().BeNull();
         }
     }
 }
