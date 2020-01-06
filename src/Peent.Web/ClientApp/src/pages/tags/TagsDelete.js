@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Formik } from 'formik';
 import ContentHeader from '../../components/ContentHeader';
 import { Form, Button } from 'react-bootstrap';
 import * as actions from '../../store/actions/index';
 import { Redirect, useParams } from "react-router-dom";
 import Spinner from '../../components/UI/Spinner/Spinner'
+import { useForm } from 'react-hook-form'
 
 function TagsDelete(props) {
     const { id } = useParams();
@@ -13,11 +13,11 @@ function TagsDelete(props) {
         props.onFetchTag(id);
     }, [id]);
 
-    const handleSubmit = (values, actions) => {
-        actions.setSubmitting(true);
-        props.onDeleteTag(id, values);
-        actions.setSubmitting(false);
+    const onSubmit = (data) => {
+        props.onDeleteTag(id, data);
     };
+
+    const { handleSubmit } = useForm();
 
     if(props.tag == null || props.loading) {
         return <Spinner />
@@ -31,18 +31,9 @@ function TagsDelete(props) {
             <ContentHeader>
                 <h1 className="h2">Delete Tag</h1>
             </ContentHeader>
-            <Formik
-                initialValues={props.tag}
-                onSubmit={handleSubmit}>
-                {({
-                    handleSubmit,
-                    isSubmitting
-                })=> (
-                <Form noValidate onSubmit={handleSubmit}>
-                    <Button type="submit" variant="danger" disabled={isSubmitting}>Delete</Button>
-                </Form>
-                )}
-            </Formik>
+            <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+                <Button type="submit" variant="danger" disabled={props.loading}>Delete</Button>
+            </Form>
         </div>
     );
 }

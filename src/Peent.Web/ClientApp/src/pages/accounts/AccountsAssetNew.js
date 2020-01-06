@@ -4,16 +4,14 @@ import * as actions from '../../store/actions/index';
 import AccountsNew from './AccountsNew';
 
 function AccountsExpenseNew(props) {
-    const handleSubmit = (values, actions) => {
-        actions.setSubmitting(true);
-        props.onSubmitAccount({...values, type: 1, currencyId: parseInt(values.currencyId)});
-        actions.setSubmitting(false);
+    const onSubmit = (data) => {
+        props.onSubmitAccount({...data, type: 1, currencyId: parseInt(data.currencyId)});
     };
     
     return (<AccountsNew 
         url="/accounts/asset"
         added={props.added}
-        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
         onFetchCurrencies={props.onFetchCurrencies}
         currencies={props.currencies}
         loading={props.loading}
