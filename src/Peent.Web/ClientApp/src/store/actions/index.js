@@ -25,3 +25,11 @@ export {
 export {
     fetchCurrencies
 } from './currencies';
+
+export {
+    addTransaction,
+    updateTransaction,
+    deleteTransaction,
+    fetchTransactions,
+    fetchTransaction
+} from './transactions';

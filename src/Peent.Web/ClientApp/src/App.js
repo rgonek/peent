@@ -24,6 +24,8 @@ import AccountsLiabilitiesNew from './pages/accounts/AccountsLiabilitiesNew'
 import AccountsEdit from './pages/accounts/AccountsEdit'
 import AccountDetails from './pages/accounts/AccountDetails'
 import AccountsDelete from './pages/accounts/AccountsDelete'
+import Transactions from './pages/transactions/Transactions'
+import TransactionsNew from './pages/transactions/TransactionsNew'
 import {
   BrowserRouter as Router,
   Switch,
@@ -58,6 +60,8 @@ function App() {
           <Route path='/accounts/:id/details' component={AccountDetails} />
           <Route path='/accounts/:id/delete' component={AccountsDelete} />
           <Route path='/accounts/:id' component={AccountsEdit} />
+          <Route path='/transactions/new' component={TransactionsNew} />
+          <Route path='/transactions' component={Transactions} />
           <Route exact path='/' component={Dashboard} />
         </Switch>
       </Layout>
