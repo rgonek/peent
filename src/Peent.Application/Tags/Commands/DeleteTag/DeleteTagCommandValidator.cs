@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using Peent.Application.Tags.Queries.GetTag;
 
 namespace Peent.Application.Tags.Commands.DeleteTag
 {
-    public class DeleteTagCommandValidator : AbstractValidator<GetTagQuery>
+    public class DeleteTagCommandValidator : AbstractValidator<DeleteTagCommand>
     {
         public DeleteTagCommandValidator()
         {

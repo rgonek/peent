@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace Peent.Application.Transactions.Commands.CreateTransaction
+namespace Peent.Application.Transactions.Commands.EditTransaction
 {
-    public class CreateTransactionCommand : IRequest<long>
+    public class EditTransactionCommand : IRequest<Unit>
     {
+        public long Id { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
 
