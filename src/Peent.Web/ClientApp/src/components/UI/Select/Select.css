@@ -1,0 +1,3 @@
+.react-select.is-invalid > div {
+    border-color: #dc3545;
+}
