@@ -51,7 +51,7 @@ function Transactions(props) {
   );
 
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-    props.onFetchTags(pageIndex, pageSize, sortBy, filters);
+    props.onFetchTransactions(pageIndex, pageSize, sortBy, filters);
   }, []);
 
     return (
@@ -67,7 +67,7 @@ function Transactions(props) {
       <Table
         title='Transactions'
         columns={columns}
-        data={props.tags}
+        data={props.transactions}
         fetchData={fetchData}
         loading={props.loading}
         pageCount={props.pageCount}
@@ -82,17 +82,17 @@ function Transactions(props) {
 
 const mapStateToProps = state => {
   return {
-    tags: state.tag.tags,
-    loading: state.tag.loading,
-    pageCount: state.tag.pageCount,
-    rowCount: state.tag.rowCount
+    transactions: state.transaction.transactions,
+    loading: state.transaction.loading,
+    pageCount: state.transaction.pageCount,
+    rowCount: state.transaction.rowCount
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchTags: (pageIndex, pageSize, sortBy, filters) =>
-      dispatch(actions.fetchTags(pageIndex, pageSize, sortBy, filters))
+    onFetchTransactions: (pageIndex, pageSize, sortBy, filters) =>
+      dispatch(actions.fetchTransactions(pageIndex, pageSize, sortBy, filters))
   };
 };
 

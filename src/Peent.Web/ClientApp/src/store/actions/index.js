@@ -3,6 +3,7 @@ export {
     updateTag,
     deleteTag,
     fetchTags,
+    fetchTagsOptions,
     fetchTag
 } from './tags';
 
@@ -11,6 +12,7 @@ export {
     updateCategory,
     deleteCategory,
     fetchCategories,
+    fetchCategoriesOptions,
     fetchCategory
 } from './categories';
 

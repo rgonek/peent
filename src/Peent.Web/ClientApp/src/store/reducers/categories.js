@@ -74,6 +74,23 @@ const fetchCategoriesFail = ( state, action ) => {
     return updateObject( state, { loading: false } );
 };
 
+const fetchCategoriesOptionsStart = ( state, action ) => {
+    return updateObject( state, { loading: true, submitted: false } );
+};
+
+const fetchCategoriesOptionsSuccess = ( state, action ) => {
+    return updateObject( state, {
+        categories: action.categories,
+        pageCount: action.pageCount,
+        rowCount: action.rowCount,
+        loading: false
+    } );
+};
+
+const fetchCategoriesOptionsFail = ( state, action ) => {
+    return updateObject( state, { loading: false } );
+};
+
 const fetchCategoryStart = ( state, action ) => {
     return updateObject( state, { loading: true, submitted: false } );
 };
@@ -106,6 +123,10 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.FETCH_CATEGORIES_START: return fetchCategoriesStart( state, action );
         case actionTypes.FETCH_CATEGORIES_SUCCESS: return fetchCategoriesSuccess( state, action );
         case actionTypes.FETCH_CATEGORIES_FAIL: return fetchCategoriesFail( state, action );
+
+        case actionTypes.FETCH_CATEGORIES_OPTIONS_START: return fetchCategoriesOptionsStart( state, action );
+        case actionTypes.FETCH_CATEGORIES_OPTIONS_SUCCESS: return fetchCategoriesOptionsSuccess( state, action );
+        case actionTypes.FETCH_CATEGORIES_OPTIONS_FAIL: return fetchCategoriesOptionsFail( state, action );
 
         case actionTypes.FETCH_CATEGORY_START: return fetchCategoryStart( state, action );
         case actionTypes.FETCH_CATEGORY_SUCCESS: return fetchCategorySuccess( state, action );

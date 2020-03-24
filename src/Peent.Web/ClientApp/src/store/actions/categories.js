@@ -165,6 +165,56 @@ export const fetchCategories = (pageIndex, pageSize, sortBy, filters) => {
     };
 };
 
+export const fetchCategoriesOptionsSuccess = ( categories, pageCount, rowCount ) => {
+    return {
+        type: actionTypes.FETCH_CATEGORIES_OPTIONS_SUCCESS,
+        categories: categories,
+        pageCount: pageCount,
+        rowCount: rowCount
+    };
+};
+
+export const fetchCategoriesOptionsFail = ( error ) => {
+    return {
+        type: actionTypes.FETCH_CATEGORIES_OPTIONS_FAIL,
+        error: error
+    };
+};
+
+export const fetchCategoriesOptionsStart = () => {
+    return {
+        type: actionTypes.FETCH_CATEGORIES_OPTIONS_START
+    };
+};
+
+export const fetchCategoriesOptions = (search) => {
+    return dispatch => {
+        dispatch(fetchCategoriesOptionsStart());
+        const query = {
+            pageIndex: 1,
+            pageSize: 100,
+            filters: [{
+                field: '_',
+                values: [search]
+            }]
+        };
+        
+        axios.post('/categories/GetAll', query)
+            .then( res => {
+                const fetchedCategories = [];
+                for ( let key in res.data.results ) {
+                    fetchedCategories.push( {
+                        ...res.data.results[key]
+                    } );
+                }
+                dispatch(fetchCategoriesOptionsSuccess(fetchedCategories, res.data.pageCount, res.data.rowCount));
+            } )
+            .catch( err => {
+                dispatch(fetchCategoriesOptionsFail(err));
+            } );
+    };
+};
+
 export const fetchCategorySuccess = ( category ) => {
     return {
         type: actionTypes.FETCH_CATEGORY_SUCCESS,

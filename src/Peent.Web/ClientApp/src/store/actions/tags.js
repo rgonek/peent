@@ -165,6 +165,58 @@ export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
     };
 };
 
+export const fetchTagsOptionsSuccess = ( tags, pageCount, rowCount ) => {
+    return {
+        type: actionTypes.FETCH_TAGS_OPTIONS_SUCCESS,
+        tags: tags,
+        pageCount: pageCount,
+        rowCount: rowCount
+    };
+};
+
+export const fetchTagsOptionsFail = ( error ) => {
+    return {
+        type: actionTypes.FETCH_TAGS_OPTIONS_FAIL,
+        error: error
+    };
+};
+
+export const fetchTagsOptionsStart = () => {
+    return {
+        type: actionTypes.FETCH_TAGS_OPTIONS_START
+    };
+};
+
+export const fetchTagsOptions = (search) => {
+    return dispatch => {
+        dispatch(fetchTagsOptionsStart());
+        const filterModel = {
+            field: "_",
+            values: [search]
+        };
+
+        const query = {
+            pageIndex: 1,
+            pageSize: 100,
+            filters: filterModel
+        };
+        
+        axios.post('/tags/GetAll', query)
+            .then( res => {
+                const fetchedTags = [];
+                for ( let key in res.data.results ) {
+                    fetchedTags.push( {
+                        ...res.data.results[key]
+                    } );
+                }
+                dispatch(fetchTagsOptionsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));
+            } )
+            .catch( err => {
+                dispatch(fetchTagsOptionsFail(err));
+            } );
+    };
+};
+
 export const fetchTagSuccess = ( tag ) => {
     return {
         type: actionTypes.FETCH_TAG_SUCCESS,

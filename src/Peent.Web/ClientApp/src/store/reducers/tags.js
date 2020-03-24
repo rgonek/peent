@@ -74,6 +74,24 @@ const fetchTagsFail = ( state, action ) => {
     return updateObject( state, { loading: false } );
 };
 
+
+const fetchTagsOptionsStart = ( state, action ) => {
+    return updateObject( state, { loading: true, submitted: false } );
+};
+
+const fetchTagsOptionsSuccess = ( state, action ) => {
+    return updateObject( state, {
+        tags: action.tags,
+        pageCount: action.pageCount,
+        rowCount: action.rowCount,
+        loading: false
+    } );
+};
+
+const fetchTagsOptionsFail = ( state, action ) => {
+    return updateObject( state, { loading: false } );
+};
+
 const fetchTagStart = ( state, action ) => {
     return updateObject( state, { loading: true, submitted: false } );
 };
@@ -106,6 +124,10 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.FETCH_TAGS_START: return fetchTagsStart( state, action );
         case actionTypes.FETCH_TAGS_SUCCESS: return fetchTagsSuccess( state, action );
         case actionTypes.FETCH_TAGS_FAIL: return fetchTagsFail( state, action );
+
+        case actionTypes.FETCH_TAGS_OPTIONS_START: return fetchTagsOptionsStart( state, action );
+        case actionTypes.FETCH_TAGS_OPTIONS_SUCCESS: return fetchTagsOptionsSuccess( state, action );
+        case actionTypes.FETCH_TAGS_OPTIONS_FAIL: return fetchTagsOptionsFail( state, action );
 
         case actionTypes.FETCH_TAG_START: return fetchTagStart( state, action );
         case actionTypes.FETCH_TAG_SUCCESS: return fetchTagSuccess( state, action );
