@@ -190,15 +190,14 @@ export const fetchTagsOptionsStart = () => {
 export const fetchTagsOptions = (search) => {
     return dispatch => {
         dispatch(fetchTagsOptionsStart());
-        const filterModel = {
-            field: "_",
-            values: [search]
-        };
 
         const query = {
             pageIndex: 1,
             pageSize: 100,
-            filters: filterModel
+            filters: {
+                field: "_",
+                values: [search]
+            }
         };
         
         axios.post('/tags/GetAll', query)

@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import AccountsNew from './AccountsNew';
+import { AccountType } from '../../shared/constants'
 
 function AccountsExpenseNew(props) {
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
-        props.onSubmitAccount({...values, type: 4, currencyId: parseInt(values.currencyId)});
+        props.onSubmitAccount({...values, type: AccountType.liabilities, currencyId: parseInt(values.currencyId)});
         actions.setSubmitting(false);
     };
     

@@ -2,12 +2,13 @@ import React, { useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import Accounts from './Accounts'
+import { AccountType } from '../../shared/constants'
 
 function AccountsRevenue(props) {
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
     const filtersExpense = {
       ...filters,
-      type: [3]
+      type: [AccountType.revenue]
     }
     props.onFetchAccounts(pageIndex, pageSize, sortBy, filtersExpense);
   }, []);

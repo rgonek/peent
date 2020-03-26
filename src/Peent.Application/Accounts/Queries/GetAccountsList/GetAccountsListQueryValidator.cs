@@ -10,7 +10,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
                 .GreaterThanOrEqualTo(1);
             RuleFor(x => x.PageSize)
                 .GreaterThan(0)
-                .LessThanOrEqualTo(100);
+                .LessThanOrEqualTo(500);
         }
     }
 }

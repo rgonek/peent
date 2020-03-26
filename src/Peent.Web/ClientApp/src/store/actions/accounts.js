@@ -1,7 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-peent';
-import { convertEmptyStringsToNulls } from '../../shared/utility'
-import { convertToSortModel, convertToFilterModel } from '../../shared/utility';
+import { convertEmptyStringsToNulls, convertToSortModel, convertToFilterModel } from '../../shared/utility';
 
 export const addAccount = ( accountData ) => {
     return dispatch => {
@@ -150,6 +149,57 @@ export const fetchAccounts = (pageIndex, pageSize, sortBy, filters) => {
             } )
             .catch( err => {
                 dispatch(fetchAccountsFail(err));
+            } );
+    };
+};
+
+export const fetchAccountsOptionsSuccess = ( accounts, pageCount, rowCount ) => {
+    return {
+        type: actionTypes.FETCH_ACCOUNTS_OPTIONS_SUCCESS,
+        accounts: accounts,
+        pageCount: pageCount,
+        rowCount: rowCount
+    };
+};
+
+export const fetchAccountsOptionsFail = ( error ) => {
+    return {
+        type: actionTypes.FETCH_ACCOUNTS_OPTIONS_FAIL,
+        error: error
+    };
+};
+
+export const fetchAccountsOptionsStart = () => {
+    return {
+        type: actionTypes.FETCH_ACCOUNTS_OPTIONS_START
+    };
+};
+
+export const fetchAccountsOptions = (search) => {
+    return dispatch => {
+        dispatch(fetchAccountsOptionsStart());
+
+        const query = {
+            pageIndex : 1,
+            pageSize: 500,
+            filters: {
+                field: "_",
+                values: [search]
+            }
+        };
+        
+        axios.post('/accounts/GetAll', query)
+            .then( res => {
+                const fetchedAccounts = [];
+                for ( let key in res.data.results ) {
+                    fetchedAccounts.push( {
+                        ...res.data.results[key]
+                    } );
+                }
+                dispatch(fetchAccountsOptionsSuccess(fetchedAccounts, res.data.pageCount, res.data.rowCount));
+            } )
+            .catch( err => {
+                dispatch(fetchAccountsOptionsFail(err));
             } );
     };
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as yup from "yup";
 import ContentHeader from "../../components/ContentHeader";
@@ -8,22 +8,17 @@ import { Redirect } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Select from "../../components/UI/Select/Select";
 import ReactSelect from "react-select";
+import { AccountType, TransactionType } from '../../shared/constants'
 
 function TransactionsNew(props) {
   const formSchema = yup.object({
-    title: yup
-      .string()
-      .required()
-      .max(1000),
+    title: yup.string().required().max(1000),
     description: yup.string().max(2000),
     date: yup.date(),
-    categoryId: yup
-      .number()
-      .required()
-      .min(1),
-    tagIds: yup.array()
-    // sourceAccountId: yup.number().required().min(1),
-    // destinationAccountId: yup.number().required().min(1),
+    categoryId: yup.number().required().min(1),
+    tagIds: yup.array(),
+    sourceAccountId: yup.number().required().min(1),
+    destinationAccountId: yup.number().required().min(1)
     // amount: yup.number().required()
   });
   const onCategoriesInputChange = inputValue => {
@@ -32,27 +27,43 @@ function TransactionsNew(props) {
   const onTagsInputChange = inputValue => {
     if (!props.allTagsLoaded) props.onFetchTagsOptions(inputValue);
   };
+  const onAccountsInputChange = inputValue => {
+    if (!props.allAccountsLoaded) props.onFetchAccountsOptions(inputValue);
+  };
   const { register, control, setValue, handleSubmit, errors } = useForm({
     validationSchema: formSchema,
     defaultValues: {
       title: "",
       description: "",
       date: "",
-      categoryId: 0//,
-      // tagIds: [] //, sourceAccountId: 0, destinationAccountId: 0, amount: 0
+      categoryId: 0,
+      tagIds: [], 
+      sourceAccountId: 0, 
+      destinationAccountId: 0, 
+      amount: 0
     }
   });
+
+  const [sourceAccountType, setSourceAccountType] = useState(null);
+  const [destinationAccountType, setDestinationAccountType] = useState(null);
+  
   useEffect(() => {
     onCategoriesInputChange();
     onTagsInputChange();
+    onAccountsInputChange();
   }, []);
+
+  const handleSourceAccountChange = (value, action) => {
+    setSourceAccountType(props.accounts.find(x => x.id === value?.value)?.type);
+  };
+  const handleDestinationAccountChange = (value, action) => {
+    setDestinationAccountType(props.accounts.find(x => x.id === value?.value)?.type);
+  };
+
   const onSubmit = data => {
     console.log("submit");
     console.log(data);
     //props.onSubmitTransaction(data);
-  };
-  const handleChange = (value, action) => {
-      setValue("categoryId", value?.value);
   };
 
   const categoriesOptions = props.categories.map(category => ({
@@ -63,6 +74,16 @@ function TransactionsNew(props) {
     label: tag.name,
     value: tag.id
   }));
+  const sourceAccountsOptions = filterSourceAccounts(props.accounts, destinationAccountType).map(account => ({
+    label: account.name,
+    value: account.id
+  }));
+  const destinationAccountsOptions = filterDestinationAccounts(props.accounts, sourceAccountType).map(account => ({
+    label: account.name,
+    value: account.id
+  }));
+
+  const transactionType = getTransactionType(sourceAccountType, destinationAccountType);
 
   if (props.added) return <Redirect to="/transactions" />;
 
@@ -139,6 +160,39 @@ function TransactionsNew(props) {
             {errors.tagIds && errors.tagIds.message}
           </Form.Control.Feedback>
         </Form.Group>
+        {transactionType}
+        <Form.Group>
+          <Form.Label>Source account</Form.Label>
+          <Select
+            name="sourceAccountId"
+            isInvalid={!!errors.sourceAccountId}
+            options={sourceAccountsOptions}
+            onChange={handleSourceAccountChange}
+            onInputChange={onAccountsInputChange}
+            isLoading={props.accountsLoading}
+            control={control}
+            placeholder="Select source account"
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.sourceAccountId && errors.sourceAccountId.message}
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Destination account</Form.Label>
+          <Select
+            name="destinationAccountId"
+            isInvalid={!!errors.destinationAccountId}
+            options={destinationAccountsOptions}
+            onChange={handleDestinationAccountChange}
+            onInputChange={onAccountsInputChange}
+            isLoading={props.accountsLoading}
+            control={control}
+            placeholder="Select destination account"
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.destinationAccountId && errors.destinationAccountId.message}
+          </Form.Control.Feedback>
+        </Form.Group>
         <Button type="submit" variant="primary" disabled={props.loading}>
           Submit
         </Button>
@@ -157,7 +211,10 @@ const mapStateToProps = state => {
     allCategoriesLoaded: state.category.pageCount === 1,
     tagsLoading: state.tag.loading,
     tags: state.tag.tags,
-    allTagsLoaded: state.tag.pageCount === 1
+    allTagsLoaded: state.tag.pageCount === 1,
+    accountsLoading: state.account.loading,
+    accounts: state.account.accounts,
+    allAccountsLoaded: state.account.pageCount === 1
   };
 };
 
@@ -168,8 +225,40 @@ const mapDispatchToProps = dispatch => {
     onFetchCategoriesOptions: search =>
       dispatch(actions.fetchCategoriesOptions(search)),
     onFetchTagsOptions: search =>
-      dispatch(actions.fetchTagsOptions(search))
+      dispatch(actions.fetchTagsOptions(search)),
+    onFetchAccountsOptions: search =>
+      dispatch(actions.fetchAccountsOptions(search))
   };
 };
+
+const filterSourceAccounts = (accounts, destinationAccountType) => {
+  return accounts.filter(x => 
+      x.type === AccountType.asset ||
+      (destinationAccountType !== AccountType.expense && x.type === AccountType.revenue));
+}
+
+const filterDestinationAccounts = (accounts, sourceAccountType) => {
+  return accounts.filter(x => 
+      x.type === AccountType.asset ||
+      (sourceAccountType !== AccountType.revenue && x.type === AccountType.expense));
+}
+
+const getTransactionType = (sourceAccountType, destinationAccountType) => {
+  if(sourceAccountType === AccountType.asset)
+    return destinationAccountType == AccountType.asset ?
+      TransactionType.transfer :
+      TransactionType.withdrawal;
+
+  if (sourceAccountType == AccountType.revenue)
+    return TransactionType.deposit;
+
+  if (sourceAccountType == AccountType.initialBalance)
+    return TransactionType.openingBalance;
+
+  if (sourceAccountType == AccountType.reconciliation)
+    return TransactionType.reconciliation;
+
+  return TransactionType.unknown;
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionsNew);

@@ -74,6 +74,23 @@ const fetchAccountsFail = ( state, action ) => {
     return updateObject( state, { loading: false } );
 };
 
+const fetchAccountsOptionsStart = ( state, action ) => {
+    return updateObject( state, { loading: true, submitted: false } );
+};
+
+const fetchAccountsOptionsSuccess = ( state, action ) => {
+    return updateObject( state, {
+        accounts: action.accounts,
+        pageCount: action.pageCount,
+        rowCount: action.rowCount,
+        loading: false
+    } );
+};
+
+const fetchAccountsOptionsFail = ( state, action ) => {
+    return updateObject( state, { loading: false } );
+};
+
 const fetchAccountStart = ( state, action ) => {
     return updateObject( state, { loading: true, submitted: false } );
 };
@@ -106,6 +123,10 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.FETCH_ACCOUNTS_START: return fetchAccountsStart( state, action );
         case actionTypes.FETCH_ACCOUNTS_SUCCESS: return fetchAccountsSuccess( state, action );
         case actionTypes.FETCH_ACCOUNTS_FAIL: return fetchAccountsFail( state, action );
+
+        case actionTypes.FETCH_ACCOUNTS_OPTIONS_START: return fetchAccountsOptionsStart( state, action );
+        case actionTypes.FETCH_ACCOUNTS_OPTIONS_SUCCESS: return fetchAccountsOptionsSuccess( state, action );
+        case actionTypes.FETCH_ACCOUNTS_OPTIONS_FAIL: return fetchAccountsOptionsFail( state, action );
 
         case actionTypes.FETCH_ACCOUNT_START: return fetchAccountStart( state, action );
         case actionTypes.FETCH_ACCOUNT_SUCCESS: return fetchAccountSuccess( state, action );

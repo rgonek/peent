@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import AccountsNew from './AccountsNew';
+import { AccountType } from '../../shared/constants'
 
 function AccountsExpenseNew(props) {
     const onSubmit = (data) => {
-        props.onSubmitAccount({...data, type: 2, currencyId: parseInt(data.currencyId)});
+        props.onSubmitAccount({...data, type: AccountType.expense, currencyId: parseInt(data.currencyId)});
     };
     
     return (<AccountsNew 
