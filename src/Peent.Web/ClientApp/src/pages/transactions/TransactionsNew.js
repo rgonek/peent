@@ -9,6 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import Select from "../../components/UI/Select/Select";
 import ReactSelect from "react-select";
 import { AccountType, TransactionType } from '../../shared/constants'
+import * as _ from '../../shared/extensions'
 
 function TransactionsNew(props) {
   const formSchema = yup.object({
@@ -66,22 +67,16 @@ function TransactionsNew(props) {
     //props.onSubmitTransaction(data);
   };
 
-  const categoriesOptions = props.categories.map(category => ({
-    label: category.name,
-    value: category.id
-  }));
-  const tagsOptions = props.tags.map(tag => ({
-    label: tag.name,
-    value: tag.id
-  }));
-  const sourceAccountsOptions = filterSourceAccounts(props.accounts, destinationAccountType).map(account => ({
-    label: account.name,
-    value: account.id
-  }));
-  const destinationAccountsOptions = filterDestinationAccounts(props.accounts, sourceAccountType).map(account => ({
-    label: account.name,
-    value: account.id
-  }));
+  const categoriesOptions = props.categories.toOptions(x => x.name, x => x.id);
+  const tagsOptions = props.tags.toOptions(x => x.name, x => x.id);
+  const sourceAccountsOptions = filterSourceAccounts(props.accounts, destinationAccountType)
+    .groupBy(x => x.type)
+    .toList()
+    .toOptions(x => x + " accounts", x => x.toOptions(x => x.name, x => x.id));
+  const destinationAccountsOptions = filterDestinationAccounts(props.accounts, sourceAccountType)
+    .groupBy(x => x.type)
+    .toList()
+    .toOptions(x => x + " accounts", x => x.toOptions(x => x.name, x => x.id));
 
   const transactionType = getTransactionType(sourceAccountType, destinationAccountType);
 
