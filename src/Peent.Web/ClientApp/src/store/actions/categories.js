@@ -151,12 +151,7 @@ export const fetchCategories = (pageIndex, pageSize, sortBy, filters) => {
         
         axios.post('/categories/GetAll', query)
             .then( res => {
-                const fetchedCategories = [];
-                for ( let key in res.data.results ) {
-                    fetchedCategories.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedCategories = res.data.results.map(x => ({...x}));
                 dispatch(fetchCategoriesSuccess(fetchedCategories, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {
@@ -201,12 +196,7 @@ export const fetchCategoriesOptions = (search) => {
         
         axios.post('/categories/GetAll', query)
             .then( res => {
-                const fetchedCategories = [];
-                for ( let key in res.data.results ) {
-                    fetchedCategories.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedCategories = res.data.results.map(x => ({...x}));
                 dispatch(fetchCategoriesOptionsSuccess(fetchedCategories, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {

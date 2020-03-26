@@ -151,12 +151,7 @@ export const fetchTransactions = (pageIndex, pageSize, sortBy, filters) => {
         
         axios.post('/transactions/GetAll', query)
             .then( res => {
-                const fetchedTransactions = [];
-                for ( let key in res.data.results ) {
-                    fetchedTransactions.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedTransactions = res.data.results.map(x => ({...x}));
                 dispatch(fetchTransactionsSuccess(fetchedTransactions, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {

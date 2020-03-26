@@ -139,12 +139,7 @@ export const fetchAccounts = (pageIndex, pageSize, sortBy, filters) => {
         
         axios.post('/accounts/GetAll', query)
             .then( res => {
-                const fetchedAccounts = [];
-                for ( let key in res.data.results ) {
-                    fetchedAccounts.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedAccounts = res.data.results.map(x => ({...x}));
                 dispatch(fetchAccountsSuccess(fetchedAccounts, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {
@@ -190,12 +185,7 @@ export const fetchAccountsOptions = (search) => {
         
         axios.post('/accounts/GetAll', query)
             .then( res => {
-                const fetchedAccounts = [];
-                for ( let key in res.data.results ) {
-                    fetchedAccounts.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedAccounts = res.data.results.map(x => ({...x}));
                 dispatch(fetchAccountsOptionsSuccess(fetchedAccounts, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {

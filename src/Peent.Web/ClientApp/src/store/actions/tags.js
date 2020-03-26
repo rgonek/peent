@@ -151,12 +151,7 @@ export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
         
         axios.post('/tags/GetAll', query)
             .then( res => {
-                const fetchedTags = [];
-                for ( let key in res.data.results ) {
-                    fetchedTags.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedTags = res.data.results.map(x => ({...x}));
                 dispatch(fetchTagsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {
@@ -202,12 +197,7 @@ export const fetchTagsOptions = (search) => {
         
         axios.post('/tags/GetAll', query)
             .then( res => {
-                const fetchedTags = [];
-                for ( let key in res.data.results ) {
-                    fetchedTags.push( {
-                        ...res.data.results[key]
-                    } );
-                }
+                const fetchedTags = res.data.results.map(x => ({...x}));
                 dispatch(fetchTagsOptionsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));
             } )
             .catch( err => {

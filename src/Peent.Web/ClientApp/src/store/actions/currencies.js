@@ -28,12 +28,7 @@ export const fetchCurrencies = () => {
         
         axios.get('/currencies/GetAll')
             .then( res => {
-                const fetchedCurrencies = [];
-                for ( let key in res.data ) {
-                    fetchedCurrencies.push( {
-                        ...res.data[key]
-                    } );
-                }
+                const fetchedCurrencies = res.data.results.map(x => ({...x}));
                 dispatch(fetchCurrenciesSuccess(fetchedCurrencies));
             } )
             .catch( err => {
