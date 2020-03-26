@@ -35,14 +35,14 @@ namespace Peent.Application.Categories.Queries.GetCategoriesList
             if (query.Filters.Any())
                 categoriesQuery = Filter(categoriesQuery, query.Filters);
 
-            var tagsPaged = await ((IQueryable<Category>)categoriesQuery)
+            var categoriesPaged = await ((IQueryable<Category>)categoriesQuery)
                 .GetPagedAsync(
                     query.PageIndex,
                     query.PageSize,
                     x => new CategoryModel(x),
                     token);
 
-            return tagsPaged;
+            return categoriesPaged;
         }
 
         private IOrderedQueryable<Category> Sort(IOrderedQueryable<Category> categoriesQuery, IList<SortInfo> sortInfo)
