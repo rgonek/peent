@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as yup from "yup";
 import ContentHeader from "../../components/ContentHeader";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Col } from "react-bootstrap";
 import * as actions from "../../store/actions/index";
 import { Redirect } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -88,118 +88,140 @@ function TransactionsNew(props) {
         <h1 className="h2">New Transaction</h1>
       </ContentHeader>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group>
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            isInvalid={!!errors.title}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.title && errors.title.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            name="description"
-            isInvalid={!!errors.description}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.description && errors.description.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Date</Form.Label>
-          <Form.Control
-            type="date"
-            name="date"
-            isInvalid={!!errors.date}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.date && errors.date.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Category</Form.Label>
-          <Select
-            name="categoryId"
-            isInvalid={!!errors.categoryId}
-            options={categoriesOptions}
-            onInputChange={onCategoriesInputChange}
-            isLoading={props.categoriesLoading}
-            control={control}
-            placeholder="Select category"
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.categoryId && errors.categoryId.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Tags</Form.Label>
-          <Select
-            name="tagIds"
-            isInvalid={!!errors.tagIds}
-            options={tagsOptions}
-            isMulti={true}
-            onInputChange={onTagsInputChange}
-            isLoading={props.tagsLoading}
-            control={control}
-            placeholder="Select tags"
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.tagIds && errors.tagIds.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        {transactionType}
-        <Form.Group>
-          <Form.Label>Source account</Form.Label>
-          <Select
-            name="sourceAccountId"
-            isInvalid={!!errors.sourceAccountId}
-            options={sourceAccountsOptions}
-            onChange={handleSourceAccountChange}
-            onInputChange={onAccountsInputChange}
-            isLoading={props.accountsLoading}
-            control={control}
-            placeholder="Select source account"
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.sourceAccountId && errors.sourceAccountId.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Destination account</Form.Label>
-          <Select
-            name="destinationAccountId"
-            isInvalid={!!errors.destinationAccountId}
-            options={destinationAccountsOptions}
-            onChange={handleDestinationAccountChange}
-            onInputChange={onAccountsInputChange}
-            isLoading={props.accountsLoading}
-            control={control}
-            placeholder="Select destination account"
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.destinationAccountId && errors.destinationAccountId.message}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Amount</Form.Label>
-          <Form.Control
-            type="number"
-            name="amount"
-            isInvalid={!!errors.amount}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.amount && errors.amount.message}
-          </Form.Control.Feedback>
-        </Form.Group>
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Label>Date</Form.Label>
+            <Form.Control
+              type="date"
+              name="date"
+              isInvalid={!!errors.date}
+              ref={register}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.date && errors.date.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col}>
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              type="text"
+              name="title"
+              isInvalid={!!errors.title}
+              ref={register}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.title && errors.title.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Label>Source account</Form.Label>
+            <Select
+              name="sourceAccountId"
+              isInvalid={!!errors.sourceAccountId}
+              options={sourceAccountsOptions}
+              onChange={handleSourceAccountChange}
+              onInputChange={onAccountsInputChange}
+              isLoading={props.accountsLoading}
+              control={control}
+              placeholder="Select source account"
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.sourceAccountId && errors.sourceAccountId.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col}>
+            <Form.Label>{transactionType}</Form.Label>
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Label>Destination account</Form.Label>
+            <Select
+              name="destinationAccountId"
+              isInvalid={!!errors.destinationAccountId}
+              options={destinationAccountsOptions}
+              onChange={handleDestinationAccountChange}
+              onInputChange={onAccountsInputChange}
+              isLoading={props.accountsLoading}
+              control={control}
+              placeholder="Select destination account"
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.destinationAccountId && errors.destinationAccountId.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group as={Col}>
+            <Form.Label>Amount</Form.Label>
+            <Form.Control
+              type="number"
+              name="amount"
+              isInvalid={!!errors.amount}
+              ref={register}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.amount && errors.amount.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form.Row>
+
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows="5"
+              name="description"
+              isInvalid={!!errors.description}
+              ref={register}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.description && errors.description.message}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Col>
+            <Form.Group>
+              <Form.Label>Category</Form.Label>
+              <Select
+                name="categoryId"
+                isInvalid={!!errors.categoryId}
+                options={categoriesOptions}
+                onInputChange={onCategoriesInputChange}
+                isLoading={props.categoriesLoading}
+                control={control}
+                placeholder="Select category"
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.categoryId && errors.categoryId.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Tags</Form.Label>
+              <Select
+                name="tagIds"
+                isInvalid={!!errors.tagIds}
+                options={tagsOptions}
+                isMulti={true}
+                onInputChange={onTagsInputChange}
+                isLoading={props.tagsLoading}
+                control={control}
+                placeholder="Select tags"
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.tagIds && errors.tagIds.message}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+        </Form.Row>
+        
         <Button type="submit" variant="primary" disabled={props.loading}>
           Submit
         </Button>
