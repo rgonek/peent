@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-peent';
-import { convertEmptyStringsToNulls, convertToSortModel, convertToFilterModel } from '../../shared/utility';
+import { convertEmptyStringsToNulls } from '../../shared/utility';
+import * as _ from '../../shared/extensions'
 
 export const addAccount = ( accountData ) => {
     return dispatch => {
@@ -128,13 +129,11 @@ export const fetchAccountsStart = () => {
 export const fetchAccounts = (pageIndex, pageSize, sortBy, filters) => {
     return dispatch => {
         dispatch(fetchAccountsStart());
-        const sortModel = convertToSortModel(sortBy);
-        const filterModel = convertToFilterModel(filters);
         const query = {
             pageIndex,
             pageSize,
-            sort: sortModel,
-            filters: filterModel
+            sort: sortBy.toSortModel(),
+            filters: filters.toFilterModel()
         };
         
         axios.post('/accounts/GetAll', query)

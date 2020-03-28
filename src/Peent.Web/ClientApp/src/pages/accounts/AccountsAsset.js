@@ -6,11 +6,8 @@ import { AccountType } from '../../shared/constants'
 
 function AccountsRevenue(props) {
   const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-    const filtersExpense = {
-      ...filters,
-      type: [AccountType.asset]
-    }
-    props.onFetchAccounts(pageIndex, pageSize, sortBy, filtersExpense);
+    filters.push({id:"type", value: AccountType.asset});
+    props.onFetchAccounts(pageIndex, pageSize, sortBy, filters);
   }, []);
 
   return (

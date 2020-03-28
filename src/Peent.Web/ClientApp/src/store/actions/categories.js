@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-peent';
-import { convertEmptyStringsToNulls } from '../../shared/utility'
+import { convertEmptyStringsToNulls } from '../../shared/utility';
+import * as _ from '../../shared/extensions';
 
 export const addCategory = ( categoryData ) => {
     return dispatch => {
@@ -128,25 +129,12 @@ export const fetchCategoriesStart = () => {
 export const fetchCategories = (pageIndex, pageSize, sortBy, filters) => {
     return dispatch => {
         dispatch(fetchCategoriesStart());
-        const sortModel = sortBy.map((item, index) => {
-            return {
-                field: item.id,
-                direction: item.desc ? 'desc' : 'asc'
-            };
-        });
-        const filterModel = Object.keys(filters)
-            .map(key => {
-                return {
-                    field: key,
-                    values: [filters[key]]
-                }
-            });
 
         const query = {
             pageIndex,
             pageSize,
-            sort: sortModel,
-            filters: filterModel
+            sort: sortBy.toSortModel(),
+            filters: filters.toFilterModel()
         };
         
         axios.post('/categories/GetAll', query)

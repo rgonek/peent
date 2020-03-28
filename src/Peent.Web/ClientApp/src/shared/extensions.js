@@ -26,3 +26,23 @@ Array.prototype.toOptions = function(labelGetter, valueGetter) {
         value: valueGetter(item)
     }));
 };
+
+Array.prototype.toFilterModel = function() {
+  return this.map(item => ({
+      field: item.id,
+      values: Array.isArray(item.value) ? 
+        item.value.map(val => {
+            return val.toString();
+        }) : 
+        [item.value.toString()]
+  }));
+};
+
+Array.prototype.toSortModel = function() {
+  return this.map((item, index) => {
+      return {
+          field: item.id,
+          direction: item.desc ? 'desc' : 'asc'
+      };
+  });
+};

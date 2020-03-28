@@ -46,7 +46,7 @@ function Table({
         initialState: { pageIndex: 1 },
         manualPagination: true,
         pageCount: controlledPageCount + 1,
-        manualSorting: true,
+        manualSortBy: true,
         manualFilters: true,
         defaultColumn
       },
@@ -62,14 +62,14 @@ function Table({
       else {
         fetchData(pageIndex, pageSize, sortBy, filters);
       }
-    }, [fetchData, pageIndex, pageSize]);
+    }, [fetchData, pageIndex, pageSize, sortBy, filters]);
 
     const handlePageClick = pageNumber => {
       gotoPage(pageNumber);
     };
 
     const handleSearchChange = e => {
-      filters['_'] = e.target.value;
+      filters.push({id: "_", value: e.target.value});
       fetchData(pageIndex, pageSize, sortBy, filters);
     };
 
