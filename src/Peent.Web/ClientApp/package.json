@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "js-levenshtein": "^1.1.6",
     "noty": "^3.2.0-beta",
     "react": "^16.10.1",
     "react-bootstrap": "^1.0.0-beta.14",
@@ -18,7 +19,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-select": "^3.1.0",
-    "react-table": "^7.0.0-beta.14",
+    "react-table": "^7.0.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "yup": "^0.27.0"
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
+    "@babel/helper-call-delegate": "^7.8.7",
     "@babel/preset-flow": "^7.0.0",
     "empty": "^0.10.1",
     "flow-bin": "^0.109.0",
