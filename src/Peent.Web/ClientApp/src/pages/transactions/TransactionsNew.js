@@ -19,8 +19,8 @@ function TransactionsNew(props) {
     categoryId: yup.number().required().min(1),
     tagIds: yup.array(),
     sourceAccountId: yup.number().required().min(1),
-    destinationAccountId: yup.number().required().min(1)
-    // amount: yup.number().required()
+    destinationAccountId: yup.number().required().min(1),
+    amount: yup.number().positive().required()
   });
   const onCategoriesInputChange = inputValue => {
     if (!props.allCategoriesLoaded) props.onFetchCategoriesOptions(inputValue);
@@ -186,6 +186,18 @@ function TransactionsNew(props) {
           />
           <Form.Control.Feedback type="invalid">
             {errors.destinationAccountId && errors.destinationAccountId.message}
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Amount</Form.Label>
+          <Form.Control
+            type="number"
+            name="amount"
+            isInvalid={!!errors.amount}
+            ref={register}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.amount && errors.amount.message}
           </Form.Control.Feedback>
         </Form.Group>
         <Button type="submit" variant="primary" disabled={props.loading}>
