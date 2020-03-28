@@ -16,3 +16,10 @@ export const TransactionType = Object.freeze({
   openingBalance: "openingBalance",
   reconciliation: "reconciliation"
 });
+
+export const SortDirection = Object.freeze({
+  descending: "desc",
+  ascending: "asc"
+});
+
+export const GLOBAL_FILTER = "_";

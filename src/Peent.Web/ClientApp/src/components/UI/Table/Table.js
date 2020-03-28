@@ -12,6 +12,8 @@ import Col from 'react-bootstrap/Col'
 import InputGroup from 'react-bootstrap/InputGroup'
 import { FaSearch } from "react-icons/fa";
 import './Table.css';
+import * as _ from '../../../shared/extensions';
+import * as constants from '../../../shared/constants';
 
 function Table({
     title,
@@ -53,14 +55,16 @@ function Table({
       useFilters,
       useSortBy,
       usePagination
-    )
+    );
+
+    const [globalFilterValue, setGlobalFilterValue] = React.useState("");
   
     React.useEffect(() => {
       if(pageIndex === 0) {
         gotoPage(1);
       }
       else {
-        fetchData(pageIndex, pageSize, sortBy, filters);
+        fetchData(pageIndex, pageSize, sortBy, filters.addFilter(constants.GLOBAL_FILTER, globalFilterValue));
       }
     }, [fetchData, pageIndex, pageSize, sortBy, filters]);
 
@@ -69,8 +73,8 @@ function Table({
     };
 
     const handleSearchChange = e => {
-      filters.push({id: "_", value: e.target.value});
-      fetchData(pageIndex, pageSize, sortBy, filters);
+      setGlobalFilterValue(e.target.value);
+      fetchData(pageIndex, pageSize, sortBy, filters.addFilter(constants.GLOBAL_FILTER, e.target.value));
     };
 
     const renderColumn = column => {

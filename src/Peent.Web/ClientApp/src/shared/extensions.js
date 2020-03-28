@@ -1,3 +1,5 @@
+import * as constants from './constants';
+
 Array.prototype.groupBy = function(keyGetter) {
   const map = new Map();
   this.forEach(item => {
@@ -11,6 +13,7 @@ Array.prototype.groupBy = function(keyGetter) {
   });
   return map;
 };
+
 Map.prototype.toList = function() {
   return Array.from(this);
 };
@@ -42,7 +45,26 @@ Array.prototype.toSortModel = function() {
   return this.map((item, index) => {
       return {
           field: item.id,
-          direction: item.desc ? 'desc' : 'asc'
+          direction: item.desc ? 
+            constants.SortDirection.descending : 
+            constants.SortDirection.ascending
       };
   });
+};
+
+Array.prototype.addFilter = function(columnId, value) {
+  if(value){
+    return this.find(item => item.id === columnId) ?
+      this.map(item => {
+        return item.id === columnId ? 
+          buildFilterObject(columnId, value): 
+          item;
+      }) :
+      [...this, buildFilterObject(columnId, value)];
+  }
+  return this.filter(item => item.id !== columnId);
+};
+
+const buildFilterObject = (columnId, value) => {
+  return { id: columnId, value: value };
 };

@@ -136,7 +136,7 @@ export const fetchCategories = (pageIndex, pageSize, sortBy, filters) => {
             sort: sortBy.toSortModel(),
             filters: filters.toFilterModel()
         };
-        
+
         axios.post('/categories/GetAll', query)
             .then( res => {
                 const fetchedCategories = res.data.results.map(x => ({...x}));
