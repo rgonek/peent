@@ -3,11 +3,16 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import Accounts from "./Accounts";
 import { AccountType } from "../../shared/constants";
+import * as _ from "../../shared/extensions";
 
 function AccountsExpense(props) {
     const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        filters.push({ id: "type", value: AccountType.expense });
-        props.onFetchAccounts(pageIndex, pageSize, sortBy, filters);
+        props.onFetchAccounts(
+            pageIndex,
+            pageSize,
+            sortBy,
+            filters.addFilter("type", AccountType.expense)
+        );
     }, []);
 
     return (
