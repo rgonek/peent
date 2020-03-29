@@ -6,6 +6,7 @@
         "axios": "^0.19.0",
         "bootstrap": "^4.3.1",
         "js-levenshtein": "^1.1.6",
+        "math-expression-evaluator": "^1.2.22",
         "noty": "^3.2.0-beta",
         "react": "^16.10.1",
         "react-bootstrap": "^1.0.0-beta.14",

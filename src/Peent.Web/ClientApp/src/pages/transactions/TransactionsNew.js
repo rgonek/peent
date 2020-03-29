@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Select from "../../components/UI/Select/Select";
 import DateTimePicker from "../../components/UI/DateTimePicker/DateTimePicker";
+import NumberInput from "../../components/UI/NumberInput/NumberInput";
 import { AccountType, TransactionType } from "../../shared/constants";
 import * as _ from "../../shared/extensions";
 
@@ -41,7 +42,7 @@ function TransactionsNew(props) {
             tagIds: [],
             sourceAccountId: 0,
             destinationAccountId: 0,
-            amount: 0,
+            amount: "",
         },
     });
 
@@ -174,12 +175,7 @@ function TransactionsNew(props) {
 
                     <Form.Group as={Col}>
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control
-                            type="number"
-                            name="amount"
-                            isInvalid={!!errors.amount}
-                            ref={register}
-                        />
+                        <NumberInput name="amount" isInvalid={!!errors.amount} control={control} />
                         <Form.Control.Feedback type="invalid">
                             {errors.amount && errors.amount.message}
                         </Form.Control.Feedback>
