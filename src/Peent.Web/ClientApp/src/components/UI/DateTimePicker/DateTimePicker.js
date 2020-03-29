@@ -10,18 +10,19 @@ function DateTimePicker({
     control,
     name,
     isInvalid,
-    value,
     defaultValue,
     className,
     onChange,
     ...restProps
 }) {
     const {
+        defaultValuesRef,
         setValue,
         register,
         mode: { isOnSubmit, isOnBlur, isOnChange },
     } = control;
 
+    const value = defaultValue ? defaultValue : defaultValuesRef.current[name];
     const [flatpickr, setFlatpickr] = useState(null);
 
     useEffect(() => {
@@ -77,8 +78,7 @@ function DateTimePicker({
     return (
         <Flatpickr
             name={name}
-            value={value}
-            defaultValue={defaultValue}
+            defaultValue={value}
             render={inputRender}
             options={options}
             onChange={handleChange}
