@@ -39,7 +39,7 @@ function Select({
         if (shouldReValidateOnBlur) setValue(name, stateValue, true);
     };
 
-    const classNames = ["react-select", isInvalid && "is-invalid", className].join(" ");
+    const classNames = ["react-select", isInvalid ? "is-invalid" : "", className].join(" ");
 
     return (
         <ReactSelect
