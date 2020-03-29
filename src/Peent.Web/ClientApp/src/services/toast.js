@@ -1,20 +1,20 @@
-import Noty from 'noty';
+import Noty from "noty";
 
 const toast = {
     error: (message) => {
         new Noty({
-            type: 'error',
+            type: "error",
             text: message,
-            timeout: 5000
+            timeout: 5000,
         }).show();
     },
     success: (message) => {
         new Noty({
-            type: 'success',
+            type: "success",
             text: message,
-            timeout: 5000
+            timeout: 5000,
         }).show();
-    }
+    },
 };
 
 export default toast;

@@ -2,17 +2,17 @@
     position: relative;
 }
 
-.toggle-arrow {    
+.toggle-arrow {
     position: absolute !important;
     top: 9px;
     right: 10px;
-    -webkit-transition: .3s ease-in-out;
-    -moz-transition: .3s ease-in-out;
-    -o-transition: .3s ease-in-out;
-    transition: .3s ease-in-out;
+    -webkit-transition: 0.3s ease-in-out;
+    -moz-transition: 0.3s ease-in-out;
+    -o-transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
 }
 
-.nav-link[aria-expanded=true] .toggle-arrow {
+.nav-link[aria-expanded="true"] .toggle-arrow {
     transform: rotate(-90deg);
 }
 

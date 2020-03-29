@@ -1,11 +1,4 @@
-export {
-    addTag,
-    updateTag,
-    deleteTag,
-    fetchTags,
-    fetchTagsOptions,
-    fetchTag
-} from './tags';
+export { addTag, updateTag, deleteTag, fetchTags, fetchTagsOptions, fetchTag } from "./tags";
 
 export {
     addCategory,
@@ -13,8 +6,8 @@ export {
     deleteCategory,
     fetchCategories,
     fetchCategoriesOptions,
-    fetchCategory
-} from './categories';
+    fetchCategory,
+} from "./categories";
 
 export {
     addAccount,
@@ -22,17 +15,15 @@ export {
     deleteAccount,
     fetchAccounts,
     fetchAccountsOptions,
-    fetchAccount
-} from './accounts';
+    fetchAccount,
+} from "./accounts";
 
-export {
-    fetchCurrencies
-} from './currencies';
+export { fetchCurrencies } from "./currencies";
 
 export {
     addTransaction,
     updateTransaction,
     deleteTransaction,
     fetchTransactions,
-    fetchTransaction
-} from './transactions';
+    fetchTransaction,
+} from "./transactions";

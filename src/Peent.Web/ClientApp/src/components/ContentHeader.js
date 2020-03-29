@@ -1,8 +1,8 @@
 // @flow
-import * as React from 'react';
+import * as React from "react";
 
 type Props = {
-    children?: React.Node
+    children?: React.Node,
 };
 
 function ContentHeader(props: Props) {
@@ -12,5 +12,5 @@ function ContentHeader(props: Props) {
         </div>
     );
 }
-  
+
 export default ContentHeader;

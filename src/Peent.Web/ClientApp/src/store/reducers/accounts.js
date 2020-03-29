@@ -1,6 +1,6 @@
-import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../shared/utility';
-import toast from '../../services/toast'
+import * as actionTypes from "../actions/actionTypes";
+import { updateObject } from "../../shared/utility";
+import toast from "../../services/toast";
 
 const initialState = {
     accounts: [],
@@ -8,130 +8,149 @@ const initialState = {
     pageCount: 0,
     rowCount: 0,
     account: null,
-    submitted: false
+    submitted: false,
 };
 
-const addAccountStart = ( state, action ) => {
-    return updateObject( state, { loading: true } );
+const addAccountStart = (state, action) => {
+    return updateObject(state, { loading: true });
 };
 
-const addAccountSuccess = ( state, action ) => {
-    toast.success('Account added');
-    return updateObject( state, { loading: false, submitted: true } );
+const addAccountSuccess = (state, action) => {
+    toast.success("Account added");
+    return updateObject(state, { loading: false, submitted: true });
 };
 
-const addAccountFail = ( state, action ) => {
-    return updateObject( state, { loading: false } );
+const addAccountFail = (state, action) => {
+    return updateObject(state, { loading: false });
 };
 
-const updateAccountStart = ( state, action ) => {
-    return updateObject( state, { loading: true } );
+const updateAccountStart = (state, action) => {
+    return updateObject(state, { loading: true });
 };
 
-const updateAccountSuccess = ( state, action ) => {
-    toast.success('Account updated');
-    return updateObject( state, {
+const updateAccountSuccess = (state, action) => {
+    toast.success("Account updated");
+    return updateObject(state, {
         loading: false,
         account: action.accountData,
-        submitted: true
-    } );
+        submitted: true,
+    });
 };
 
-const updateAccountFail = ( state, action ) => {
-    return updateObject( state, { loading: false } );
+const updateAccountFail = (state, action) => {
+    return updateObject(state, { loading: false });
 };
 
-const deleteAccountStart = ( state, action ) => {
-    return updateObject( state, { loading: true } );
+const deleteAccountStart = (state, action) => {
+    return updateObject(state, { loading: true });
 };
 
-const deleteAccountSuccess = ( state, action ) => {
-    toast.success('Account deleted');
-    return updateObject( state, {
+const deleteAccountSuccess = (state, action) => {
+    toast.success("Account deleted");
+    return updateObject(state, {
         loading: false,
-        submitted: true
-    } );
+        submitted: true,
+    });
 };
 
-const deleteAccountFail = ( state, action ) => {
-    return updateObject( state, { loading: false } );
+const deleteAccountFail = (state, action) => {
+    return updateObject(state, { loading: false });
 };
 
-const fetchAccountsStart = ( state, action ) => {
-    return updateObject( state, { loading: true, submitted: false } );
+const fetchAccountsStart = (state, action) => {
+    return updateObject(state, { loading: true, submitted: false });
 };
 
-const fetchAccountsSuccess = ( state, action ) => {
-    return updateObject( state, {
+const fetchAccountsSuccess = (state, action) => {
+    return updateObject(state, {
         accounts: action.accounts,
         pageCount: action.pageCount,
         rowCount: action.rowCount,
-        loading: false
-    } );
+        loading: false,
+    });
 };
 
-const fetchAccountsFail = ( state, action ) => {
-    return updateObject( state, { loading: false } );
+const fetchAccountsFail = (state, action) => {
+    return updateObject(state, { loading: false });
 };
 
-const fetchAccountsOptionsStart = ( state, action ) => {
-    return updateObject( state, { loading: true, submitted: false } );
+const fetchAccountsOptionsStart = (state, action) => {
+    return updateObject(state, { loading: true, submitted: false });
 };
 
-const fetchAccountsOptionsSuccess = ( state, action ) => {
-    return updateObject( state, {
+const fetchAccountsOptionsSuccess = (state, action) => {
+    return updateObject(state, {
         accounts: action.accounts,
         pageCount: action.pageCount,
         rowCount: action.rowCount,
-        loading: false
-    } );
+        loading: false,
+    });
 };
 
-const fetchAccountsOptionsFail = ( state, action ) => {
-    return updateObject( state, { loading: false } );
+const fetchAccountsOptionsFail = (state, action) => {
+    return updateObject(state, { loading: false });
 };
 
-const fetchAccountStart = ( state, action ) => {
-    return updateObject( state, { loading: true, submitted: false } );
+const fetchAccountStart = (state, action) => {
+    return updateObject(state, { loading: true, submitted: false });
 };
 
-const fetchAccountSuccess = ( state, action ) => {
-    return updateObject( state, {
+const fetchAccountSuccess = (state, action) => {
+    return updateObject(state, {
         account: action.account,
-        loading: false
-    } );
+        loading: false,
+    });
 };
 
-const fetchAccountFail = ( state, action ) => {
-    return updateObject( state, { loading: false } );
+const fetchAccountFail = (state, action) => {
+    return updateObject(state, { loading: false });
 };
 
-const reducer = ( state = initialState, action ) => {
-    switch ( action.type ) {
-        case actionTypes.ADD_ACCOUNT_START: return addAccountStart( state, action );
-        case actionTypes.ADD_ACCOUNT_SUCCESS: return addAccountSuccess( state, action );
-        case actionTypes.ADD_ACCOUNT_FAIL: return addAccountFail( state, action );
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actionTypes.ADD_ACCOUNT_START:
+            return addAccountStart(state, action);
+        case actionTypes.ADD_ACCOUNT_SUCCESS:
+            return addAccountSuccess(state, action);
+        case actionTypes.ADD_ACCOUNT_FAIL:
+            return addAccountFail(state, action);
 
-        case actionTypes.UPDATE_ACCOUNT_START: return updateAccountStart( state, action );
-        case actionTypes.UPDATE_ACCOUNT_SUCCESS: return updateAccountSuccess( state, action );
-        case actionTypes.UPDATE_ACCOUNT_FAIL: return updateAccountFail( state, action );
+        case actionTypes.UPDATE_ACCOUNT_START:
+            return updateAccountStart(state, action);
+        case actionTypes.UPDATE_ACCOUNT_SUCCESS:
+            return updateAccountSuccess(state, action);
+        case actionTypes.UPDATE_ACCOUNT_FAIL:
+            return updateAccountFail(state, action);
 
-        case actionTypes.DELETE_ACCOUNT_START: return deleteAccountStart( state, action );
-        case actionTypes.DELETE_ACCOUNT_SUCCESS: return deleteAccountSuccess( state, action );
-        case actionTypes.DELETE_ACCOUNT_FAIL: return deleteAccountFail( state, action );
+        case actionTypes.DELETE_ACCOUNT_START:
+            return deleteAccountStart(state, action);
+        case actionTypes.DELETE_ACCOUNT_SUCCESS:
+            return deleteAccountSuccess(state, action);
+        case actionTypes.DELETE_ACCOUNT_FAIL:
+            return deleteAccountFail(state, action);
 
-        case actionTypes.FETCH_ACCOUNTS_START: return fetchAccountsStart( state, action );
-        case actionTypes.FETCH_ACCOUNTS_SUCCESS: return fetchAccountsSuccess( state, action );
-        case actionTypes.FETCH_ACCOUNTS_FAIL: return fetchAccountsFail( state, action );
+        case actionTypes.FETCH_ACCOUNTS_START:
+            return fetchAccountsStart(state, action);
+        case actionTypes.FETCH_ACCOUNTS_SUCCESS:
+            return fetchAccountsSuccess(state, action);
+        case actionTypes.FETCH_ACCOUNTS_FAIL:
+            return fetchAccountsFail(state, action);
 
-        case actionTypes.FETCH_ACCOUNTS_OPTIONS_START: return fetchAccountsOptionsStart( state, action );
-        case actionTypes.FETCH_ACCOUNTS_OPTIONS_SUCCESS: return fetchAccountsOptionsSuccess( state, action );
-        case actionTypes.FETCH_ACCOUNTS_OPTIONS_FAIL: return fetchAccountsOptionsFail( state, action );
+        case actionTypes.FETCH_ACCOUNTS_OPTIONS_START:
+            return fetchAccountsOptionsStart(state, action);
+        case actionTypes.FETCH_ACCOUNTS_OPTIONS_SUCCESS:
+            return fetchAccountsOptionsSuccess(state, action);
+        case actionTypes.FETCH_ACCOUNTS_OPTIONS_FAIL:
+            return fetchAccountsOptionsFail(state, action);
 
-        case actionTypes.FETCH_ACCOUNT_START: return fetchAccountStart( state, action );
-        case actionTypes.FETCH_ACCOUNT_SUCCESS: return fetchAccountSuccess( state, action );
-        case actionTypes.FETCH_ACCOUNT_FAIL: return fetchAccountFail( state, action );
-        default: return state;
+        case actionTypes.FETCH_ACCOUNT_START:
+            return fetchAccountStart(state, action);
+        case actionTypes.FETCH_ACCOUNT_SUCCESS:
+            return fetchAccountSuccess(state, action);
+        case actionTypes.FETCH_ACCOUNT_FAIL:
+            return fetchAccountFail(state, action);
+        default:
+            return state;
     }
 };
 

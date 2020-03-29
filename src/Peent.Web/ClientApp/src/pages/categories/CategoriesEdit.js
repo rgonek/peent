@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import * as yup from 'yup';
-import ContentHeader from '../../components/ContentHeader';
-import { Form, Button } from 'react-bootstrap';
-import * as actions from '../../store/actions/index';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import * as yup from "yup";
+import ContentHeader from "../../components/ContentHeader";
+import { Form, Button } from "react-bootstrap";
+import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
-import Spinner from '../../components/UI/Spinner/Spinner'
-import { useForm } from 'react-hook-form'
+import Spinner from "../../components/UI/Spinner/Spinner";
+import { useForm } from "react-hook-form";
 
 function CategoriesEdit(props) {
     const { id } = useParams();
@@ -16,18 +16,18 @@ function CategoriesEdit(props) {
 
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
-        description: yup.string().max(2000)
-      });
+        description: yup.string().max(2000),
+    });
     const onSubmit = (data) => {
         props.onSubmitCategory(id, data);
     };
 
     const { register, handleSubmit, errors } = useForm({
-        validationSchema: formSchema
+        validationSchema: formSchema,
     });
 
-    if(props.category == null || props.loading) {
-        return <Spinner />
+    if (props.category == null || props.loading) {
+        return <Spinner />;
     }
 
     return (
@@ -43,7 +43,8 @@ function CategoriesEdit(props) {
                         name="name"
                         defaultValue={props.category.name}
                         isInvalid={!!errors.name}
-                        ref={register} />
+                        ref={register}
+                    />
                     <Form.Control.Feedback type="invalid">
                         {errors.name && errors.name.message}
                     </Form.Control.Feedback>
@@ -55,32 +56,32 @@ function CategoriesEdit(props) {
                         name="description"
                         defaultValue={props.category.description}
                         isInvalid={!!errors.description}
-                        ref={register} />
+                        ref={register}
+                    />
                     <Form.Control.Feedback type="invalid">
                         {errors.description && errors.description.message}
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" variant="primary" disabled={props.loading}>Submit</Button>
+                <Button type="submit" variant="primary" disabled={props.loading}>
+                    Submit
+                </Button>
             </Form>
         </div>
     );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-      category: state.category.category,
-      loading: state.category.loading
+        category: state.category.category,
+        loading: state.category.loading,
     };
-  };
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSubmitCategory: (id, categoryData) => dispatch(actions.updateCategory(id, categoryData)),
-    onFetchCategory: (id) => dispatch( actions.fetchCategory(id) )
-  };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CategoriesEdit);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSubmitCategory: (id, categoryData) => dispatch(actions.updateCategory(id, categoryData)),
+        onFetchCategory: (id) => dispatch(actions.fetchCategory(id)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesEdit);

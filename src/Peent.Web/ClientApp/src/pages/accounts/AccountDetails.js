@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import ContentHeader from '../../components/ContentHeader';
-import * as actions from '../../store/actions/index';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import ContentHeader from "../../components/ContentHeader";
+import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
-import Spinner from '../../components/UI/Spinner/Spinner'
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 function AccountDetails(props) {
     const { id } = useParams();
@@ -11,8 +11,8 @@ function AccountDetails(props) {
         props.onFetchAccount(id);
     }, [id]);
 
-    if(props.account == null || props.loading) {
-        return <Spinner />
+    if (props.account == null || props.loading) {
+        return <Spinner />;
     }
 
     return (
@@ -25,20 +25,17 @@ function AccountDetails(props) {
     );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-      account: state.account.account,
-      loading: state.account.loading
+        account: state.account.account,
+        loading: state.account.loading,
     };
-  };
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onFetchAccount: (id) => dispatch( actions.fetchAccount(id) )
-  };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AccountDetails);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onFetchAccount: (id) => dispatch(actions.fetchAccount(id)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountDetails);

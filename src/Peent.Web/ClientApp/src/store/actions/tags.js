@@ -1,177 +1,181 @@
-import * as actionTypes from './actionTypes';
-import axios from '../../axios-peent';
-import { convertEmptyStringsToNulls } from '../../shared/utility'
-import * as _ from '../../shared/extensions';
+import * as actionTypes from "./actionTypes";
+import axios from "../../axios-peent";
+import { convertEmptyStringsToNulls } from "../../shared/utility";
+import * as _ from "../../shared/extensions";
 
-export const addTag = ( tagData ) => {
-    return dispatch => {
+export const addTag = (tagData) => {
+    return (dispatch) => {
         tagData = convertEmptyStringsToNulls(tagData);
-        dispatch( addTagStart() );
-        axios.post( '/tags', tagData )
-            .then( response => {
-                dispatch( addTagSuccess( response.data.name, tagData ) );
-            } )
-            .catch( error => {
-                dispatch( addTagFail( error ) );
-            } );
+        dispatch(addTagStart());
+        axios
+            .post("/tags", tagData)
+            .then((response) => {
+                dispatch(addTagSuccess(response.data.name, tagData));
+            })
+            .catch((error) => {
+                dispatch(addTagFail(error));
+            });
     };
 };
 
 export const addTagStart = () => {
     return {
-        type: actionTypes.ADD_TAG_START
+        type: actionTypes.ADD_TAG_START,
     };
 };
 
-export const addTagSuccess = ( id, tagData ) => {
+export const addTagSuccess = (id, tagData) => {
     return {
         type: actionTypes.ADD_TAG_SUCCESS,
         tagId: id,
-        tagData: tagData
+        tagData: tagData,
     };
 };
 
-export const addTagFail = ( error ) => {
+export const addTagFail = (error) => {
     return {
         type: actionTypes.ADD_TAG_FAIL,
-        error: error
+        error: error,
     };
 };
 
-export const updateTag = ( id, tagData ) => {
-    return dispatch => {
+export const updateTag = (id, tagData) => {
+    return (dispatch) => {
         tagData = convertEmptyStringsToNulls(tagData);
-        dispatch( updateTagStart() );
-        axios.put( '/tags/' + id, tagData )
-            .then( response => {
-                dispatch( updateTagSuccess( tagData ) );
-            } )
-            .catch( error => {
-                dispatch( updateTagFail( error ) );
-            } );
+        dispatch(updateTagStart());
+        axios
+            .put("/tags/" + id, tagData)
+            .then((response) => {
+                dispatch(updateTagSuccess(tagData));
+            })
+            .catch((error) => {
+                dispatch(updateTagFail(error));
+            });
     };
 };
 
 export const updateTagStart = () => {
     return {
-        type: actionTypes.UPDATE_TAG_START
+        type: actionTypes.UPDATE_TAG_START,
     };
 };
 
-export const updateTagSuccess = ( tagData ) => {
+export const updateTagSuccess = (tagData) => {
     return {
         type: actionTypes.UPDATE_TAG_SUCCESS,
-        tagData: tagData
+        tagData: tagData,
     };
 };
 
-export const updateTagFail = ( error ) => {
+export const updateTagFail = (error) => {
     return {
         type: actionTypes.UPDATE_TAG_FAIL,
-        error: error
+        error: error,
     };
 };
 
-export const deleteTag = ( id ) => {
-    return dispatch => {
-        dispatch( deleteTagStart() );
-        axios.delete( '/tags/' + id )
-            .then( response => {
-                dispatch( deleteTagSuccess() );
-            } )
-            .catch( error => {
-                dispatch( deleteTagFail( error ) );
-            } );
+export const deleteTag = (id) => {
+    return (dispatch) => {
+        dispatch(deleteTagStart());
+        axios
+            .delete("/tags/" + id)
+            .then((response) => {
+                dispatch(deleteTagSuccess());
+            })
+            .catch((error) => {
+                dispatch(deleteTagFail(error));
+            });
     };
 };
 
 export const deleteTagStart = () => {
     return {
-        type: actionTypes.DELETE_TAG_START
+        type: actionTypes.DELETE_TAG_START,
     };
 };
 
 export const deleteTagSuccess = () => {
     return {
-        type: actionTypes.DELETE_TAG_SUCCESS
+        type: actionTypes.DELETE_TAG_SUCCESS,
     };
 };
 
-export const deleteTagFail = ( error ) => {
+export const deleteTagFail = (error) => {
     return {
         type: actionTypes.DELETE_TAG_FAIL,
-        error: error
+        error: error,
     };
 };
 
-export const fetchTagsSuccess = ( tags, pageCount, rowCount ) => {
+export const fetchTagsSuccess = (tags, pageCount, rowCount) => {
     return {
         type: actionTypes.FETCH_TAGS_SUCCESS,
         tags: tags,
         pageCount: pageCount,
-        rowCount: rowCount
+        rowCount: rowCount,
     };
 };
 
-export const fetchTagsFail = ( error ) => {
+export const fetchTagsFail = (error) => {
     return {
         type: actionTypes.FETCH_TAGS_FAIL,
-        error: error
+        error: error,
     };
 };
 
 export const fetchTagsStart = () => {
     return {
-        type: actionTypes.FETCH_TAGS_START
+        type: actionTypes.FETCH_TAGS_START,
     };
 };
 
 export const fetchTags = (pageIndex, pageSize, sortBy, filters) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(fetchTagsStart());
 
         const query = {
             pageIndex,
             pageSize,
             sort: sortBy.toSortModel(),
-            filters: filters.toFilterModel()
+            filters: filters.toFilterModel(),
         };
-        
-        axios.post('/tags/GetAll', query)
-            .then( res => {
-                const fetchedTags = res.data.results.map(x => ({...x}));
+
+        axios
+            .post("/tags/GetAll", query)
+            .then((res) => {
+                const fetchedTags = res.data.results.map((x) => ({ ...x }));
                 dispatch(fetchTagsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));
-            } )
-            .catch( err => {
+            })
+            .catch((err) => {
                 dispatch(fetchTagsFail(err));
-            } );
+            });
     };
 };
 
-export const fetchTagsOptionsSuccess = ( tags, pageCount, rowCount ) => {
+export const fetchTagsOptionsSuccess = (tags, pageCount, rowCount) => {
     return {
         type: actionTypes.FETCH_TAGS_OPTIONS_SUCCESS,
         tags: tags,
         pageCount: pageCount,
-        rowCount: rowCount
+        rowCount: rowCount,
     };
 };
 
-export const fetchTagsOptionsFail = ( error ) => {
+export const fetchTagsOptionsFail = (error) => {
     return {
         type: actionTypes.FETCH_TAGS_OPTIONS_FAIL,
-        error: error
+        error: error,
     };
 };
 
 export const fetchTagsOptionsStart = () => {
     return {
-        type: actionTypes.FETCH_TAGS_OPTIONS_START
+        type: actionTypes.FETCH_TAGS_OPTIONS_START,
     };
 };
 
 export const fetchTagsOptions = (search) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(fetchTagsOptionsStart());
 
         const query = {
@@ -179,54 +183,55 @@ export const fetchTagsOptions = (search) => {
             pageSize: 100,
             filters: {
                 field: "_",
-                values: [search]
-            }
+                values: [search],
+            },
         };
-        
-        axios.post('/tags/GetAll', query)
-            .then( res => {
-                const fetchedTags = res.data.results.map(x => ({...x}));
-                dispatch(fetchTagsOptionsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount));
-            } )
-            .catch( err => {
+
+        axios
+            .post("/tags/GetAll", query)
+            .then((res) => {
+                const fetchedTags = res.data.results.map((x) => ({ ...x }));
+                dispatch(
+                    fetchTagsOptionsSuccess(fetchedTags, res.data.pageCount, res.data.rowCount)
+                );
+            })
+            .catch((err) => {
                 dispatch(fetchTagsOptionsFail(err));
-            } );
+            });
     };
 };
 
-export const fetchTagSuccess = ( tag ) => {
+export const fetchTagSuccess = (tag) => {
     return {
         type: actionTypes.FETCH_TAG_SUCCESS,
-        tag: tag
+        tag: tag,
     };
 };
 
-export const fetchTagFail = ( error ) => {
+export const fetchTagFail = (error) => {
     return {
         type: actionTypes.FETCH_TAG_FAIL,
-        error: error
+        error: error,
     };
 };
 
 export const fetchTagStart = () => {
     return {
-        type: actionTypes.FETCH_TAG_START
+        type: actionTypes.FETCH_TAG_START,
     };
 };
 
 export const fetchTag = (id) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(fetchTagStart());
 
-        axios.get('/tags/' + id, {transformResponse: [].concat(
-            axios.defaults.transformResponse
-            )
-          })
-            .then( res => {
+        axios
+            .get("/tags/" + id, { transformResponse: [].concat(axios.defaults.transformResponse) })
+            .then((res) => {
                 dispatch(fetchTagSuccess(res.data));
-            } )
-            .catch( err => {
+            })
+            .catch((err) => {
                 dispatch(fetchTagFail(err));
-            } );
+            });
     };
 };

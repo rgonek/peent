@@ -1,25 +1,25 @@
 export const AccountType = Object.freeze({
-  unknown: "unknown",
-  asset: "asset",
-  expense: "expense",
-  revenue: "revenue",
-  liabilities: "liabilities",
-  initialBalance: "initialBalance",
-  reconciliation: "reconciliation"
+    unknown: "unknown",
+    asset: "asset",
+    expense: "expense",
+    revenue: "revenue",
+    liabilities: "liabilities",
+    initialBalance: "initialBalance",
+    reconciliation: "reconciliation",
 });
 
 export const TransactionType = Object.freeze({
-  unknown: "unknown",
-  withdrawal: "withdrawal",
-  deposit: "deposit",
-  transfer: "transfer",
-  openingBalance: "openingBalance",
-  reconciliation: "reconciliation"
+    unknown: "unknown",
+    withdrawal: "withdrawal",
+    deposit: "deposit",
+    transfer: "transfer",
+    openingBalance: "openingBalance",
+    reconciliation: "reconciliation",
 });
 
 export const SortDirection = Object.freeze({
-  descending: "desc",
-  ascending: "asc"
+    descending: "desc",
+    ascending: "asc",
 });
 
 export const GLOBAL_FILTER = "_";

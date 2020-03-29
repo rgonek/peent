@@ -1,7 +1,7 @@
-import React from 'react';
-import { Form } from 'react-bootstrap';
+import React from "react";
+import { Form } from "react-bootstrap";
 
-const input = ( props ) => {
+const input = (props) => {
     let inputElement = null;
     const inputClasses = [classes.InputElement];
 
@@ -9,23 +9,27 @@ const input = ( props ) => {
         inputClasses.push(classes.Invalid);
     }
 
-    switch ( props.elementType ) {
-        case ( 'textarea' ):
-            inputElement = <Form.Control
-                as="textarea"
-                className={inputClasses.join(' ')}
-                {...props.elementConfig}
-                value={props.value}
-                onChange={props.changed} />;
+    switch (props.elementType) {
+        case "textarea":
+            inputElement = (
+                <Form.Control
+                    as="textarea"
+                    className={inputClasses.join(" ")}
+                    {...props.elementConfig}
+                    value={props.value}
+                    onChange={props.changed}
+                />
+            );
             break;
-        case ( 'select' ):
+        case "select":
             inputElement = (
                 <Form.Control
                     as="select"
-                    className={inputClasses.join(' ')}
+                    className={inputClasses.join(" ")}
                     value={props.value}
-                    onChange={props.changed}>
-                    {props.elementConfig.options.map(option => (
+                    onChange={props.changed}
+                >
+                    {props.elementConfig.options.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.displayValue}
                         </option>
@@ -33,13 +37,16 @@ const input = ( props ) => {
                 </Form.Control>
             );
             break;
-        case ( 'input' ):
+        case "input":
         default:
-            inputElement = <Form.Control
-                className={inputClasses.join(' ')}
-                {...props.elementConfig}
-                value={props.value}
-                onChange={props.changed} />;
+            inputElement = (
+                <Form.Control
+                    className={inputClasses.join(" ")}
+                    {...props.elementConfig}
+                    value={props.value}
+                    onChange={props.changed}
+                />
+            );
     }
 
     return (
@@ -48,7 +55,6 @@ const input = ( props ) => {
             {inputElement}
         </Form.Group>
     );
-
 };
 
 export default input;

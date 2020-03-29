@@ -1,12 +1,12 @@
 export const updateObject = (oldObject, updatedProperties) => {
     return {
         ...oldObject,
-        ...updatedProperties
+        ...updatedProperties,
     };
 };
 
 export const convertEmptyStringsToNulls = (obj) => {
-    const replacer = (key, value) => String(value) === '' ? null : value;
-  
-    return JSON.parse( JSON.stringify(obj, replacer));
+    const replacer = (key, value) => (String(value) === "" ? null : value);
+
+    return JSON.parse(JSON.stringify(obj, replacer));
 };
