@@ -23,8 +23,7 @@ function TransactionsNew(props) {
         amount: yup.number().positive().required(),
     });
     const onCategoriesInputChange = (inputValue) => {
-        if (!props.allCategoriesLoaded)
-            props.onFetchCategoriesOptions(inputValue);
+        if (!props.allCategoriesLoaded) props.onFetchCategoriesOptions(inputValue);
     };
     const onTagsInputChange = (inputValue) => {
         if (!props.allTagsLoaded) props.onFetchTagsOptions(inputValue);
@@ -56,14 +55,10 @@ function TransactionsNew(props) {
     }, []);
 
     const handleSourceAccountChange = (value, action) => {
-        setSourceAccountType(
-            props.accounts.find((x) => x.id === value?.value)?.type
-        );
+        setSourceAccountType(props.accounts.find((x) => x.id === value?.value)?.type);
     };
     const handleDestinationAccountChange = (value, action) => {
-        setDestinationAccountType(
-            props.accounts.find((x) => x.id === value?.value)?.type
-        );
+        setDestinationAccountType(props.accounts.find((x) => x.id === value?.value)?.type);
     };
 
     const onSubmit = (data) => {
@@ -80,39 +75,30 @@ function TransactionsNew(props) {
         (x) => x.name,
         (x) => x.id
     );
-    const sourceAccountsOptions = filterSourceAccounts(
-        props.accounts,
-        destinationAccountType
-    )
+    const sourceAccountsOptions = filterSourceAccounts(props.accounts, destinationAccountType)
         .groupBy((x) => x.type)
         .toList()
         .toOptions(
             (x) => x + " accounts",
             (x) =>
                 x.toOptions(
-                    (x) => x.name,
-                    (x) => x.id
+                    (y) => y.name,
+                    (y) => y.id
                 )
         );
-    const destinationAccountsOptions = filterDestinationAccounts(
-        props.accounts,
-        sourceAccountType
-    )
+    const destinationAccountsOptions = filterDestinationAccounts(props.accounts, sourceAccountType)
         .groupBy((x) => x.type)
         .toList()
         .toOptions(
             (x) => x + " accounts",
             (x) =>
                 x.toOptions(
-                    (x) => x.name,
-                    (x) => x.id
+                    (y) => y.name,
+                    (y) => y.id
                 )
         );
 
-    const transactionType = getTransactionType(
-        sourceAccountType,
-        destinationAccountType
-    );
+    const transactionType = getTransactionType(sourceAccountType, destinationAccountType);
 
     if (props.added) return <Redirect to="/transactions" />;
 
@@ -122,19 +108,10 @@ function TransactionsNew(props) {
                 <h1 className="h2">New Transaction</h1>
             </ContentHeader>
             <Form onSubmit={handleSubmit(onSubmit)}>
-                <Form.Group>
-                    <Form.Label>Date</Form.Label>
-                    <DateTimePicker />
-                </Form.Group>
                 <Form.Row>
                     <Form.Group as={Col}>
                         <Form.Label>Date</Form.Label>
-                        <Form.Control
-                            type="date"
-                            name="date"
-                            isInvalid={!!errors.date}
-                            ref={register}
-                        />
+                        <DateTimePicker name="date" isInvalid={!!errors.date} control={control} />
                         <Form.Control.Feedback type="invalid">
                             {errors.date && errors.date.message}
                         </Form.Control.Feedback>
@@ -168,8 +145,7 @@ function TransactionsNew(props) {
                             placeholder="Select source account"
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.sourceAccountId &&
-                                errors.sourceAccountId.message}
+                            {errors.sourceAccountId && errors.sourceAccountId.message}
                         </Form.Control.Feedback>
                     </Form.Group>
 
@@ -192,8 +168,7 @@ function TransactionsNew(props) {
                             placeholder="Select destination account"
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.destinationAccountId &&
-                                errors.destinationAccountId.message}
+                            {errors.destinationAccountId && errors.destinationAccountId.message}
                         </Form.Control.Feedback>
                     </Form.Group>
 
@@ -262,11 +237,7 @@ function TransactionsNew(props) {
                     </Col>
                 </Form.Row>
 
-                <Button
-                    type="submit"
-                    variant="primary"
-                    disabled={props.loading}
-                >
+                <Button type="submit" variant="primary" disabled={props.loading}>
                     Submit
                 </Button>
             </Form>
@@ -293,14 +264,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onSubmitTransaction: (transactionData) =>
-            dispatch(actions.addTransaction(transactionData)),
-        onFetchCategoriesOptions: (search) =>
-            dispatch(actions.fetchCategoriesOptions(search)),
-        onFetchTagsOptions: (search) =>
-            dispatch(actions.fetchTagsOptions(search)),
-        onFetchAccountsOptions: (search) =>
-            dispatch(actions.fetchAccountsOptions(search)),
+        onSubmitTransaction: (transactionData) => dispatch(actions.addTransaction(transactionData)),
+        onFetchCategoriesOptions: (search) => dispatch(actions.fetchCategoriesOptions(search)),
+        onFetchTagsOptions: (search) => dispatch(actions.fetchTagsOptions(search)),
+        onFetchAccountsOptions: (search) => dispatch(actions.fetchAccountsOptions(search)),
     };
 };
 
@@ -308,8 +275,7 @@ const filterSourceAccounts = (accounts, destinationAccountType) => {
     return accounts.filter(
         (x) =>
             x.type === AccountType.asset ||
-            (destinationAccountType !== AccountType.expense &&
-                x.type === AccountType.revenue)
+            (destinationAccountType !== AccountType.expense && x.type === AccountType.revenue)
     );
 };
 
@@ -317,8 +283,7 @@ const filterDestinationAccounts = (accounts, sourceAccountType) => {
     return accounts.filter(
         (x) =>
             x.type === AccountType.asset ||
-            (sourceAccountType !== AccountType.revenue &&
-                x.type === AccountType.expense)
+            (sourceAccountType !== AccountType.revenue && x.type === AccountType.expense)
     );
 };
 
@@ -328,14 +293,11 @@ const getTransactionType = (sourceAccountType, destinationAccountType) => {
             ? TransactionType.transfer
             : TransactionType.withdrawal;
 
-    if (sourceAccountType == AccountType.revenue)
-        return TransactionType.deposit;
+    if (sourceAccountType == AccountType.revenue) return TransactionType.deposit;
 
-    if (sourceAccountType == AccountType.initialBalance)
-        return TransactionType.openingBalance;
+    if (sourceAccountType == AccountType.initialBalance) return TransactionType.openingBalance;
 
-    if (sourceAccountType == AccountType.reconciliation)
-        return TransactionType.reconciliation;
+    if (sourceAccountType == AccountType.reconciliation) return TransactionType.reconciliation;
 
     return TransactionType.unknown;
 };

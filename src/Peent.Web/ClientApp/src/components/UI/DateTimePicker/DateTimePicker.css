@@ -1,0 +1,25 @@
+.date-time-picker .form-control[readonly],
+.date-time-picker .form-control.is-invalid[readonly] {
+    background-color: #fff;
+}
+
+.date-time-picker .btn-outline-primary {
+    padding-top: 2px;
+}
+
+.date-time-picker .btn-outline-primary:not(:hover) {
+    border-color: #ced4da;
+    color: #6c757d;
+}
+
+.date-time-picker.is-invalid .btn-outline-primary {
+    border-color: #dc3545;
+}
+
+.date-time-picker.is-invalid .btn-outline-primary:hover {
+    background-color: #dc3545;
+}
+
+.date-time-picker.is-invalid .btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
