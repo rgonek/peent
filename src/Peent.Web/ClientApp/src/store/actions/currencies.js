@@ -1,6 +1,5 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
-import { convertEmptyStringsToNulls } from "../../shared/utility";
 
 export const fetchCurrenciesSuccess = (currencies) => {
     return {

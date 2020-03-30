@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
 import { convertEmptyStringsToNulls } from "../../shared/utility";
-import * as _ from "../../shared/extensions";
+import "../../shared/extensions";
 
 export const addTag = (tagData) => {
     return (dispatch) => {
@@ -45,7 +45,7 @@ export const updateTag = (id, tagData) => {
         dispatch(updateTagStart());
         axios
             .put("/tags/" + id, tagData)
-            .then((response) => {
+            .then(() => {
                 dispatch(updateTagSuccess(tagData));
             })
             .catch((error) => {
@@ -79,7 +79,7 @@ export const deleteTag = (id) => {
         dispatch(deleteTagStart());
         axios
             .delete("/tags/" + id)
-            .then((response) => {
+            .then(() => {
                 dispatch(deleteTagSuccess());
             })
             .catch((error) => {

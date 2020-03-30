@@ -16,7 +16,7 @@ function CategoriesNew(props) {
         validationSchema: formSchema,
         defaultValues: { name: "", description: "" },
     });
-    const onSubmit = (values, actions) => {
+    const onSubmit = (values) => {
         props.onSubmitCategory(values);
     };
 

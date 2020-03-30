@@ -11,20 +11,20 @@ const initialState = {
     submitted: false,
 };
 
-const addTagStart = (state, action) => {
+const addTagStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const addTagSuccess = (state, action) => {
+const addTagSuccess = (state) => {
     toast.success("Tag added");
     return updateObject(state, { loading: false, submitted: true });
 };
 
-const addTagFail = (state, action) => {
+const addTagFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const updateTagStart = (state, action) => {
+const updateTagStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
@@ -37,15 +37,15 @@ const updateTagSuccess = (state, action) => {
     });
 };
 
-const updateTagFail = (state, action) => {
+const updateTagFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const deleteTagStart = (state, action) => {
+const deleteTagStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const deleteTagSuccess = (state, action) => {
+const deleteTagSuccess = (state) => {
     toast.success("Tag deleted");
     return updateObject(state, {
         loading: false,
@@ -53,11 +53,11 @@ const deleteTagSuccess = (state, action) => {
     });
 };
 
-const deleteTagFail = (state, action) => {
+const deleteTagFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchTagsStart = (state, action) => {
+const fetchTagsStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -70,11 +70,11 @@ const fetchTagsSuccess = (state, action) => {
     });
 };
 
-const fetchTagsFail = (state, action) => {
+const fetchTagsFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchTagsOptionsStart = (state, action) => {
+const fetchTagsOptionsStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -87,11 +87,11 @@ const fetchTagsOptionsSuccess = (state, action) => {
     });
 };
 
-const fetchTagsOptionsFail = (state, action) => {
+const fetchTagsOptionsFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchTagStart = (state, action) => {
+const fetchTagStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -102,7 +102,7 @@ const fetchTagSuccess = (state, action) => {
     });
 };
 
-const fetchTagFail = (state, action) => {
+const fetchTagFail = (state) => {
     return updateObject(state, { loading: false });
 };
 

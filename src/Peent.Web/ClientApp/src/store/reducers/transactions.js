@@ -11,20 +11,20 @@ const initialState = {
     submitted: false,
 };
 
-const addTransactionStart = (state, action) => {
+const addTransactionStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const addTransactionSuccess = (state, action) => {
+const addTransactionSuccess = (state) => {
     toast.success("Transaction added");
     return updateObject(state, { loading: false, submitted: true });
 };
 
-const addTransactionFail = (state, action) => {
+const addTransactionFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const updateTransactionStart = (state, action) => {
+const updateTransactionStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
@@ -37,15 +37,15 @@ const updateTransactionSuccess = (state, action) => {
     });
 };
 
-const updateTransactionFail = (state, action) => {
+const updateTransactionFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const deleteTransactionStart = (state, action) => {
+const deleteTransactionStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const deleteTransactionSuccess = (state, action) => {
+const deleteTransactionSuccess = (state) => {
     toast.success("Transaction deleted");
     return updateObject(state, {
         loading: false,
@@ -53,11 +53,11 @@ const deleteTransactionSuccess = (state, action) => {
     });
 };
 
-const deleteTransactionFail = (state, action) => {
+const deleteTransactionFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchTransactionsStart = (state, action) => {
+const fetchTransactionsStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -70,11 +70,11 @@ const fetchTransactionsSuccess = (state, action) => {
     });
 };
 
-const fetchTransactionsFail = (state, action) => {
+const fetchTransactionsFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchTransactionStart = (state, action) => {
+const fetchTransactionStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -85,7 +85,7 @@ const fetchTransactionSuccess = (state, action) => {
     });
 };
 
-const fetchTransactionFail = (state, action) => {
+const fetchTransactionFail = (state) => {
     return updateObject(state, { loading: false });
 };
 

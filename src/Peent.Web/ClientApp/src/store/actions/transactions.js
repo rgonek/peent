@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
 import { convertEmptyStringsToNulls } from "../../shared/utility";
-import * as _ from "../../shared/extensions";
+import "../../shared/extensions";
 
 export const addTransaction = (transactionData) => {
     return (dispatch) => {
@@ -45,7 +45,7 @@ export const updateTransaction = (id, transactionData) => {
         dispatch(updateTransactionStart());
         axios
             .put("/transactions/" + id, transactionData)
-            .then((response) => {
+            .then(() => {
                 dispatch(updateTransactionSuccess(transactionData));
             })
             .catch((error) => {
@@ -79,7 +79,7 @@ export const deleteTransaction = (id) => {
         dispatch(deleteTransactionStart());
         axios
             .delete("/transactions/" + id)
-            .then((response) => {
+            .then(() => {
                 dispatch(deleteTransactionSuccess());
             })
             .catch((error) => {

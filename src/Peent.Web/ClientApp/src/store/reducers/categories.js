@@ -11,20 +11,20 @@ const initialState = {
     submitted: false,
 };
 
-const addCategoryStart = (state, action) => {
+const addCategoryStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const addCategorySuccess = (state, action) => {
+const addCategorySuccess = (state) => {
     toast.success("Category added");
     return updateObject(state, { loading: false, submitted: true });
 };
 
-const addCategoryFail = (state, action) => {
+const addCategoryFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const updateCategoryStart = (state, action) => {
+const updateCategoryStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
@@ -37,15 +37,15 @@ const updateCategorySuccess = (state, action) => {
     });
 };
 
-const updateCategoryFail = (state, action) => {
+const updateCategoryFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const deleteCategoryStart = (state, action) => {
+const deleteCategoryStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const deleteCategorySuccess = (state, action) => {
+const deleteCategorySuccess = (state) => {
     toast.success("Category deleted");
     return updateObject(state, {
         loading: false,
@@ -53,11 +53,11 @@ const deleteCategorySuccess = (state, action) => {
     });
 };
 
-const deleteCategoryFail = (state, action) => {
+const deleteCategoryFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchCategoriesStart = (state, action) => {
+const fetchCategoriesStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -70,11 +70,11 @@ const fetchCategoriesSuccess = (state, action) => {
     });
 };
 
-const fetchCategoriesFail = (state, action) => {
+const fetchCategoriesFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchCategoriesOptionsStart = (state, action) => {
+const fetchCategoriesOptionsStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -87,11 +87,11 @@ const fetchCategoriesOptionsSuccess = (state, action) => {
     });
 };
 
-const fetchCategoriesOptionsFail = (state, action) => {
+const fetchCategoriesOptionsFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchCategoryStart = (state, action) => {
+const fetchCategoryStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -102,7 +102,7 @@ const fetchCategorySuccess = (state, action) => {
     });
 };
 
-const fetchCategoryFail = (state, action) => {
+const fetchCategoryFail = (state) => {
     return updateObject(state, { loading: false });
 };
 

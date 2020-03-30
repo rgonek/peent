@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 
-export function defaultColumnFilter({ column: { filterValue, preFilteredRows, setFilter } }) {
+export function defaultColumnFilter({ column: { filterValue, setFilter } }) {
     return (
         <Form.Control
             type="text"

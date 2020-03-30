@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
 import { convertEmptyStringsToNulls } from "../../shared/utility";
-import * as _ from "../../shared/extensions";
+import "../../shared/extensions";
 
 export const addAccount = (accountData) => {
     return (dispatch) => {
@@ -45,7 +45,7 @@ export const updateAccount = (id, accountData) => {
         dispatch(updateAccountStart());
         axios
             .put("/accounts/" + id, accountData)
-            .then((response) => {
+            .then(() => {
                 dispatch(updateAccountSuccess(accountData));
             })
             .catch((error) => {
@@ -79,7 +79,7 @@ export const deleteAccount = (id) => {
         dispatch(deleteAccountStart());
         axios
             .delete("/accounts/" + id)
-            .then((response) => {
+            .then(() => {
                 dispatch(deleteAccountSuccess());
             })
             .catch((error) => {

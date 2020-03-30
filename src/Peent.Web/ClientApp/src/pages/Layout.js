@@ -16,10 +16,7 @@ function Layout(props: Props) {
             <Container fluid="true">
                 <Row>
                     <Navigation />
-                    <main
-                        role="main"
-                        className="col-md-9 ml-sm-auto col-lg-10 px-4"
-                    >
+                    <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                         {props.children}
                     </main>
                 </Row>

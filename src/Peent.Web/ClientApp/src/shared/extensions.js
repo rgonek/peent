@@ -44,7 +44,7 @@ Array.prototype.toFilterModel = function () {
 };
 
 Array.prototype.toSortModel = function () {
-    return this.map((item, index) => {
+    return this.map((item) => {
         return {
             field: item.id,
             direction: item.desc

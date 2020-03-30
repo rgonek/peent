@@ -6,7 +6,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import { ButtonToolbar, Button } from "react-bootstrap";
 import Table from "../../components/UI/Table/Table";
 import { useHistory } from "react-router-dom";
-import Card from "react-bootstrap/Card";
 
 function Transactions(props) {
     let history = useHistory();
@@ -108,9 +107,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetchTransactions: (pageIndex, pageSize, sortBy, filters) =>
-            dispatch(
-                actions.fetchTransactions(pageIndex, pageSize, sortBy, filters)
-            ),
+            dispatch(actions.fetchTransactions(pageIndex, pageSize, sortBy, filters)),
     };
 };
 

@@ -5,12 +5,12 @@ import ContentHeader from "../../components/ContentHeader";
 import { Form, Button, Col } from "react-bootstrap";
 import * as actions from "../../store/actions/index";
 import { Redirect } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Select from "../../components/UI/Select/Select";
 import DateTimePicker from "../../components/UI/DateTimePicker/DateTimePicker";
 import NumberInput from "../../components/UI/NumberInput/NumberInput";
 import { AccountType, TransactionType } from "../../shared/constants";
-import * as _ from "../../shared/extensions";
+import "../../shared/extensions";
 
 function TransactionsNew(props) {
     const formSchema = yup.object({
@@ -32,7 +32,7 @@ function TransactionsNew(props) {
     const onAccountsInputChange = (inputValue) => {
         if (!props.allAccountsLoaded) props.onFetchAccountsOptions(inputValue);
     };
-    const { register, control, setValue, handleSubmit, errors } = useForm({
+    const { register, control, handleSubmit, errors } = useForm({
         validationSchema: formSchema,
         defaultValues: {
             title: "",
@@ -55,10 +55,10 @@ function TransactionsNew(props) {
         onAccountsInputChange();
     }, []);
 
-    const handleSourceAccountChange = (value, action) => {
+    const handleSourceAccountChange = (value) => {
         setSourceAccountType(props.accounts.find((x) => x.id === value?.value)?.type);
     };
-    const handleDestinationAccountChange = (value, action) => {
+    const handleDestinationAccountChange = (value) => {
         setDestinationAccountType(props.accounts.find((x) => x.id === value?.value)?.type);
     };
 

@@ -11,20 +11,20 @@ const initialState = {
     submitted: false,
 };
 
-const addAccountStart = (state, action) => {
+const addAccountStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const addAccountSuccess = (state, action) => {
+const addAccountSuccess = (state) => {
     toast.success("Account added");
     return updateObject(state, { loading: false, submitted: true });
 };
 
-const addAccountFail = (state, action) => {
+const addAccountFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const updateAccountStart = (state, action) => {
+const updateAccountStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
@@ -37,15 +37,15 @@ const updateAccountSuccess = (state, action) => {
     });
 };
 
-const updateAccountFail = (state, action) => {
+const updateAccountFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const deleteAccountStart = (state, action) => {
+const deleteAccountStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
-const deleteAccountSuccess = (state, action) => {
+const deleteAccountSuccess = (state) => {
     toast.success("Account deleted");
     return updateObject(state, {
         loading: false,
@@ -53,11 +53,11 @@ const deleteAccountSuccess = (state, action) => {
     });
 };
 
-const deleteAccountFail = (state, action) => {
+const deleteAccountFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchAccountsStart = (state, action) => {
+const fetchAccountsStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -70,11 +70,11 @@ const fetchAccountsSuccess = (state, action) => {
     });
 };
 
-const fetchAccountsFail = (state, action) => {
+const fetchAccountsFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchAccountsOptionsStart = (state, action) => {
+const fetchAccountsOptionsStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -87,11 +87,11 @@ const fetchAccountsOptionsSuccess = (state, action) => {
     });
 };
 
-const fetchAccountsOptionsFail = (state, action) => {
+const fetchAccountsOptionsFail = (state) => {
     return updateObject(state, { loading: false });
 };
 
-const fetchAccountStart = (state, action) => {
+const fetchAccountStart = (state) => {
     return updateObject(state, { loading: true, submitted: false });
 };
 
@@ -102,7 +102,7 @@ const fetchAccountSuccess = (state, action) => {
     });
 };
 
-const fetchAccountFail = (state, action) => {
+const fetchAccountFail = (state) => {
     return updateObject(state, { loading: false });
 };
 

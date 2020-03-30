@@ -24,25 +24,6 @@ const errorResponseHandler = (error) => {
     return Promise.reject(error);
 };
 
-const buildMessage = (error) => {
-    if (error.response) {
-        if (error.response.data.errors) {
-            let message = error.response.data.title;
-            Object.keys(error.response.data.errors).map((key) => {
-                console.log(key);
-                console.log(error.response.data.errors[key]);
-                error.response.data.errors[key].forEach((element) => {
-                    message += " " + element;
-                });
-            });
-            return message;
-        }
-        return error.response.data;
-    }
-
-    return error.message;
-};
-
 axios.interceptors.response.use((response) => response, errorResponseHandler);
 
 export default errorResponseHandler;

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import Flatpickr from "react-flatpickr";
-import { Controller } from "react-hook-form";
 import "flatpickr/dist/themes/material_blue.css";
 import "./DateTimePicker.css";
 
@@ -15,12 +14,7 @@ function DateTimePicker({
     onChange,
     ...restProps
 }) {
-    const {
-        defaultValuesRef,
-        setValue,
-        register,
-        mode: { isOnSubmit, isOnBlur, isOnChange },
-    } = control;
+    const { defaultValuesRef, setValue, register } = control;
 
     const value = defaultValue ? defaultValue : defaultValuesRef.current[name];
     const [flatpickr, setFlatpickr] = useState(null);
@@ -33,7 +27,7 @@ function DateTimePicker({
         setValue(name, dateStr, true);
         if (onChange) onChange(selectedDates, dateStr, instance);
     };
-    const handleCalendarClose = (selectedDates, dateStr, instance) => {
+    const handleCalendarClose = (selectedDates, dateStr) => {
         flatpickr.setDate(dateStr, true);
     };
 
@@ -48,7 +42,7 @@ function DateTimePicker({
     const groupClassNames = ["date-time-picker", isInvalidClassName, className].join(" ");
     const inputClassNames = [isInvalidClassName].join(" ");
 
-    const inputRender = ({ defaultValue, value, ...props }, ref) => {
+    const inputRender = ({ defaultValue, value }, ref) => {
         return (
             <InputGroup className={groupClassNames}>
                 <Form.Control
@@ -57,6 +51,7 @@ function DateTimePicker({
                     defaultValue={defaultValue}
                     className={inputClassNames}
                     ref={ref}
+                    {...restProps}
                 />
                 <InputGroup.Append>
                     <Button variant="outline-primary" onClick={handleInputButtonClick}>

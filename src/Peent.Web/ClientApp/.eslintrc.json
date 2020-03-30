@@ -3,6 +3,7 @@
         "browser": true,
         "es6": true
     },
+    "parser": "babel-eslint",
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
@@ -11,18 +12,19 @@
     "plugins": ["react", "prettier"],
     "parserOptions": {
         "ecmaVersion": 2018,
-        "sourceType": "module",
+        "sourceType": "module"
     },
     "rules": {
         "prettier/prettier": [
             "error",
             {
-                "printWidth": 80,
+                "printWidth": 100,
                 "trailingComma": "es5",
-                "semi": false,
-                "jsxSingleQuote": true,
-                "singleQuote": true,
-                "useTabs": true
+                "semi": true,
+                "jsxSingleQuote": false,
+                "singleQuote": false,
+                "useTabs": false,
+                "tabWidth": 4
             }
         ]
     }

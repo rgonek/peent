@@ -6,13 +6,12 @@ import Spinner from "../Spinner/Spinner";
 import Pagination from "../Pagination/Pagination";
 import { defaultColumnFilter } from "./Filters";
 import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FaSearch } from "react-icons/fa";
 import "./Table.css";
-import * as _ from "../../../shared/extensions";
+import "../../../shared/extensions";
 import * as constants from "../../../shared/constants";
 
 function Table({
@@ -151,7 +150,7 @@ function Table({
                 <BootstrapTable striped bordered hover {...getTableProps()}>
                     <thead>{headers}</thead>
                     <tbody {...getTableBodyProps()}>
-                        {page.map((row, i) => {
+                        {page.map((row) => {
                             prepareRow(row);
                             let rowProps = null;
                             if (onRowClick) {

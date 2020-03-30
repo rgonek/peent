@@ -8,6 +8,7 @@ function Select({
     isInvalid,
     defaultValue,
     onChange,
+    onBlur,
     isMulti = false,
     className,
     isClearable = true,
@@ -17,8 +18,8 @@ function Select({
     const {
         setValue,
         register,
-        mode: { isOnSubmit, isOnBlur, isOnChange },
-        reValidateMode: { isReValidateOnBlur, isReValidateOnSubmit },
+        mode: { isOnBlur },
+        reValidateMode: { isReValidateOnBlur },
     } = control;
 
     const [stateValue, setStateValue] = useState(defaultValue);
@@ -37,6 +38,7 @@ function Select({
     const handleBlur = (e) => {
         const shouldReValidateOnBlur = isOnBlur || isReValidateOnBlur;
         if (shouldReValidateOnBlur) setValue(name, stateValue, true);
+        if (onBlur) onBlur(e);
     };
 
     const classNames = ["react-select", isInvalid ? "is-invalid" : "", className].join(" ");

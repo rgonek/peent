@@ -1,13 +1,12 @@
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../../shared/utility";
-import toast from "../../services/toast";
 
 const initialState = {
     currencies: [],
     loading: false,
 };
 
-const fetchCurrenciesStart = (state, action) => {
+const fetchCurrenciesStart = (state) => {
     return updateObject(state, { loading: true });
 };
 
@@ -18,7 +17,7 @@ const fetchCurrenciesSuccess = (state, action) => {
     });
 };
 
-const fetchCurrenciesFail = (state, action) => {
+const fetchCurrenciesFail = (state) => {
     return updateObject(state, { loading: false });
 };
 

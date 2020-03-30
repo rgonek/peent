@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
 import { convertEmptyStringsToNulls } from "../../shared/utility";
-import * as _ from "../../shared/extensions";
+import "../../shared/extensions";
 
 export const addCategory = (categoryData) => {
     return (dispatch) => {
@@ -45,7 +45,7 @@ export const updateCategory = (id, categoryData) => {
         dispatch(updateCategoryStart());
         axios
             .put("/categories/" + id, categoryData)
-            .then((response) => {
+            .then(() => {
                 dispatch(updateCategorySuccess(categoryData));
             })
             .catch((error) => {
@@ -79,7 +79,7 @@ export const deleteCategory = (id) => {
         dispatch(deleteCategoryStart());
         axios
             .delete("/categories/" + id)
-            .then((response) => {
+            .then(() => {
                 dispatch(deleteCategorySuccess());
             })
             .catch((error) => {

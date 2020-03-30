@@ -20,7 +20,7 @@ function AccountsEdit(props) {
         description: yup.string().max(2000),
         currencyId: yup.number().positive().required().integer(),
     });
-    const onSubmit = (data, actions) => {
+    const onSubmit = (data) => {
         props.onSubmitAccount(id, { ...data, currencyId: parseInt(data.currencyId) });
     };
 
