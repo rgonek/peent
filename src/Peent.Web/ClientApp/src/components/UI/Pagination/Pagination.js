@@ -1,8 +1,9 @@
 import React from "react";
 import { usePagination } from "react-pagination-hook";
 import BootstrapPagination from "react-bootstrap/Pagination";
+import PropTypes from "prop-types";
 
-function Pagination({ pageCount, onPageChange, pageIndex = 1, maxButtons = 5 }) {
+function Pagination({ pageCount, onPageChange, pageIndex, maxButtons }) {
     const { activePage, visiblePieces } = usePagination({
         initialPage: pageIndex,
         numberOfPages: pageCount,
@@ -46,5 +47,16 @@ function Pagination({ pageCount, onPageChange, pageIndex = 1, maxButtons = 5 }) 
         </BootstrapPagination>
     );
 }
+
+Pagination.propTypes = {
+    pageCount: PropTypes.number,
+    pageIndex: PropTypes.number,
+    maxButtons: PropTypes.number,
+    onPageChange: PropTypes.func,
+};
+Pagination.defaultProps = {
+    pageIndex: 1,
+    maxButtons: 5,
+};
 
 export default Pagination;

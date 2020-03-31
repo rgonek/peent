@@ -2,7 +2,10 @@ import axios from "../axios-peent";
 import toast from "./toast";
 
 const errorResponseHandler = (error) => {
-    if (error.config.hasOwnProperty("errorHandle") && error.config.errorHandle === false) {
+    if (
+        Object.prototype.hasOwnProperty.call(error.config, "errorHandle") &&
+        error.config.errorHandle === false
+    ) {
         return Promise.reject(error);
     }
 

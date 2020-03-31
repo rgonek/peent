@@ -7,11 +7,12 @@ import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function TagsEdit(props) {
+function TagsEdit({ tag, loading, onSubmitTag, onFetchTag }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchTag(id);
+        onFetchTag(id);
     }, [id]);
 
     const formSchema = yup.object({
@@ -25,14 +26,14 @@ function TagsEdit(props) {
             }),
     });
     const onSubmit = (data) => {
-        props.onSubmitTag(id, data);
+        onSubmitTag(id, data);
     };
 
     const { register, handleSubmit, errors } = useForm({
         validationSchema: formSchema,
     });
 
-    if (props.tag == null || props.loading) {
+    if (tag == null || loading) {
         return <Spinner />;
     }
 
@@ -47,7 +48,7 @@ function TagsEdit(props) {
                     <Form.Control
                         type="text"
                         name="name"
-                        defaultValue={props.tag.name}
+                        defaultValue={tag.name}
                         isInvalid={!!errors.name}
                         ref={register}
                     />
@@ -60,7 +61,7 @@ function TagsEdit(props) {
                     <Form.Control
                         type="text"
                         name="description"
-                        defaultValue={props.tag.description}
+                        defaultValue={tag.description}
                         isInvalid={!!errors.description}
                         ref={register}
                     />
@@ -73,7 +74,7 @@ function TagsEdit(props) {
                     <Form.Control
                         type="date"
                         name="date"
-                        defaultValue={props.tag.date}
+                        defaultValue={tag.date}
                         isInvalid={!!errors.date}
                         ref={register}
                     />
@@ -81,13 +82,20 @@ function TagsEdit(props) {
                         {errors.date && errors.date.message}
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" variant="primary" disabled={props.loading}>
+                <Button type="submit" variant="primary" disabled={loading}>
                     Submit
                 </Button>
             </Form>
         </div>
     );
 }
+
+TagsEdit.propTypes = {
+    tag: PropTypes.object,
+    loading: PropTypes.bool,
+    onSubmitTag: PropTypes.func,
+    onFetchTag: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

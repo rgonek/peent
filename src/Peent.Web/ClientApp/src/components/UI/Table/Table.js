@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FaSearch } from "react-icons/fa";
+import PropTypes from "prop-types";
 import "./Table.css";
 import "../../../shared/extensions";
 import * as constants from "../../../shared/constants";
@@ -117,12 +118,15 @@ function Table({
         );
     };
 
-    const headers = headerGroups.map((headerGroup) => [
-        <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => renderColumn(column))}
-        </tr>,
-        renderFilterRow(headerGroup),
-    ]);
+    const headers = headerGroups.map((headerGroup) => {
+        const { key, role, ...props } = headerGroup.getHeaderGroupProps();
+        return [
+            <tr key={key} role={role} {...props}>
+                {headerGroup.headers.map((column) => renderColumn(column))}
+            </tr>,
+            renderFilterRow(headerGroup),
+        ];
+    });
 
     return (
         <Card className="card-table">
@@ -152,19 +156,27 @@ function Table({
                     <tbody {...getTableBodyProps()}>
                         {page.map((row) => {
                             prepareRow(row);
-                            let rowProps = null;
+                            let customRowProps = null;
                             if (onRowClick) {
-                                rowProps = {
+                                customRowProps = {
                                     style: { cursor: "pointer" },
                                     onClick: () => onRowClick(row.original),
                                 };
                             }
 
+                            const { rowKey, rowRole, ...rowProps } = row.getRowProps(
+                                customRowProps
+                            );
                             return (
-                                <tr {...row.getRowProps()} {...rowProps}>
+                                <tr key={rowKey} role={rowRole} {...rowProps}>
                                     {row.cells.map((cell) => {
+                                        const {
+                                            cellKey,
+                                            cellRole,
+                                            ...cellProps
+                                        } = cell.getCellProps();
                                         return (
-                                            <td {...cell.getCellProps()}>
+                                            <td key={cellKey} role={cellRole} {...cellProps}>
                                                 {cell.value ? cell.render("Cell") : null}
                                             </td>
                                         );
@@ -214,5 +226,17 @@ function Table({
         </Card>
     );
 }
+
+Table.propTypes = {
+    title: PropTypes.string,
+    columns: PropTypes.arrayOf(PropTypes.object),
+    data: PropTypes.arrayOf(PropTypes.object),
+    fetchData: PropTypes.func,
+    loading: PropTypes.bool,
+    pageCount: PropTypes.number,
+    rowCount: PropTypes.number,
+    onRowClick: PropTypes.func,
+};
+Table.defaultProps = {};
 
 export default Table;

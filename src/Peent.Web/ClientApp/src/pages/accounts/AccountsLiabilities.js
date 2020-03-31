@@ -4,10 +4,11 @@ import * as actions from "../../store/actions/index";
 import Accounts from "./Accounts";
 import { AccountType } from "../../shared/constants";
 import "../../shared/extensions";
+import PropTypes from "prop-types";
 
-function AccountsRevenue(props) {
+function AccountsLiabilities({ accounts, loading, pageCount, rowCount, onFetchAccounts }) {
     const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        props.onFetchAccounts(
+        onFetchAccounts(
             pageIndex,
             pageSize,
             sortBy,
@@ -19,14 +20,22 @@ function AccountsRevenue(props) {
         <Accounts
             title="Liabilities accounts"
             url="/accounts/liabilities/"
-            loading={props.loading}
-            pageCount={props.pageCount}
-            rowCount={props.rowCount}
-            accounts={props.accounts}
+            loading={loading}
+            pageCount={pageCount}
+            rowCount={rowCount}
+            accounts={accounts}
             fetchData={fetchData}
         />
     );
 }
+
+AccountsLiabilities.propTypes = {
+    accounts: PropTypes.array,
+    loading: PropTypes.bool,
+    pageCount: PropTypes.number,
+    rowCount: PropTypes.number,
+    onFetchAccounts: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -44,4 +53,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountsRevenue);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountsLiabilities);

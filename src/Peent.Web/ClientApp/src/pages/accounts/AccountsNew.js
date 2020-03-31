@@ -5,6 +5,7 @@ import { Form, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
 function AccountsNew({ added, url, onSubmit, onFetchCurrencies, currencies, loading }) {
     useEffect(() => {
@@ -80,5 +81,14 @@ function AccountsNew({ added, url, onSubmit, onFetchCurrencies, currencies, load
         </div>
     );
 }
+
+AccountsNew.propTypes = {
+    added: PropTypes.bool,
+    url: PropTypes.string,
+    currencies: PropTypes.array,
+    loading: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    onFetchCurrencies: PropTypes.func,
+};
 
 export default AccountsNew;

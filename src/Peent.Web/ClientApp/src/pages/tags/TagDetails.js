@@ -4,14 +4,15 @@ import ContentHeader from "../../components/ContentHeader";
 import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import PropTypes from "prop-types";
 
-function TagDetails(props) {
+function TagDetails({ tag, loading, onFetchTag }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchTag(id);
+        onFetchTag(id);
     }, [id]);
 
-    if (props.tag == null || props.loading) {
+    if (tag == null || loading) {
         return <Spinner />;
     }
 
@@ -20,10 +21,16 @@ function TagDetails(props) {
             <ContentHeader>
                 <h1 className="h2">Tag details</h1>
             </ContentHeader>
-            {props.tag.name}
+            {tag.name}
         </div>
     );
 }
+
+TagDetails.propTypes = {
+    tag: PropTypes.bool,
+    loading: PropTypes.bool,
+    onFetchTag: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

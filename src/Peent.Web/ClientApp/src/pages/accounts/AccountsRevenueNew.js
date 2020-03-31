@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import AccountsNew from "./AccountsNew";
 import { AccountType } from "../../shared/constants";
+import PropTypes from "prop-types";
 
-function AccountsExpenseNew(props) {
+function AccountsRevenueNew({ added, loading, currencies, onSubmitAccount, onFetchCurrencies }) {
     const onSubmit = (data) => {
-        props.onSubmitAccount({
+        onSubmitAccount({
             ...data,
             type: AccountType.revenue,
             currencyId: parseInt(data.currencyId),
@@ -16,14 +17,22 @@ function AccountsExpenseNew(props) {
     return (
         <AccountsNew
             url="/accounts/revenue"
-            added={props.added}
+            added={added}
             onSubmit={onSubmit}
-            onFetchCurrencies={props.onFetchCurrencies}
-            currencies={props.currencies}
-            loading={props.loading}
+            onFetchCurrencies={onFetchCurrencies}
+            currencies={currencies}
+            loading={loading}
         />
     );
 }
+
+AccountsRevenueNew.propTypes = {
+    added: PropTypes.bool,
+    loading: PropTypes.bool,
+    currencies: PropTypes.array,
+    onSubmitAccount: PropTypes.func,
+    onFetchCurrencies: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -40,4 +49,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountsExpenseNew);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountsRevenueNew);

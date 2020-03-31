@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactSelect from "react-select";
+import PropTypes from "prop-types";
 import "./Select.css";
 
 function Select({
@@ -9,11 +10,11 @@ function Select({
     defaultValue,
     onChange,
     onBlur,
-    isMulti = false,
+    isMulti,
     className,
-    isClearable = true,
-    isSearchable = true,
-    ...restProps
+    isClearable,
+    isSearchable,
+    ...props
 }) {
     const {
         setValue,
@@ -45,6 +46,7 @@ function Select({
 
     return (
         <ReactSelect
+            {...props}
             name={name}
             isMulti={isMulti}
             isClearable={isClearable}
@@ -52,9 +54,26 @@ function Select({
             onChange={handleChange}
             className={classNames}
             onBlur={handleBlur}
-            {...restProps}
         />
     );
 }
+
+Select.propTypes = {
+    control: PropTypes.object.isRequired,
+    name: PropTypes.string,
+    isInvalid: PropTypes.bool,
+    defaultValue: PropTypes.any,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func,
+    isMulti: PropTypes.bool,
+    className: PropTypes.string,
+    isClearable: PropTypes.bool,
+    isSearchable: PropTypes.bool,
+};
+Select.defaultProps = {
+    isMulti: false,
+    isClearable: true,
+    isSearchable: true,
+};
 
 export default Select;

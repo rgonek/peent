@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import PropTypes from "prop-types";
 
 export function defaultColumnFilter({ column: { filterValue, setFilter } }) {
     return (
@@ -14,3 +15,10 @@ export function defaultColumnFilter({ column: { filterValue, setFilter } }) {
         />
     );
 }
+
+defaultColumnFilter.propTypes = {
+    column: PropTypes.shape({
+        filterValue: PropTypes.string,
+        setFilter: PropTypes.func,
+    }),
+};

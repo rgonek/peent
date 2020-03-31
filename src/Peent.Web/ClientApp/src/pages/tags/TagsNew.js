@@ -6,8 +6,9 @@ import { Form, Button } from "react-bootstrap";
 import * as actions from "../../store/actions/index";
 import { Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function TagsNew(props) {
+function TagsNew({ loading, added, onSubmitTag }) {
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
         description: yup.string().max(2000),
@@ -23,10 +24,10 @@ function TagsNew(props) {
         defaultValues: { name: "", description: "", date: "" },
     });
     const onSubmit = (data) => {
-        props.onSubmitTag(data);
+        onSubmitTag(data);
     };
 
-    if (props.added) return <Redirect to="/tags" />;
+    if (added) return <Redirect to="/tags" />;
 
     return (
         <div>
@@ -70,13 +71,19 @@ function TagsNew(props) {
                         {errors.date && errors.date.message}
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" variant="primary" disabled={props.loading}>
+                <Button type="submit" variant="primary" disabled={loading}>
                     Submit
                 </Button>
             </Form>
         </div>
     );
 }
+
+TagsNew.propTypes = {
+    loading: PropTypes.bool,
+    added: PropTypes.bool,
+    onSubmitTag: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

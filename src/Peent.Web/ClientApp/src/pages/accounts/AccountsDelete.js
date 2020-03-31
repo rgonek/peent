@@ -6,24 +6,25 @@ import * as actions from "../../store/actions/index";
 import { Redirect, useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function AccountsDelete(props) {
+function AccountsDelete({ account, loading, deleted, onDeleteAccount, onFetchAccount }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchAccount(id);
+        onFetchAccount(id);
     }, [id]);
 
     const onSubmit = (data) => {
-        props.onDeleteAccount(id, data);
+        onDeleteAccount(id, data);
     };
 
     const { handleSubmit } = useForm();
 
-    if (props.account == null || props.loading) {
+    if (account == null || loading) {
         return <Spinner />;
     }
 
-    if (props.deleted) return <Redirect to="/accounts" />;
+    if (deleted) return <Redirect to="/accounts" />;
 
     return (
         <div>
@@ -31,13 +32,21 @@ function AccountsDelete(props) {
                 <h1 className="h2">Delete Account</h1>
             </ContentHeader>
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-                <Button type="submit" variant="danger" disabled={props.loading}>
+                <Button type="submit" variant="danger" disabled={loading}>
                     Delete
                 </Button>
             </Form>
         </div>
     );
 }
+
+AccountsDelete.propTypes = {
+    account: PropTypes.object,
+    loading: PropTypes.bool,
+    deleted: PropTypes.bool,
+    onDeleteAccount: PropTypes.func,
+    onFetchAccount: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

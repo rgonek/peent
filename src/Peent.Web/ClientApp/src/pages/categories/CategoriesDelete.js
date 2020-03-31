@@ -6,24 +6,25 @@ import * as actions from "../../store/actions/index";
 import { Redirect, useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function CategoriesDelete(props) {
+function CategoriesDelete({ category, loading, deleted, onDeleteCategory, onFetchCategory }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchCategory(id);
+        onFetchCategory(id);
     }, [id]);
 
     const onSubmit = (data) => {
-        props.onDeleteCategory(id, data);
+        onDeleteCategory(id, data);
     };
 
     const { handleSubmit } = useForm();
 
-    if (props.category == null || props.loading) {
+    if (category == null || loading) {
         return <Spinner />;
     }
 
-    if (props.deleted) return <Redirect to="/categories" />;
+    if (deleted) return <Redirect to="/categories" />;
 
     return (
         <div>
@@ -31,13 +32,21 @@ function CategoriesDelete(props) {
                 <h1 className="h2">Delete Category</h1>
             </ContentHeader>
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-                <Button type="submit" variant="danger" disabled={props.loading}>
+                <Button type="submit" variant="danger" disabled={loading}>
                     Delete
                 </Button>
             </Form>
         </div>
     );
 }
+
+CategoriesDelete.propTypes = {
+    category: PropTypes.object,
+    loading: PropTypes.bool,
+    deleted: PropTypes.bool,
+    onDeleteCategory: PropTypes.func,
+    onFetchCategory: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

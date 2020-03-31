@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import Math from "math-expression-evaluator";
+import PropTypes from "prop-types";
 
 const NumberInput = ({
     control,
     name,
     defaultValue,
-    allowDotAndCommaAsDecimalSeparator = true,
+    allowDotAndCommaAsDecimalSeparator,
     onChange,
     onBlur,
-    ...restProps
+    ...props
 }) => {
     const { defaultValuesRef, setValue, register } = control;
 
@@ -49,14 +50,26 @@ const NumberInput = ({
 
     return (
         <Form.Control
+            {...props}
             type="text"
             name={name}
             value={stateValue}
             onChange={handleChange}
             onBlur={handleBlur}
-            {...restProps}
         />
     );
+};
+
+NumberInput.propTypes = {
+    control: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+    defaultValue: PropTypes.number,
+    allowDotAndCommaAsDecimalSeparator: PropTypes.bool,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func,
+};
+NumberInput.defaultProps = {
+    allowDotAndCommaAsDecimalSeparator: true,
 };
 
 export default NumberInput;

@@ -6,8 +6,9 @@ import { LinkContainer } from "react-router-bootstrap";
 import { ButtonToolbar, Button } from "react-bootstrap";
 import Table from "../../components/UI/Table/Table";
 import { useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 
-function Tags(props) {
+function Tags({ tags, loading, pageCount, rowCount, onFetchTags }) {
     let history = useHistory();
     const onEditClick = (e, id) => {
         history.push("tags/" + id);
@@ -17,6 +18,18 @@ function Tags(props) {
         history.push("tags/" + id + "/delete");
         e.stopPropagation();
     };
+    const actionsCell = useMemo(({ cell: { value } }) => {
+        return (
+            <>
+                <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
+                    Edit
+                </Button>{" "}
+                <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
+                    Delete
+                </Button>
+            </>
+        );
+    });
     const columns = useMemo(
         () => [
             {
@@ -25,26 +38,7 @@ function Tags(props) {
                 id: "_actions",
                 disableSortBy: true,
                 disableFilters: true,
-                Cell: ({ cell: { value } }) => {
-                    return (
-                        <>
-                            <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={(e) => onEditClick(e, value)}
-                            >
-                                Edit
-                            </Button>{" "}
-                            <Button
-                                variant="danger"
-                                size="sm"
-                                onClick={(e) => onDeleteClick(e, value)}
-                            >
-                                Delete
-                            </Button>
-                        </>
-                    );
-                },
+                Cell: actionsCell,
             },
             {
                 Header: "Name",
@@ -64,7 +58,7 @@ function Tags(props) {
     );
 
     const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        props.onFetchTags(pageIndex, pageSize, sortBy, filters);
+        onFetchTags(pageIndex, pageSize, sortBy, filters);
     }, []);
 
     return (
@@ -82,11 +76,11 @@ function Tags(props) {
             <Table
                 title="Tags"
                 columns={columns}
-                data={props.tags}
+                data={tags}
                 fetchData={fetchData}
-                loading={props.loading}
-                pageCount={props.pageCount}
-                rowCount={props.rowCount}
+                loading={loading}
+                pageCount={pageCount}
+                rowCount={rowCount}
                 onRowClick={(data) => {
                     history.push("tags/" + data.id + "/details");
                 }}
@@ -94,6 +88,14 @@ function Tags(props) {
         </div>
     );
 }
+
+Tags.propTypes = {
+    tags: PropTypes.array,
+    loading: PropTypes.bool,
+    pageCount: PropTypes.number,
+    rowCount: PropTypes.number,
+    onFetchTags: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

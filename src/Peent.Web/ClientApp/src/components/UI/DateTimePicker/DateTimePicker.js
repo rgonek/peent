@@ -2,18 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import Flatpickr from "react-flatpickr";
+import PropTypes from "prop-types";
 import "flatpickr/dist/themes/material_blue.css";
 import "./DateTimePicker.css";
 
-function DateTimePicker({
-    control,
-    name,
-    isInvalid,
-    defaultValue,
-    className,
-    onChange,
-    ...restProps
-}) {
+function DateTimePicker({ control, name, isInvalid, defaultValue, className, onChange, ...props }) {
     const { defaultValuesRef, setValue, register } = control;
 
     const value = defaultValue ? defaultValue : defaultValuesRef.current[name];
@@ -42,16 +35,16 @@ function DateTimePicker({
     const groupClassNames = ["date-time-picker", isInvalidClassName, className].join(" ");
     const inputClassNames = [isInvalidClassName].join(" ");
 
-    const inputRender = ({ defaultValue, value }, ref) => {
+    const inputRender = ({ defaultValue, value, ...props }, ref) => {
         return (
             <InputGroup className={groupClassNames}>
                 <Form.Control
+                    {...props}
                     name={name}
                     value={value}
                     defaultValue={defaultValue}
                     className={inputClassNames}
                     ref={ref}
-                    {...restProps}
                 />
                 <InputGroup.Append>
                     <Button variant="outline-primary" onClick={handleInputButtonClick}>
@@ -60,6 +53,10 @@ function DateTimePicker({
                 </InputGroup.Append>
             </InputGroup>
         );
+    };
+    inputRender.propTypes = {
+        defaultValue: PropTypes.string,
+        value: PropTypes.string,
     };
 
     const options = {
@@ -72,6 +69,7 @@ function DateTimePicker({
 
     return (
         <Flatpickr
+            {...props}
             name={name}
             defaultValue={value}
             render={inputRender}
@@ -81,5 +79,14 @@ function DateTimePicker({
         />
     );
 }
+
+DateTimePicker.propTypes = {
+    control: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+    isInvalid: PropTypes.bool.isRequired,
+    defaultValue: PropTypes.string,
+    className: PropTypes.string,
+    onChange: PropTypes.func,
+};
 
 export default DateTimePicker;

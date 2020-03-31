@@ -4,14 +4,15 @@ import ContentHeader from "../../components/ContentHeader";
 import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import PropTypes from "prop-types";
 
-function CategoryDetails(props) {
+function CategoryDetails({ category, loading, onFetchCategory }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchCategory(id);
+        onFetchCategory(id);
     }, [id]);
 
-    if (props.category == null || props.loading) {
+    if (category == null || loading) {
         return <Spinner />;
     }
 
@@ -20,10 +21,16 @@ function CategoryDetails(props) {
             <ContentHeader>
                 <h1 className="h2">Category details</h1>
             </ContentHeader>
-            {props.category.name}
+            {category.name}
         </div>
     );
 }
+
+CategoryDetails.propTypes = {
+    category: PropTypes.bool,
+    loading: PropTypes.bool,
+    onFetchCategory: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

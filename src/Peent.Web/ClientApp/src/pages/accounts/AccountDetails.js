@@ -4,14 +4,15 @@ import ContentHeader from "../../components/ContentHeader";
 import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import PropTypes from "prop-types";
 
-function AccountDetails(props) {
+function AccountDetails({ account, loading, onFetchAccount }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchAccount(id);
+        onFetchAccount(id);
     }, [id]);
 
-    if (props.account == null || props.loading) {
+    if (account == null || loading) {
         return <Spinner />;
     }
 
@@ -20,10 +21,16 @@ function AccountDetails(props) {
             <ContentHeader>
                 <h1 className="h2">Account details</h1>
             </ContentHeader>
-            {props.account.name}
+            {account.name}
         </div>
     );
 }
+
+AccountDetails.propTypes = {
+    account: PropTypes.object,
+    loading: PropTypes.bool,
+    onFetchAccount: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

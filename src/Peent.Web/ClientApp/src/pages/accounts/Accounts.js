@@ -4,6 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { ButtonToolbar, Button } from "react-bootstrap";
 import Table from "../../components/UI/Table/Table";
 import { useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function Accounts({ title, url, accounts, pageCount, rowCount, loading, fetchData }) {
     let history = useHistory();
@@ -15,6 +16,18 @@ function Accounts({ title, url, accounts, pageCount, rowCount, loading, fetchDat
         history.push("/accounts/" + id + "/delete");
         e.stopPropagation();
     };
+    const actionsCell = useMemo(({ cell: { value } }) => {
+        return (
+            <>
+                <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
+                    Edit
+                </Button>{" "}
+                <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
+                    Delete
+                </Button>
+            </>
+        );
+    });
     const columns = useMemo(
         () => [
             {
@@ -23,26 +36,7 @@ function Accounts({ title, url, accounts, pageCount, rowCount, loading, fetchDat
                 id: "_actions",
                 disableSortBy: true,
                 disableFilters: true,
-                Cell: ({ cell: { value } }) => {
-                    return (
-                        <>
-                            <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={(e) => onEditClick(e, value)}
-                            >
-                                Edit
-                            </Button>{" "}
-                            <Button
-                                variant="danger"
-                                size="sm"
-                                onClick={(e) => onDeleteClick(e, value)}
-                            >
-                                Delete
-                            </Button>
-                        </>
-                    );
-                },
+                Cell: actionsCell,
             },
             {
                 Header: "Name",
@@ -87,5 +81,15 @@ function Accounts({ title, url, accounts, pageCount, rowCount, loading, fetchDat
         </div>
     );
 }
+
+Accounts.propTypes = {
+    title: PropTypes.string,
+    url: PropTypes.string,
+    accounts: PropTypes.array,
+    pageCount: PropTypes.number,
+    rowCount: PropTypes.number,
+    loading: PropTypes.bool,
+    fetchData: PropTypes.func,
+};
 
 export default Accounts;

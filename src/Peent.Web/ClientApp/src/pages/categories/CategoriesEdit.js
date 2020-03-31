@@ -7,11 +7,12 @@ import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function CategoriesEdit(props) {
+function CategoriesEdit({ category, loading, onSubmitCategory, onFetchCategory }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchCategory(id);
+        onFetchCategory(id);
     }, [id]);
 
     const formSchema = yup.object({
@@ -19,14 +20,14 @@ function CategoriesEdit(props) {
         description: yup.string().max(2000),
     });
     const onSubmit = (data) => {
-        props.onSubmitCategory(id, data);
+        onSubmitCategory(id, data);
     };
 
     const { register, handleSubmit, errors } = useForm({
         validationSchema: formSchema,
     });
 
-    if (props.category == null || props.loading) {
+    if (category == null || loading) {
         return <Spinner />;
     }
 
@@ -41,7 +42,7 @@ function CategoriesEdit(props) {
                     <Form.Control
                         type="text"
                         name="name"
-                        defaultValue={props.category.name}
+                        defaultValue={category.name}
                         isInvalid={!!errors.name}
                         ref={register}
                     />
@@ -54,7 +55,7 @@ function CategoriesEdit(props) {
                     <Form.Control
                         type="text"
                         name="description"
-                        defaultValue={props.category.description}
+                        defaultValue={category.description}
                         isInvalid={!!errors.description}
                         ref={register}
                     />
@@ -62,13 +63,20 @@ function CategoriesEdit(props) {
                         {errors.description && errors.description.message}
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" variant="primary" disabled={props.loading}>
+                <Button type="submit" variant="primary" disabled={loading}>
                     Submit
                 </Button>
             </Form>
         </div>
     );
 }
+
+CategoriesEdit.propTypes = {
+    category: PropTypes.object,
+    loading: PropTypes.bool,
+    onSubmitCategory: PropTypes.func,
+    onFetchCategory: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

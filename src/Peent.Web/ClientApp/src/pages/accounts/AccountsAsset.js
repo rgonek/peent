@@ -4,29 +4,33 @@ import * as actions from "../../store/actions/index";
 import Accounts from "./Accounts";
 import { AccountType } from "../../shared/constants";
 import "../../shared/extensions";
+import PropTypes from "prop-types";
 
-function AccountsRevenue(props) {
+function AccountsRevenue({ accounts, loading, pageCount, rowCount, onFetchAccounts }) {
     const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        props.onFetchAccounts(
-            pageIndex,
-            pageSize,
-            sortBy,
-            filters.addFilter("type", AccountType.asset)
-        );
+        onFetchAccounts(pageIndex, pageSize, sortBy, filters.addFilter("type", AccountType.asset));
     }, []);
 
     return (
         <Accounts
             title="Asset accounts"
             url="/accounts/asset/"
-            loading={props.loading}
-            pageCount={props.pageCount}
-            rowCount={props.rowCount}
-            accounts={props.accounts}
+            loading={loading}
+            pageCount={pageCount}
+            rowCount={rowCount}
+            accounts={accounts}
             fetchData={fetchData}
         />
     );
 }
+
+AccountsRevenue.propTypes = {
+    accounts: PropTypes.array,
+    loading: PropTypes.bool,
+    pageCount: PropTypes.number,
+    rowCount: PropTypes.number,
+    onFetchAccounts: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

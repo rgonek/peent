@@ -6,24 +6,25 @@ import * as actions from "../../store/actions/index";
 import { Redirect, useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function TagsDelete(props) {
+function TagsDelete({ tag, loading, deleted, onDeleteTag, onFetchTag }) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchTag(id);
+        onFetchTag(id);
     }, [id]);
 
     const onSubmit = (data) => {
-        props.onDeleteTag(id, data);
+        onDeleteTag(id, data);
     };
 
     const { handleSubmit } = useForm();
 
-    if (props.tag == null || props.loading) {
+    if (tag == null || loading) {
         return <Spinner />;
     }
 
-    if (props.deleted) return <Redirect to="/tags" />;
+    if (deleted) return <Redirect to="/tags" />;
 
     return (
         <div>
@@ -31,13 +32,21 @@ function TagsDelete(props) {
                 <h1 className="h2">Delete Tag</h1>
             </ContentHeader>
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-                <Button type="submit" variant="danger" disabled={props.loading}>
+                <Button type="submit" variant="danger" disabled={loading}>
                     Delete
                 </Button>
             </Form>
         </div>
     );
 }
+
+TagsDelete.propTypes = {
+    tag: PropTypes.object,
+    loading: PropTypes.bool,
+    deleted: PropTypes.bool,
+    onDeleteTag: PropTypes.func,
+    onFetchTag: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

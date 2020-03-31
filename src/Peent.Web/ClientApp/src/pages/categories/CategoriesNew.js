@@ -6,8 +6,9 @@ import { Form, Button } from "react-bootstrap";
 import * as actions from "../../store/actions/index";
 import { Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function CategoriesNew(props) {
+function CategoriesNew({ loading, added, onSubmitCategory }) {
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
         description: yup.string().max(2000),
@@ -17,10 +18,10 @@ function CategoriesNew(props) {
         defaultValues: { name: "", description: "" },
     });
     const onSubmit = (values) => {
-        props.onSubmitCategory(values);
+        onSubmitCategory(values);
     };
 
-    if (props.added) return <Redirect to="/categories" />;
+    if (added) return <Redirect to="/categories" />;
 
     return (
         <div>
@@ -52,7 +53,7 @@ function CategoriesNew(props) {
                         {errors.description && errors.description.message}
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" variant="primary" disabled={props.loading}>
+                <Button type="submit" variant="primary" disabled={loading}>
                     Submit
                 </Button>
             </Form>
@@ -60,9 +61,14 @@ function CategoriesNew(props) {
     );
 }
 
+CategoriesNew.propTypes = {
+    loading: PropTypes.bool,
+    added: PropTypes.bool,
+    onSubmitCategory: PropTypes.func,
+};
+
 const mapStateToProps = (state) => {
     return {
-        categories: state.category.categories,
         loading: state.category.loading,
         added: state.category.submitted,
     };

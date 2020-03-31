@@ -7,12 +7,20 @@ import * as actions from "../../store/actions/index";
 import { useParams } from "react-router-dom";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-function AccountsEdit(props) {
+function AccountsEdit({
+    account,
+    loading,
+    currencies,
+    onSubmitAccount,
+    onFetchAccount,
+    onFetchCurrencies,
+}) {
     const { id } = useParams();
     useEffect(() => {
-        props.onFetchAccount(id);
-        props.onFetchCurrencies();
+        onFetchAccount(id);
+        onFetchCurrencies();
     }, [id]);
 
     const formSchema = yup.object({
@@ -21,14 +29,14 @@ function AccountsEdit(props) {
         currencyId: yup.number().positive().required().integer(),
     });
     const onSubmit = (data) => {
-        props.onSubmitAccount(id, { ...data, currencyId: parseInt(data.currencyId) });
+        onSubmitAccount(id, { ...data, currencyId: parseInt(data.currencyId) });
     };
 
     const { register, handleSubmit, errors } = useForm({
         validationSchema: formSchema,
     });
 
-    if (props.account == null || props.currencies == null || props.loading) return <Spinner />;
+    if (account == null || currencies == null || loading) return <Spinner />;
 
     return (
         <div>
@@ -41,7 +49,7 @@ function AccountsEdit(props) {
                     <Form.Control
                         type="text"
                         name="name"
-                        defaultValue={props.account.name}
+                        defaultValue={account.name}
                         isInvalid={!!errors.name}
                         ref={register}
                     />
@@ -54,7 +62,7 @@ function AccountsEdit(props) {
                     <Form.Control
                         type="text"
                         name="description"
-                        defaultValue={props.account.description}
+                        defaultValue={account.description}
                         isInvalid={!!errors.description}
                         ref={register}
                     />
@@ -67,12 +75,12 @@ function AccountsEdit(props) {
                     <Form.Control
                         as="select"
                         name="currencyId"
-                        defaultValue={props.account.currencyId}
+                        defaultValue={account.currencyId}
                         isInvalid={!!errors.currencyId}
                         ref={register}
                     >
                         <option />
-                        {props.currencies.map((option) => (
+                        {currencies.map((option) => (
                             <option key={option.id} value={option.id}>
                                 {option.name} ({option.symbol})
                             </option>
@@ -82,13 +90,22 @@ function AccountsEdit(props) {
                         {errors.currencyId && errors.currencyId.message}
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Button type="submit" variant="primary" disabled={props.loading}>
+                <Button type="submit" variant="primary" disabled={loading}>
                     Submit
                 </Button>
             </Form>
         </div>
     );
 }
+
+AccountsEdit.propTypes = {
+    account: PropTypes.object,
+    loading: PropTypes.bool,
+    currencies: PropTypes.array,
+    onSubmitAccount: PropTypes.func,
+    onFetchAccount: PropTypes.func,
+    onFetchCurrencies: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {

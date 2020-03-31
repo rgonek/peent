@@ -10,9 +10,26 @@ import Select from "../../components/UI/Select/Select";
 import DateTimePicker from "../../components/UI/DateTimePicker/DateTimePicker";
 import NumberInput from "../../components/UI/NumberInput/NumberInput";
 import { AccountType, TransactionType } from "../../shared/constants";
+import PropTypes from "prop-types";
 import "../../shared/extensions";
 
-function TransactionsNew(props) {
+function TransactionsNew({
+    loading,
+    added,
+    categoriesLoading,
+    categories,
+    allCategoriesLoaded,
+    tagsLoading,
+    tags,
+    allTagsLoaded,
+    accountsLoading,
+    accounts,
+    allAccountsLoaded,
+    onSubmitTransaction,
+    onFetchCategoriesOptions,
+    onFetchTagsOptions,
+    onFetchAccountsOptions,
+}) {
     const formSchema = yup.object({
         title: yup.string().required().max(1000),
         description: yup.string().max(2000),
@@ -24,13 +41,13 @@ function TransactionsNew(props) {
         amount: yup.number().positive().required(),
     });
     const onCategoriesInputChange = (inputValue) => {
-        if (!props.allCategoriesLoaded) props.onFetchCategoriesOptions(inputValue);
+        if (!allCategoriesLoaded) onFetchCategoriesOptions(inputValue);
     };
     const onTagsInputChange = (inputValue) => {
-        if (!props.allTagsLoaded) props.onFetchTagsOptions(inputValue);
+        if (!allTagsLoaded) onFetchTagsOptions(inputValue);
     };
     const onAccountsInputChange = (inputValue) => {
-        if (!props.allAccountsLoaded) props.onFetchAccountsOptions(inputValue);
+        if (!allAccountsLoaded) onFetchAccountsOptions(inputValue);
     };
     const { register, control, handleSubmit, errors } = useForm({
         validationSchema: formSchema,
@@ -56,27 +73,27 @@ function TransactionsNew(props) {
     }, []);
 
     const handleSourceAccountChange = (value) => {
-        setSourceAccountType(props.accounts.find((x) => x.id === value?.value)?.type);
+        setSourceAccountType(accounts.find((x) => x.id === value?.value)?.type);
     };
     const handleDestinationAccountChange = (value) => {
-        setDestinationAccountType(props.accounts.find((x) => x.id === value?.value)?.type);
+        setDestinationAccountType(accounts.find((x) => x.id === value?.value)?.type);
     };
 
     const onSubmit = (data) => {
         console.log("submit");
         console.log(data);
-        //props.onSubmitTransaction(data);
+        if (data === null) onSubmitTransaction(data);
     };
 
-    const categoriesOptions = props.categories.toOptions(
+    const categoriesOptions = categories.toOptions(
         (x) => x.name,
         (x) => x.id
     );
-    const tagsOptions = props.tags.toOptions(
+    const tagsOptions = tags.toOptions(
         (x) => x.name,
         (x) => x.id
     );
-    const sourceAccountsOptions = filterSourceAccounts(props.accounts, destinationAccountType)
+    const sourceAccountsOptions = filterSourceAccounts(accounts, destinationAccountType)
         .groupBy((x) => x.type)
         .toList()
         .toOptions(
@@ -87,7 +104,7 @@ function TransactionsNew(props) {
                     (y) => y.id
                 )
         );
-    const destinationAccountsOptions = filterDestinationAccounts(props.accounts, sourceAccountType)
+    const destinationAccountsOptions = filterDestinationAccounts(accounts, sourceAccountType)
         .groupBy((x) => x.type)
         .toList()
         .toOptions(
@@ -101,7 +118,7 @@ function TransactionsNew(props) {
 
     const transactionType = getTransactionType(sourceAccountType, destinationAccountType);
 
-    if (props.added) return <Redirect to="/transactions" />;
+    if (added) return <Redirect to="/transactions" />;
 
     return (
         <div>
@@ -141,7 +158,7 @@ function TransactionsNew(props) {
                             options={sourceAccountsOptions}
                             onChange={handleSourceAccountChange}
                             onInputChange={onAccountsInputChange}
-                            isLoading={props.accountsLoading}
+                            isLoading={accountsLoading}
                             control={control}
                             placeholder="Select source account"
                         />
@@ -164,7 +181,7 @@ function TransactionsNew(props) {
                             options={destinationAccountsOptions}
                             onChange={handleDestinationAccountChange}
                             onInputChange={onAccountsInputChange}
-                            isLoading={props.accountsLoading}
+                            isLoading={accountsLoading}
                             control={control}
                             placeholder="Select destination account"
                         />
@@ -205,7 +222,7 @@ function TransactionsNew(props) {
                                 isInvalid={!!errors.categoryId}
                                 options={categoriesOptions}
                                 onInputChange={onCategoriesInputChange}
-                                isLoading={props.categoriesLoading}
+                                isLoading={categoriesLoading}
                                 control={control}
                                 placeholder="Select category"
                             />
@@ -222,7 +239,7 @@ function TransactionsNew(props) {
                                 options={tagsOptions}
                                 isMulti={true}
                                 onInputChange={onTagsInputChange}
-                                isLoading={props.tagsLoading}
+                                isLoading={tagsLoading}
                                 control={control}
                                 placeholder="Select tags"
                             />
@@ -233,13 +250,31 @@ function TransactionsNew(props) {
                     </Col>
                 </Form.Row>
 
-                <Button type="submit" variant="primary" disabled={props.loading}>
+                <Button type="submit" variant="primary" disabled={loading}>
                     Submit
                 </Button>
             </Form>
         </div>
     );
 }
+
+TransactionsNew.propTypes = {
+    loading: PropTypes.bool,
+    added: PropTypes.bool,
+    categoriesLoading: PropTypes.bool,
+    categories: PropTypes.array,
+    allCategoriesLoaded: PropTypes.bool,
+    tagsLoading: PropTypes.bool,
+    tags: PropTypes.array,
+    allTagsLoaded: PropTypes.bool,
+    accountsLoading: PropTypes.bool,
+    accounts: PropTypes.array,
+    allAccountsLoaded: PropTypes.bool,
+    onSubmitTransaction: PropTypes.func,
+    onFetchCategoriesOptions: PropTypes.func,
+    onFetchTagsOptions: PropTypes.func,
+    onFetchAccountsOptions: PropTypes.func,
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -290,9 +325,7 @@ const getTransactionType = (sourceAccountType, destinationAccountType) => {
             : TransactionType.withdrawal;
 
     if (sourceAccountType == AccountType.revenue) return TransactionType.deposit;
-
     if (sourceAccountType == AccountType.initialBalance) return TransactionType.openingBalance;
-
     if (sourceAccountType == AccountType.reconciliation) return TransactionType.reconciliation;
 
     return TransactionType.unknown;
