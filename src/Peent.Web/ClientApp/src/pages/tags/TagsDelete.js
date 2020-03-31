@@ -12,7 +12,7 @@ function TagsDelete({ tag, loading, deleted, onDeleteTag, onFetchTag }) {
     const { id } = useParams();
     useEffect(() => {
         onFetchTag(id);
-    }, [id]);
+    }, [id, onFetchTag]);
 
     const onSubmit = (data) => {
         onDeleteTag(id, data);

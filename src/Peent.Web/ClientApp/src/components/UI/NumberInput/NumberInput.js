@@ -21,7 +21,7 @@ const NumberInput = ({
 
     useEffect(() => {
         register({ name: name });
-    }, []);
+    });
 
     const handleChange = (e) => {
         setStateValue(e.target.value);

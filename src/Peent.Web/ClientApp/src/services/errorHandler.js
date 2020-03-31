@@ -12,7 +12,7 @@ const errorResponseHandler = (error) => {
     if (error.response) {
         if (error.response.data.errors) {
             toast.error(error.response.data.title);
-            Object.keys(error.response.data.errors).map((key) => {
+            Object.keys(error.response.data.errors).forEach((key) => {
                 error.response.data.errors[key].forEach((element) => {
                     toast.error(element);
                 });

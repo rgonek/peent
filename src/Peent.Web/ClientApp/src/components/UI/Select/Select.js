@@ -27,7 +27,7 @@ function Select({
 
     useEffect(() => {
         register({ name: name });
-    }, []);
+    });
 
     const handleChange = (value, action) => {
         const val = isMulti ? value?.map((v) => v.value) ?? [] : value?.value;

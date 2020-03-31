@@ -10,7 +10,7 @@ function CategoryDetails({ category, loading, onFetchCategory }) {
     const { id } = useParams();
     useEffect(() => {
         onFetchCategory(id);
-    }, [id]);
+    }, [id, onFetchCategory]);
 
     if (category == null || loading) {
         return <Spinner />;
@@ -27,7 +27,7 @@ function CategoryDetails({ category, loading, onFetchCategory }) {
 }
 
 CategoryDetails.propTypes = {
-    category: PropTypes.bool,
+    category: PropTypes.object,
     loading: PropTypes.bool,
     onFetchCategory: PropTypes.func,
 };

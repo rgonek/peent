@@ -10,7 +10,7 @@ function AccountDetails({ account, loading, onFetchAccount }) {
     const { id } = useParams();
     useEffect(() => {
         onFetchAccount(id);
-    }, [id]);
+    }, [id, onFetchAccount]);
 
     if (account == null || loading) {
         return <Spinner />;

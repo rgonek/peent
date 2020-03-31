@@ -10,28 +10,33 @@ import PropTypes from "prop-types";
 
 function Categories({ categories, loading, pageCount, rowCount, onFetchCategories }) {
     let history = useHistory();
-    const onEditClick = (e, id) => {
-        history.push("categories/" + id);
-        e.stopPropagation();
-    };
-    const onDeleteClick = (e, id) => {
-        history.push("categories/" + id + "/delete");
-        e.stopPropagation();
-    };
-    const actionsCell = useMemo(({ cell: { value } }) => {
-        return (
-            <>
-                <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
-                    Edit
-                </Button>{" "}
-                <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
-                    Delete
-                </Button>
-            </>
-        );
-    });
-    const columns = useMemo(
-        () => [
+    const columns = useMemo(() => {
+        const onEditClick = (e, id) => {
+            history.push("categories/" + id);
+            e.stopPropagation();
+        };
+        const onDeleteClick = (e, id) => {
+            history.push("categories/" + id + "/delete");
+            e.stopPropagation();
+        };
+        const actionsCell = ({ cell: { value } }) => {
+            return (
+                <>
+                    <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
+                        Edit
+                    </Button>{" "}
+                    <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
+                        Delete
+                    </Button>
+                </>
+            );
+        };
+        actionsCell.propTypes = {
+            cell: PropTypes.shape({
+                value: PropTypes.any,
+            }),
+        };
+        return [
             {
                 Header: "",
                 accessor: "id",
@@ -48,13 +53,15 @@ function Categories({ categories, loading, pageCount, rowCount, onFetchCategorie
                 Header: "Description",
                 accessor: "description",
             },
-        ],
-        []
-    );
+        ];
+    }, [history]);
 
-    const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        onFetchCategories(pageIndex, pageSize, sortBy, filters);
-    }, []);
+    const fetchData = useCallback(
+        (pageIndex, pageSize, sortBy, filters) => {
+            onFetchCategories(pageIndex, pageSize, sortBy, filters);
+        },
+        [onFetchCategories]
+    );
 
     return (
         <div>

@@ -70,7 +70,7 @@ function TransactionsNew({
         onCategoriesInputChange();
         onTagsInputChange();
         onAccountsInputChange();
-    }, []);
+    });
 
     const handleSourceAccountChange = (value) => {
         setSourceAccountType(accounts.find((x) => x.id === value?.value)?.type);
@@ -80,9 +80,7 @@ function TransactionsNew({
     };
 
     const onSubmit = (data) => {
-        console.log("submit");
-        console.log(data);
-        if (data === null) onSubmitTransaction(data);
+        onSubmitTransaction(data);
     };
 
     const categoriesOptions = categories.toOptions(
@@ -320,13 +318,13 @@ const filterDestinationAccounts = (accounts, sourceAccountType) => {
 
 const getTransactionType = (sourceAccountType, destinationAccountType) => {
     if (sourceAccountType === AccountType.asset)
-        return destinationAccountType == AccountType.asset
+        return destinationAccountType === AccountType.asset
             ? TransactionType.transfer
             : TransactionType.withdrawal;
 
-    if (sourceAccountType == AccountType.revenue) return TransactionType.deposit;
-    if (sourceAccountType == AccountType.initialBalance) return TransactionType.openingBalance;
-    if (sourceAccountType == AccountType.reconciliation) return TransactionType.reconciliation;
+    if (sourceAccountType === AccountType.revenue) return TransactionType.deposit;
+    if (sourceAccountType === AccountType.initialBalance) return TransactionType.openingBalance;
+    if (sourceAccountType === AccountType.reconciliation) return TransactionType.reconciliation;
 
     return TransactionType.unknown;
 };

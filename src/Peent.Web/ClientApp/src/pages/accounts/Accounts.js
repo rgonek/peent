@@ -8,28 +8,33 @@ import PropTypes from "prop-types";
 
 function Accounts({ title, url, accounts, pageCount, rowCount, loading, fetchData }) {
     let history = useHistory();
-    const onEditClick = (e, id) => {
-        history.push("/accounts/" + id);
-        e.stopPropagation();
-    };
-    const onDeleteClick = (e, id) => {
-        history.push("/accounts/" + id + "/delete");
-        e.stopPropagation();
-    };
-    const actionsCell = useMemo(({ cell: { value } }) => {
-        return (
-            <>
-                <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
-                    Edit
-                </Button>{" "}
-                <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
-                    Delete
-                </Button>
-            </>
-        );
-    });
-    const columns = useMemo(
-        () => [
+    const columns = useMemo(() => {
+        const onEditClick = (e, id) => {
+            history.push("/accounts/" + id);
+            e.stopPropagation();
+        };
+        const onDeleteClick = (e, id) => {
+            history.push("/accounts/" + id + "/delete");
+            e.stopPropagation();
+        };
+        const actionsCell = ({ cell: { value } }) => {
+            return (
+                <>
+                    <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
+                        Edit
+                    </Button>{" "}
+                    <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
+                        Delete
+                    </Button>
+                </>
+            );
+        };
+        actionsCell.propTypes = {
+            cell: PropTypes.shape({
+                value: PropTypes.any,
+            }),
+        };
+        return [
             {
                 Header: "",
                 accessor: "id",
@@ -50,9 +55,8 @@ function Accounts({ title, url, accounts, pageCount, rowCount, loading, fetchDat
                 Header: "Currency",
                 accessor: "currency.name",
             },
-        ],
-        []
-    );
+        ];
+    }, [history]);
 
     return (
         <div>

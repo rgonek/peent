@@ -14,7 +14,7 @@ function DateTimePicker({ control, name, isInvalid, defaultValue, className, onC
 
     useEffect(() => {
         register({ name: name });
-    }, []);
+    });
 
     const handleChange = (selectedDates, dateStr, instance) => {
         setValue(name, dateStr, true);

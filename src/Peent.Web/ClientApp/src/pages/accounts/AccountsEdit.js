@@ -21,7 +21,7 @@ function AccountsEdit({
     useEffect(() => {
         onFetchAccount(id);
         onFetchCurrencies();
-    }, [id]);
+    }, [id, onFetchAccount, onFetchCurrencies]);
 
     const formSchema = yup.object({
         name: yup.string().required().max(1000),

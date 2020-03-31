@@ -13,7 +13,7 @@ function CategoriesEdit({ category, loading, onSubmitCategory, onFetchCategory }
     const { id } = useParams();
     useEffect(() => {
         onFetchCategory(id);
-    }, [id]);
+    }, [id, onFetchCategory]);
 
     const formSchema = yup.object({
         name: yup.string().required().max(1000),

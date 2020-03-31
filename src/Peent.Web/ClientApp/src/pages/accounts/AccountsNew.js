@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 function AccountsNew({ added, url, onSubmit, onFetchCurrencies, currencies, loading }) {
     useEffect(() => {
         onFetchCurrencies();
-    }, []);
+    });
 
     const formSchema = yup.object({
         name: yup.string().required().max(1000),

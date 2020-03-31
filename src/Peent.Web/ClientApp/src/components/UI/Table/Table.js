@@ -70,7 +70,7 @@ function Table({
                 filters.addFilter(constants.GLOBAL_FILTER, globalFilterValue)
             );
         }
-    }, [fetchData, pageIndex, pageSize, sortBy, filters]);
+    }, [fetchData, pageIndex, pageSize, sortBy, filters, globalFilterValue, gotoPage]);
 
     const handlePageClick = (pageNumber) => {
         gotoPage(pageNumber);

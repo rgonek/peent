@@ -1,3 +1,5 @@
+/*eslint no-extend-native: ["error", { "exceptions": ["Object", "Array", "Map"] }]*/
+
 import * as constants from "./constants";
 
 Array.prototype.groupBy = function (keyGetter) {

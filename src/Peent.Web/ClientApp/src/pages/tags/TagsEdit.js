@@ -13,7 +13,7 @@ function TagsEdit({ tag, loading, onSubmitTag, onFetchTag }) {
     const { id } = useParams();
     useEffect(() => {
         onFetchTag(id);
-    }, [id]);
+    }, [id, onFetchTag]);
 
     const formSchema = yup.object({
         name: yup.string().required().max(1000),

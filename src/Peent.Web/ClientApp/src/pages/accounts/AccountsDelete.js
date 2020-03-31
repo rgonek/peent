@@ -12,7 +12,7 @@ function AccountsDelete({ account, loading, deleted, onDeleteAccount, onFetchAcc
     const { id } = useParams();
     useEffect(() => {
         onFetchAccount(id);
-    }, [id]);
+    }, [id, onFetchAccount]);
 
     const onSubmit = (data) => {
         onDeleteAccount(id, data);

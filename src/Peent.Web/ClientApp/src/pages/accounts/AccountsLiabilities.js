@@ -7,14 +7,17 @@ import "../../shared/extensions";
 import PropTypes from "prop-types";
 
 function AccountsLiabilities({ accounts, loading, pageCount, rowCount, onFetchAccounts }) {
-    const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        onFetchAccounts(
-            pageIndex,
-            pageSize,
-            sortBy,
-            filters.addFilter("type", AccountType.liabilities)
-        );
-    }, []);
+    const fetchData = useCallback(
+        (pageIndex, pageSize, sortBy, filters) => {
+            onFetchAccounts(
+                pageIndex,
+                pageSize,
+                sortBy,
+                filters.addFilter("type", AccountType.liabilities)
+            );
+        },
+        [onFetchAccounts]
+    );
 
     return (
         <Accounts

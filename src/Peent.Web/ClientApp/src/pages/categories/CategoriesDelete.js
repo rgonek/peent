@@ -12,7 +12,7 @@ function CategoriesDelete({ category, loading, deleted, onDeleteCategory, onFetc
     const { id } = useParams();
     useEffect(() => {
         onFetchCategory(id);
-    }, [id]);
+    }, [id, onFetchCategory]);
 
     const onSubmit = (data) => {
         onDeleteCategory(id, data);

@@ -10,7 +10,7 @@ function TagDetails({ tag, loading, onFetchTag }) {
     const { id } = useParams();
     useEffect(() => {
         onFetchTag(id);
-    }, [id]);
+    }, [id, onFetchTag]);
 
     if (tag == null || loading) {
         return <Spinner />;
@@ -27,7 +27,7 @@ function TagDetails({ tag, loading, onFetchTag }) {
 }
 
 TagDetails.propTypes = {
-    tag: PropTypes.bool,
+    tag: PropTypes.object,
     loading: PropTypes.bool,
     onFetchTag: PropTypes.func,
 };

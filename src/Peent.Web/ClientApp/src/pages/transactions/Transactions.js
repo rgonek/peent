@@ -10,28 +10,33 @@ import PropTypes from "prop-types";
 
 function Transactions({ transactions, loading, pageCount, rowCount, onFetchTransactions }) {
     let history = useHistory();
-    const onEditClick = (e, id) => {
-        history.push("transactions/" + id);
-        e.stopPropagation();
-    };
-    const onDeleteClick = (e, id) => {
-        history.push("transactions/" + id + "/delete");
-        e.stopPropagation();
-    };
-    const actionsCell = useMemo(({ cell: { value } }) => {
-        return (
-            <>
-                <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
-                    Edit
-                </Button>{" "}
-                <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
-                    Delete
-                </Button>
-            </>
-        );
-    });
-    const columns = useMemo(
-        () => [
+    const columns = useMemo(() => {
+        const onEditClick = (e, id) => {
+            history.push("transactions/" + id);
+            e.stopPropagation();
+        };
+        const onDeleteClick = (e, id) => {
+            history.push("transactions/" + id + "/delete");
+            e.stopPropagation();
+        };
+        const actionsCell = ({ cell: { value } }) => {
+            return (
+                <>
+                    <Button variant="primary" size="sm" onClick={(e) => onEditClick(e, value)}>
+                        Edit
+                    </Button>{" "}
+                    <Button variant="danger" size="sm" onClick={(e) => onDeleteClick(e, value)}>
+                        Delete
+                    </Button>
+                </>
+            );
+        };
+        actionsCell.propTypes = {
+            cell: PropTypes.shape({
+                value: PropTypes.any,
+            }),
+        };
+        return [
             {
                 Header: "",
                 accessor: "id",
@@ -53,13 +58,15 @@ function Transactions({ transactions, loading, pageCount, rowCount, onFetchTrans
                 accessor: "date",
                 disableFilters: true,
             },
-        ],
-        []
-    );
+        ];
+    }, [history]);
 
-    const fetchData = useCallback((pageIndex, pageSize, sortBy, filters) => {
-        onFetchTransactions(pageIndex, pageSize, sortBy, filters);
-    }, []);
+    const fetchData = useCallback(
+        (pageIndex, pageSize, sortBy, filters) => {
+            onFetchTransactions(pageIndex, pageSize, sortBy, filters);
+        },
+        [onFetchTransactions]
+    );
 
     return (
         <div>
