@@ -126,14 +126,6 @@ function TransactionsNew({
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Row>
                     <Form.Group as={Col}>
-                        <Form.Label>Date</Form.Label>
-                        <DateTimePicker name="date" isInvalid={!!errors.date} control={control} />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.date && errors.date.message}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-
-                    <Form.Group as={Col}>
                         <Form.Label>Title</Form.Label>
                         <Form.Control
                             type="text"
@@ -143,6 +135,14 @@ function TransactionsNew({
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.title && errors.title.message}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group as={Col}>
+                        <Form.Label>Date</Form.Label>
+                        <DateTimePicker name="date" isInvalid={!!errors.date} control={control} />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.date && errors.date.message}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Form.Row>
@@ -198,20 +198,6 @@ function TransactionsNew({
                 </Form.Row>
 
                 <Form.Row>
-                    <Form.Group as={Col}>
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows="5"
-                            name="description"
-                            isInvalid={!!errors.description}
-                            ref={register}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.description && errors.description.message}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-
                     <Col>
                         <Form.Group>
                             <Form.Label>Category</Form.Label>
@@ -246,6 +232,20 @@ function TransactionsNew({
                             </Form.Control.Feedback>
                         </Form.Group>
                     </Col>
+
+                    <Form.Group as={Col}>
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows="5"
+                            name="description"
+                            isInvalid={!!errors.description}
+                            ref={register}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors.description && errors.description.message}
+                        </Form.Control.Feedback>
+                    </Form.Group>
                 </Form.Row>
 
                 <Button type="submit" variant="primary" disabled={loading}>
