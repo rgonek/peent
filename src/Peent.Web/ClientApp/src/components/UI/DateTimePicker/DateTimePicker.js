@@ -36,6 +36,23 @@ function DateTimePicker({ control, name, isInvalid, defaultValue, className, onC
     const inputClassNames = [isInvalidClassName].join(" ");
 
     const inputRender = ({ defaultValue, value, ...props }, ref) => {
+        const handleKeyUp = (e) => {
+            if (e.keyCode === 38) {
+                // up
+                setDate(1);
+            } else if (e.keyCode === 40) {
+                // down
+                setDate(-1);
+            }
+        };
+        const setDate = (dayChange) => {
+            let date = Date.now();
+            if (flatpickr.selectedDates.length > 0) {
+                date = flatpickr.selectedDates[0];
+                date.setDate(date.getDate() + dayChange);
+            }
+            flatpickr.setDate(date, true);
+        };
         return (
             <InputGroup className={groupClassNames}>
                 <Form.Control
@@ -45,6 +62,7 @@ function DateTimePicker({ control, name, isInvalid, defaultValue, className, onC
                     defaultValue={defaultValue}
                     className={inputClassNames}
                     ref={ref}
+                    onKeyUp={handleKeyUp}
                 />
                 <InputGroup.Append>
                     <Button variant="outline-primary" onClick={handleInputButtonClick}>
