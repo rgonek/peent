@@ -1,15 +1,18 @@
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Peent.Api.Infrastructure;
+using Peent.Api.Infrastructure.ModelBinders;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
@@ -43,6 +46,15 @@ namespace Peent.Api
 
             services.AddControllers(options =>
                 {
+                    var workerProvider = options.ModelBinderProviders.First(p => p.GetType() == typeof(ComplexTypeModelBinderProvider));
+                    var workerProviderIndex = options.ModelBinderProviders.IndexOf(workerProvider);
+                    var paginationBinderProvider = new PaginationInfoModelBinderProvider(workerProvider);
+                    var sortsBinderProvider = new SortsInfoModelBinderProvider(paginationBinderProvider);
+                    var filtersBinderProvider = new FiltersInfoModelBinderProvider(sortsBinderProvider);
+                    options.ModelBinderProviders.Insert(workerProviderIndex, paginationBinderProvider);
+                    options.ModelBinderProviders.Insert(workerProviderIndex, sortsBinderProvider);
+                    options.ModelBinderProviders.Insert(workerProviderIndex, filtersBinderProvider);
+
                     options.ModelMetadataDetailsProviders.Insert(0, new DateTimeBinderProvider());
                 })
                 .AddHybridModelBinder()

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
-namespace Peent.Api.Infrastructure
+namespace Peent.Api.Infrastructure.ModelBinders
 {
     public class DateTimeBinderProvider : IMetadataDetailsProvider
     {

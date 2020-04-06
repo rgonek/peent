@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Peent.Api.Infrastructure
+namespace Peent.Api.Infrastructure.ModelBinders
 {
     public class DateTimeBinder : IModelBinder
     {
