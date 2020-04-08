@@ -16,6 +16,10 @@ function DateTimePicker({ control, name, isInvalid, defaultValue, className, onC
         register({ name: name });
     });
 
+    useEffect(() => {
+        if (flatpickr) flatpickr.setDate(value, true);
+    }, [flatpickr, value]);
+
     const handleChange = (selectedDates, dateStr, instance) => {
         setValue(name, dateStr, true);
         if (onChange) onChange(selectedDates, dateStr, instance);
