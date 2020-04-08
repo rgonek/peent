@@ -30,8 +30,9 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
             var tags = new List<Tag>();
             if (command.TagIds != null && command.TagIds.Any())
             {
+                var ids = command.TagIds.ToList();
                 tags = await _db.Tags
-                    .Where(x => command.TagIds.Contains(x.Id))
+                    .Where(x => ids.Contains(x.Id))
                     .ToListAsync(token);
                 if (command.TagIds.Count != tags.Count)
                     throw NotFoundException.Create<Tag>(x => x.Id,

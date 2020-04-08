@@ -25,6 +25,8 @@ namespace Peent.Application.Transactions.Queries.GetTransaction
             var transaction = await _db.Transactions
                 .Include(x => x.Category)
                 .Include(x => x.Entries)
+                .Include("Entries.Account")
+                .Include("Entries.Account.Currency")
                 .Include(x => x.TransactionTags)
                 .Include("TransactionTags.Tag")
                 .SingleOrDefaultAsync(x => x.Id == query.Id,

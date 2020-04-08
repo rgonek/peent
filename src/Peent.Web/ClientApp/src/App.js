@@ -26,6 +26,7 @@ import AccountDetails from "./pages/accounts/AccountDetails";
 import AccountsDelete from "./pages/accounts/AccountsDelete";
 import Transactions from "./pages/transactions/Transactions";
 import TransactionsNew from "./pages/transactions/TransactionsNew";
+import TransactionsEdit from "./pages/transactions/TransactionsEdit";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./services/errorHandler";
 import "./services/transformResponse";
@@ -61,6 +62,7 @@ function App() {
                     <Route path="/accounts/:id/delete" component={AccountsDelete} />
                     <Route path="/accounts/:id" component={AccountsEdit} />
                     <Route path="/transactions/new" component={TransactionsNew} />
+                    <Route path="/transactions/:id" component={TransactionsEdit} />
                     <Route path="/transactions" component={Transactions} />
                     <Route exact path="/" component={Dashboard} />
                 </Switch>
