@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
-import { convertEmptyStringsToNulls } from "../../shared/utility";
-import "../../shared/extensions";
+import { convertEmptyStringsToNulls, buildQueryParams } from "../../shared/utility";
+import * as constants from "../../shared/constants";
 
 export const addAccount = (accountData) => {
     return (dispatch) => {
@@ -132,15 +132,10 @@ export const fetchAccountsStart = () => {
 export const fetchAccounts = (pageIndex, pageSize, sortBy, filters) => {
     return (dispatch) => {
         dispatch(fetchAccountsStart());
-        const query = {
-            pageIndex,
-            pageSize,
-            sort: sortBy.toSortModel(),
-            filters: filters.toFilterModel(),
-        };
+        const query = buildQueryParams(pageIndex, pageSize, sortBy, filters);
 
         axios
-            .post("/accounts/GetAll", query)
+            .get("/accounts", { params: { ...query } })
             .then((res) => {
                 const fetchedAccounts = res.data.results.map((x) => ({ ...x }));
                 dispatch(
@@ -179,17 +174,11 @@ export const fetchAccountsOptions = (search) => {
     return (dispatch) => {
         dispatch(fetchAccountsOptionsStart());
 
-        const query = {
-            pageIndex: 1,
-            pageSize: 500,
-            filters: {
-                field: "_",
-                values: [search],
-            },
-        };
+        const filters = [{ id: constants.QUERY_PARAMETER_GLOBAL_FILTER, value: search }];
+        const query = buildQueryParams(1, 500, [], filters);
 
         axios
-            .post("/accounts/GetAll", query)
+            .get("/accounts", { params: { ...query } })
             .then((res) => {
                 const fetchedAccounts = res.data.results.map((x) => ({ ...x }));
                 dispatch(

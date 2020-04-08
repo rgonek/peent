@@ -16,7 +16,6 @@ namespace Peent.Api.Controllers
     public class CurrenciesController : BaseController
     {
         [HttpGet]
-        [Route("GetAll")]
         [ProducesResponseType(typeof(List<CurrencyModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {

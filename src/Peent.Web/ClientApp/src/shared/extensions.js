@@ -1,6 +1,5 @@
 /*eslint no-extend-native: ["error", { "exceptions": ["Object", "Array", "Map"] }]*/
-
-import * as constants from "./constants";
+import { isNullOrUndefined } from "./utility";
 
 Array.prototype.groupBy = function (keyGetter) {
     const map = new Map();
@@ -34,28 +33,6 @@ Array.prototype.toOptions = function (labelGetter, valueGetter) {
     );
 };
 
-Array.prototype.toFilterModel = function () {
-    return this.map((item) => ({
-        field: item.id,
-        values: Array.isArray(item.value)
-            ? item.value.map((val) => {
-                  return val.toString();
-              })
-            : [item.value.toString()],
-    }));
-};
-
-Array.prototype.toSortModel = function () {
-    return this.map((item) => {
-        return {
-            field: item.id,
-            direction: item.desc
-                ? constants.SortDirection.descending
-                : constants.SortDirection.ascending,
-        };
-    });
-};
-
 Array.prototype.addFilter = function (columnId, value) {
     if (value) {
         return this.find((item) => item.id === columnId)
@@ -69,4 +46,11 @@ Array.prototype.addFilter = function (columnId, value) {
 
 const buildFilterObject = (columnId, value) => {
     return { id: columnId, value: value };
+};
+
+URLSearchParams.prototype.setOrDelete = function (name, value) {
+    if (isNullOrUndefined(value) || value === "") this.delete(name);
+    else this.set(name, value);
+
+    return this;
 };

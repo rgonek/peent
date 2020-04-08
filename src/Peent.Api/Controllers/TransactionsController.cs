@@ -23,10 +23,9 @@ namespace Peent.Api.Controllers
     [Route("[controller]")]
     public class TransactionsController : BaseController
     {
-        [HttpPost]
-        [Route("GetAll")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<TransactionModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll([FromBody] GetTransactionsListQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] GetTransactionsListQuery query)
         {
             return await Execute(query);
         }

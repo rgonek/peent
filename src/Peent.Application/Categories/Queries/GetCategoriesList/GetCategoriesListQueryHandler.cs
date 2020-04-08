@@ -70,8 +70,9 @@ namespace Peent.Application.Categories.Queries.GetCategoriesList
                     nameof(Category.Name) => categoriesQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault())),
                     nameof(Category.Description) => categoriesQuery.Where(x =>
                         x.Description.Contains(filter.Values.FirstOrDefault())),
-                    FilterInfo.Global => categoriesQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
-                                                              x.Description.Contains(filter.Values.FirstOrDefault())),
+                    FilterInfo.Global => categoriesQuery.Where(x =>
+                        x.Name.Contains(filter.Values.FirstOrDefault()) ||
+                        x.Description.Contains(filter.Values.FirstOrDefault())),
                     _ => categoriesQuery
                 };
             }

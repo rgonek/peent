@@ -22,4 +22,14 @@ export const SortDirection = Object.freeze({
     ascending: "asc",
 });
 
-export const GLOBAL_FILTER = "_";
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE_SIZE = 10;
+export const SORT_DESCENDING_PREFIX = "-";
+export const SORT_ASCENDING_PREFIX = "";
+export const SORT_FIELDS_SEPARATOR = ",";
+export const SORT_FIELDS_SEPARATOR_ENCODED = "%2C";
+export const FILTER_VALUES_SEPARATOR = ",";
+export const QUERY_PARAMETER_GLOBAL_FILTER = "q";
+export const QUERY_PARAMETER_PAGE = "page";
+export const QUERY_PARAMETER_PAGE_SIZE = "page_size";
+export const QUERY_PARAMETER_SORT = "sort";

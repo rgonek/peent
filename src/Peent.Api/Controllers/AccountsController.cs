@@ -16,10 +16,9 @@ namespace Peent.Api.Controllers
     [Route("[controller]")]
     public class AccountsController : BaseController
     {
-        [HttpPost]
-        [Route("GetAll")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<AccountModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll([FromBody] GetAccountsListQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] GetAccountsListQuery query)
         {
             return await Execute(query);
         }

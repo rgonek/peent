@@ -4,16 +4,18 @@ import Form from "react-bootstrap/Form";
 import { useTable, usePagination, useSortBy, useFilters } from "react-table";
 import Spinner from "../Spinner/Spinner";
 import Pagination from "../Pagination/Pagination";
-import { defaultColumnFilter } from "./Filters";
+import { DefaultColumnFilter } from "./Filters";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FaSearch } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useRouteMatch, useHistory } from "react-router-dom";
+import * as constants from "../../../shared/constants";
+import { getQueryState, buildSearchQuery } from "./utility";
 import "./Table.css";
 import "../../../shared/extensions";
-import * as constants from "../../../shared/constants";
 
 function Table({
     title,
@@ -27,10 +29,20 @@ function Table({
 }) {
     const defaultColumn = React.useMemo(
         () => ({
-            Filter: defaultColumnFilter,
+            Filter: DefaultColumnFilter,
         }),
         []
     );
+
+    const { url } = useRouteMatch();
+    const history = useHistory();
+    const query = React.useMemo(() => new URLSearchParams(history.location.search), [history]);
+    const {
+        pageIndex: initialPageIndex,
+        pageSize: InitialPageSize,
+        sortBy: initialSortBy,
+        filters: initialFilters,
+    } = getQueryState(query, columns);
 
     const {
         getTableProps,
@@ -45,7 +57,12 @@ function Table({
         {
             columns,
             data,
-            initialState: { pageIndex: 1 },
+            initialState: {
+                pageIndex: initialPageIndex,
+                pageSize: InitialPageSize,
+                sortBy: initialSortBy,
+                filters: initialFilters,
+            },
             manualPagination: true,
             pageCount: controlledPageCount + 1,
             manualSortBy: true,
@@ -57,20 +74,43 @@ function Table({
         usePagination
     );
 
-    const [globalFilterValue, setGlobalFilterValue] = React.useState("");
+    const [globalFilterValue, setGlobalFilterValue] = React.useState(
+        query.get(constants.QUERY_PARAMETER_GLOBAL_FILTER) ?? ""
+    );
 
     React.useEffect(() => {
         if (pageIndex === 0) {
             gotoPage(1);
         } else {
-            fetchData(
+            const allFilters = filters.addFilter(
+                constants.QUERY_PARAMETER_GLOBAL_FILTER,
+                globalFilterValue
+            );
+            const search = buildSearchQuery(
+                query,
+                columns,
                 pageIndex,
                 pageSize,
                 sortBy,
-                filters.addFilter(constants.GLOBAL_FILTER, globalFilterValue)
+                allFilters
             );
+            history.push(url + search);
+
+            fetchData(pageIndex, pageSize, sortBy, allFilters);
         }
-    }, [fetchData, pageIndex, pageSize, sortBy, filters, globalFilterValue, gotoPage]);
+    }, [
+        fetchData,
+        pageIndex,
+        pageSize,
+        sortBy,
+        filters,
+        globalFilterValue,
+        gotoPage,
+        history,
+        url,
+        columns,
+        query,
+    ]);
 
     const handlePageClick = (pageNumber) => {
         gotoPage(pageNumber);
@@ -78,12 +118,6 @@ function Table({
 
     const handleSearchChange = (e) => {
         setGlobalFilterValue(e.target.value);
-        fetchData(
-            pageIndex,
-            pageSize,
-            sortBy,
-            filters.addFilter(constants.GLOBAL_FILTER, e.target.value)
-        );
     };
 
     const renderColumn = (column) => {
@@ -142,6 +176,7 @@ function Table({
                             </InputGroup.Prepend>
                             <Form.Control
                                 type="text"
+                                defaultValue={globalFilterValue}
                                 placeholder="Search..."
                                 aria-describedby="inputGroupPrepend"
                                 onChange={handleSearchChange}

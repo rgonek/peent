@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using HybridModelBinding;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Peent.Api.Infrastructure;
 using Peent.Application.Categories.Commands.CreateCategory;
 using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Categories.Commands.EditCategory;
@@ -17,14 +16,6 @@ namespace Peent.Api.Controllers
     [Route("[controller]")]
     public class CategoriesController : BaseController
     {
-        //[HttpPost]
-        //[Route("GetAll")]
-        //[ProducesResponseType(typeof(List<CategoryModel>), StatusCodes.Status200OK)]
-        //public async Task<IActionResult> GetAll([FromBody] GetCategoriesListQuery query)
-        //{
-        //    return await Execute(query);
-        //}
-
         [HttpGet]
         [ProducesResponseType(typeof(List<CategoryModel>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll([FromQuery] GetCategoriesListQuery query)

@@ -1,7 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-peent";
-import { convertEmptyStringsToNulls } from "../../shared/utility";
-import "../../shared/extensions";
+import { convertEmptyStringsToNulls, buildQueryParams } from "../../shared/utility";
 
 export const addTransaction = (transactionData) => {
     return (dispatch) => {
@@ -133,15 +132,10 @@ export const fetchTransactions = (pageIndex, pageSize, sortBy, filters) => {
     return (dispatch) => {
         dispatch(fetchTransactionsStart());
 
-        const query = {
-            pageIndex,
-            pageSize,
-            sort: sortBy.toSortModel(),
-            filters: filters.toFilterModel(),
-        };
+        const query = buildQueryParams(pageIndex, pageSize, sortBy, filters);
 
         axios
-            .post("/transactions/GetAll", query)
+            .get("/transactions", { params: { ...query } })
             .then((res) => {
                 const fetchedTransactions = res.data.results.map((x) => ({ ...x }));
                 dispatch(
@@ -183,7 +177,7 @@ export const fetchTransaction = (id) => {
         dispatch(fetchTransactionStart());
 
         axios
-            .get("/Transactions/" + id, {
+            .get("/transactions/" + id, {
                 transformResponse: [].concat(axios.defaults.transformResponse),
             })
             .then((res) => {

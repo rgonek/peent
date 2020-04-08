@@ -45,12 +45,12 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
             if (filterKeys.Any())
             {
-                if (filterKeys.Except(new[] { FilterInfo.Global }).Any())
+                if (filterKeys.Except(new[] { FilterInfo.Global.ToLower() }).Any())
                 {
                     var allowedFields = GetAllowedFields(bindingContext.Result.Model);
 
                     var invalidKeys = filterKeys
-                        .Except(allowedFields.Union(new[] { FilterInfo.Global }))
+                        .Except(allowedFields.Union(new[] { FilterInfo.Global.ToLower() }))
                         .ToList();
                     if (invalidKeys.Any())
                     {

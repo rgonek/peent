@@ -7,6 +7,6 @@ namespace Peent.Application.Common
         public string Field { get; set; }
         public IList<string> Values { get; set; } = new List<string>();
 
-        public const string Global = "q";
+        public const string Global = "Q";
     }
 }

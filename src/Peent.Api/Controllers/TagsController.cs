@@ -16,10 +16,9 @@ namespace Peent.Api.Controllers
     [Route("[controller]")]
     public class TagsController : BaseController
     {
-        [HttpPost]
-        [Route("GetAll")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<TagModel>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll([FromBody] GetTagsListQuery query)
+        public async Task<IActionResult> GetAll([FromQuery] GetTagsListQuery query)
         {
             return await Execute(query);
         }

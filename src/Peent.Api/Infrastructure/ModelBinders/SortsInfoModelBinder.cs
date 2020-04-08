@@ -44,30 +44,39 @@ namespace Peent.Api.Infrastructure.ModelBinders
                 return;
             }
 
-            var sortKeys = sortValueResult.FirstValue.Split(SortFieldsSeparator, StringSplitOptions.RemoveEmptyEntries);
+            var sortKeys = sortValueResult.FirstValue
+                .Split(SortFieldsSeparator, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.ToLower())
+                .ToList();
 
             if (sortKeys.Any())
             {
+                var sortInfos = new List<SortInfo>();
+                foreach (var sortKey in sortKeys)
+                {
+                    var sortDirection = sortKey.StartsWith(DescendingPrefix) ? SortDirection.Desc : SortDirection.Asc;
+                    var sortField = sortKey.TrimStart(DescendingPrefix);
+
+                    sortInfos.Add(new SortInfo
+                    {
+                        Field = sortField,
+                        Direction = sortDirection
+                    });
+                }
+
                 var allowedFields = GetAllowedFields(bindingContext.Result.Model);
 
-                var invalidKeys = sortKeys
-                    .Except(allowedFields.Union(new[] { FilterInfo.Global }))
+                var invalidKeys = sortInfos.Select(x => x.Field)
+                    .Except(allowedFields)
                     .ToList();
                 if (invalidKeys.Any())
                 {
                     throw new NotAllowedSortFieldsException(invalidKeys);
                 }
 
-                foreach (var sortKey in sortKeys)
+                foreach (var sortInfo in sortInfos)
                 {
-                    var sortDirection = sortKey.StartsWith(DescendingPrefix) ? SortDirection.Desc : SortDirection.Asc;
-                    var sortField = sortKey.TrimStart(DescendingPrefix);
-
-                    sortContainer.Sort.Add(new SortInfo
-                    {
-                        Field = sortField,
-                        Direction = sortDirection
-                    });
+                    sortContainer.Sort.Add(sortInfo);
                 }
             }
         }
@@ -76,7 +85,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
         {
             if (model is IHaveAllowedFields haveAllowedFields)
             {
-                return haveAllowedFields.AllowedFields;
+                return haveAllowedFields.AllowedFields.Select(x => x.ToLower());
             }
             if (model.GetType().TryGetGenericType<IBaseRequest, IPagedResult, IEnumerable>(
                 out var resultType))
