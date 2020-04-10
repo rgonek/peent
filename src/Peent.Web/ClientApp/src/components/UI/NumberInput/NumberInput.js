@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const NumberInput = ({
     control,
     name,
-    defaultValue,
+    defaultValue: initialValue,
     allowDotAndCommaAsDecimalSeparator,
     onChange,
     onBlur,
@@ -15,17 +15,21 @@ const NumberInput = ({
     const { defaultValuesRef, setValue, register } = control;
 
     const [changed, setChanged] = useState(false);
-    const [stateValue, setStateValue] = useState(
-        defaultValue ? defaultValue : defaultValuesRef.current[name]
-    );
-
+    const defaultValue = (initialValue ? initialValue : defaultValuesRef.current[name]) ?? "";
+    const [stateValue, setStateValue] = useState(defaultValue);
+    const [needUpdate, setNeedUpdate] = useState(true);
     useEffect(() => {
         register({ name: name });
     });
 
+    useEffect(() => {
+        if (stateValue !== defaultValue && needUpdate) setStateValue(defaultValue);
+    }, [defaultValue, stateValue, needUpdate]);
+
     const handleChange = (e) => {
         setStateValue(e.target.value);
         setChanged(true);
+        setNeedUpdate(false);
         if (onChange) onChange(e);
     };
 
