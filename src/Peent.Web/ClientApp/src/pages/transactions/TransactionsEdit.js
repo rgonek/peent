@@ -104,9 +104,7 @@ function TransactionsEdit({
     };
 
     const onSubmit = (data) => {
-        console.log("submit");
-        console.log(data);
-        // onSubmitTransaction(data);
+        onSubmitTransaction(id, data);
     };
 
     const categoriesOptions = categories.toOptions(
@@ -326,7 +324,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onFetchTransaction: (id) => dispatch(actions.fetchTransaction(id)),
-        onSubmitTransaction: (transactionData) => dispatch(actions.addTransaction(transactionData)),
+        onSubmitTransaction: (id, transactionData) =>
+            dispatch(actions.updateTransaction(id, transactionData)),
         onFetchCategoriesOptions: (search) => dispatch(actions.fetchCategoriesOptions(search)),
         onFetchTagsOptions: (search) => dispatch(actions.fetchTagsOptions(search)),
         onFetchAccountsOptions: (search) => dispatch(actions.fetchAccountsOptions(search)),

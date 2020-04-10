@@ -20,12 +20,11 @@ namespace Peent.Application.Transactions.Models
         public AccountModel SourceAccount { get; }
         public AccountModel DestinationAccount { get; }
         public decimal Amount { get; }
+        public decimal RelativeAmount
+        {
+            get { return Type == TransactionType.Deposit ? Amount : -Amount; }
+        }
         public TransactionType Type { get; }
-
-        public int SourceAccountId { get; }
-        public int DestinationAccountId { get; }
-        public int CategoryId { get; }
-        public ICollection<int> TagIds { get; }
 
         public TransactionModel(Transaction transaction)
         {
@@ -40,11 +39,6 @@ namespace Peent.Application.Transactions.Models
             Amount = Math.Abs(transaction.Entries.First().Amount);
             SourceAccount = new AccountModel(transaction.Entries.First(x => x.Amount < 0).Account);
             DestinationAccount = new AccountModel(transaction.Entries.First(x => x.Amount > 0).Account);
-
-            SourceAccountId = SourceAccount.Id;
-            DestinationAccountId = DestinationAccount.Id;
-            CategoryId = Category.Id;
-            TagIds = Tags.Select(x => x.Id).ToList();
         }
     }
 }

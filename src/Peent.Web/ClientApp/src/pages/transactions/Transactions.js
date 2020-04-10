@@ -46,17 +46,28 @@ function Transactions({ transactions, loading, pageCount, rowCount, onFetchTrans
                 Cell: actionsCell,
             },
             {
-                Header: "Name",
-                accessor: "name",
+                Header: "Title",
+                accessor: "title",
             },
             {
-                Header: "Description",
-                accessor: "description",
+                Header: "Source account",
+                accessor: "sourceAccount.name",
+            },
+            {
+                Header: "Destination account",
+                accessor: "destinationAccount.name",
             },
             {
                 Header: "Date",
                 accessor: "date",
-                disableFilters: true,
+            },
+            {
+                Header: "Amount",
+                accessor: "relativeAmount",
+            },
+            {
+                Header: "Category",
+                accessor: "category.name",
             },
         ];
     }, [history]);
