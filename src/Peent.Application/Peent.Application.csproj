@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="3.0.3" />
-    <PackageReference Include="FluentValidation" Version="8.4.0" />
-    <PackageReference Include="MediatR" Version="7.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.6.2" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
   </ItemGroup>
 
 </Project>
