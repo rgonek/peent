@@ -23,7 +23,7 @@ namespace Peent.CommonTests.Infrastructure
             {
                 foreach (var specimenBuilder in specimenBuilders)
                 {
-                    fixture.Customizations.Add(specimenBuilder);
+                    fixture.Customizations.Insert(0, specimenBuilder);
                 }
             }
 

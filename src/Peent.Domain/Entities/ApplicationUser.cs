@@ -16,5 +16,12 @@ namespace Peent.Domain.Entities
 
             FirstName = firstName;
         }
+
+        public void SetFirstName(string firstName)
+        {
+            Ensure.That(firstName, nameof(firstName)).IsNotNullOrWhiteSpace();
+
+            FirstName = firstName;
+        }
     }
 }
