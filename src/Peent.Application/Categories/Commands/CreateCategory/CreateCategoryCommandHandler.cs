@@ -31,12 +31,10 @@ namespace Peent.Application.Categories.Commands.CreateCategory
             if (existingCategory != null)
                 throw DuplicateException.Create<Category>(x => x.Name, command.Name);
 
-            var category = new Category
-            {
-                Name = command.Name,
-                Description = command.Description,
-                WorkspaceId = _userAccessor.User.GetWorkspaceId()
-            };
+            var category = new Category(
+                command.Name,
+                command.Description,
+                _userAccessor.User.GetWorkspaceId());
 
             _db.Categories.Add(category);
 

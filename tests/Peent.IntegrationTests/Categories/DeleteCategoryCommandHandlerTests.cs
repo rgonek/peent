@@ -6,6 +6,7 @@ using Xunit;
 using AutoFixture;
 using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.IntegrationTests.Infrastructure;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories

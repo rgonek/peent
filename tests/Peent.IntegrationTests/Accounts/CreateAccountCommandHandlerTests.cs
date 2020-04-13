@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using Peent.Domain.Entities;
 using Xunit;
-using AutoFixture;
 using FluentAssertions;
-using Peent.Application.Accounts.Commands.CreateAccount;
 using Peent.Application.Accounts.Commands.DeleteAccount;
 using Peent.Application.Exceptions;
 using Peent.Common.Time;
@@ -112,7 +110,7 @@ namespace Peent.IntegrationTests.Accounts
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
             var accountId = await SendAsync(command);
-            await SendAsync(new DeleteAccountCommand {Id = accountId});
+            await SendAsync(new DeleteAccountCommand(accountId));
 
             await SendAsync(command);
         }

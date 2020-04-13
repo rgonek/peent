@@ -45,6 +45,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Peent.Persistence\Peent.Persistence.csproj" />
     <ProjectReference Include="..\..\test\Peent.CommonTests\Peent.CommonTests.csproj" />
+    <ProjectReference Include="..\Peent.CommonTests\Peent.CommonTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

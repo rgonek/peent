@@ -60,7 +60,7 @@ namespace Peent.UnitTests.Transactions
 
             private void AddEntryOfAccountType(Transaction transaction, AccountType type)
             {
-                transaction.AddEntry(new Account { Type = type }, 0, 0);
+                //transaction.AddEntry(new Account { Type = type }, 0, 0);
             }
         }
     }

@@ -32,14 +32,12 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
             if (existingAccount != null)
                 throw DuplicateException.Create<Account>(x => x.Name, command.Name);
 
-            var account = new Account
-            {
-                Name = command.Name,
-                Description = command.Description,
-                Type = command.Type,
-                CurrencyId = command.CurrencyId,
-                WorkspaceId = _userAccessor.User.GetWorkspaceId()
-            };
+            var account = new Account(
+                command.Name,
+                command.Description,
+                command.Type,
+                command.CurrencyId,
+                _userAccessor.User.GetWorkspaceId());
 
             _db.Accounts.Add(account);
 

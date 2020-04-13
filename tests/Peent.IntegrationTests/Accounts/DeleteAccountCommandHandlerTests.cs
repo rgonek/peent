@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
-using Peent.Application.Accounts.Commands.CreateAccount;
 using Peent.Domain.Entities;
 using Xunit;
-using AutoFixture;
 using Peent.Application.Accounts.Commands.DeleteAccount;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
@@ -18,10 +16,8 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account.WithCurrency(A.Currency);
-            var command = new DeleteAccountCommand
-            {
-                Id = account.Id
-            };
+            var command = new DeleteAccountCommand(account.Id);
+
             await SendAsync(command);
 
             (await FindAsync<Account>(account.Id)).Should().BeNull();
@@ -36,10 +32,8 @@ namespace Peent.IntegrationTests.Accounts
             Account account = An.Account.WithCurrency(A.Currency);
             var user2 = await CreateUserAsync();
             SetCurrentUser(user2, workspace);
-            var command = new DeleteAccountCommand
-            {
-                Id = account.Id
-            };
+            var command = new DeleteAccountCommand(account.Id);
+
             await SendAsync(command);
 
             (await FindAsync<Account>(account.Id)).Should().BeNull();

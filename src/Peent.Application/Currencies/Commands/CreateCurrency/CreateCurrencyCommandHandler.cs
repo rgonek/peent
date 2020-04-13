@@ -27,13 +27,11 @@ namespace Peent.Application.Currencies.Commands.CreateCurrency
             if (existingCurrency != null)
                 throw DuplicateException.Create<Currency>(x => x.Code, command.Code);
 
-            var currency = new Currency
-            {
-                Code = command.Code,
-                Name = command.Name,
-                Symbol = command.Symbol,
-                DecimalPlaces = command.DecimalPlaces
-            };
+            var currency = new Currency(
+                command.Code,
+                command.Name,
+                command.Symbol,
+                command.DecimalPlaces);
 
             _db.Currencies.Add(currency);
 

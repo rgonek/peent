@@ -43,9 +43,9 @@ namespace Peent.Application.Tags.Commands.EditTag
             if (existingTag != null)
                 throw DuplicateException.Create<Tag>(x => x.Name, command.Name);
 
-            tag.Name = command.Name;
-            tag.Description = command.Description;
-            tag.Date = command.Date;
+            tag.SetName(command.Name);
+            tag.SetDescription(command.Description);
+            tag.SetDate(command.Date);
 
             _db.Update(tag);
             await _db.SaveChangesAsync(token);

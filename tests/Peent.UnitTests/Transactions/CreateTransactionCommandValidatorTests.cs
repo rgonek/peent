@@ -2,8 +2,9 @@
 using Xunit;
 using AutoFixture;
 using Peent.Application.Transactions.Commands.CreateTransaction;
+using Peent.CommonTests.AutoFixture;
 using Peent.CommonTests.Infrastructure;
-using static Peent.UnitTests.Infrastructure.TestFixture;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Transactions
 {

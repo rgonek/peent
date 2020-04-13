@@ -9,6 +9,7 @@ using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Exceptions;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 

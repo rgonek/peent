@@ -41,8 +41,8 @@ namespace Peent.Application.Categories.Commands.EditCategory
             if (existingCategory != null)
                 throw DuplicateException.Create<Category>(x => x.Name, command.Name);
 
-            category.Name = command.Name;
-            category.Description = command.Description;
+            category.SetName(command.Name);
+            category.SetDescription(command.Description);
 
             _db.Update(category);
             await _db.SaveChangesAsync(token);

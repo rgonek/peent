@@ -36,10 +36,10 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
             if (existingCurrency != null)
                 throw DuplicateException.Create<Currency>(x => x.Code, command.Code);
 
-            currency.Code = command.Code;
-            currency.Name = command.Name;
-            currency.Symbol = command.Symbol;
-            currency.DecimalPlaces = command.DecimalPlaces;
+            currency.SetCode(command.Code);
+            currency.SetName(command.Name);
+            currency.SetSymbol(command.Symbol);
+            currency.SetDecimalPlaces(command.DecimalPlaces);
 
             _db.Update(currency);
             await _db.SaveChangesAsync(token);

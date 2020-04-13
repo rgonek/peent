@@ -4,7 +4,7 @@ using FluentAssertions;
 using Peent.Common;
 using Xunit;
 
-namespace Peent.CommonTests.TypeExtensions
+namespace Peent.UnitTests.TypeExtensions
 {
     public class TypeExtensions_TryGetGenericTypes_Tests
     {

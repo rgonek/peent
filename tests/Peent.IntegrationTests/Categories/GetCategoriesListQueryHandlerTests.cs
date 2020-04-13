@@ -6,6 +6,7 @@ using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Categories.Queries.GetCategoriesList;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories

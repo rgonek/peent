@@ -31,13 +31,11 @@ namespace Peent.Application.Tags.Commands.CreateTag
             if (existingTag != null)
                 throw DuplicateException.Create<Tag>(x => x.Name, command.Name);
 
-            var tag = new Tag
-            {
-                Name = command.Name,
-                Description = command.Description,
-                Date = command.Date,
-                WorkspaceId = _userAccessor.User.GetWorkspaceId()
-            };
+            var tag = new Tag(
+                command.Name,
+                command.Description,
+                command.Date,
+                _userAccessor.User.GetWorkspaceId());
 
             _db.Tags.Add(tag);
 

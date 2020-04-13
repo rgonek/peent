@@ -69,8 +69,8 @@ namespace Peent.IntegrationTests.Accounts
             Account account3 = An.Account.WithCurrency(currency);
             Account account4 = An.Account.WithCurrency(currency);
             Account account5 = An.Account.WithCurrency(currency);
-            await SendAsync(new DeleteAccountCommand { Id = account4.Id });
-            await SendAsync(new DeleteAccountCommand { Id = account5.Id });
+            await SendAsync(new DeleteAccountCommand(account4.Id));
+            await SendAsync(new DeleteAccountCommand(account5.Id));
 
             var accountsPaged = await SendAsync(new GetAccountsListQuery());
 

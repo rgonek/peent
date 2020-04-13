@@ -9,6 +9,7 @@ using Peent.Application.Accounts.Commands.DeleteAccount;
 using Peent.Application.Accounts.Commands.EditAccount;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
@@ -116,7 +117,7 @@ namespace Peent.IntegrationTests.Accounts
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account;
             Account account2 = An.Account;
-            await SendAsync(new DeleteAccountCommand { Id = account.Id });
+            await SendAsync(new DeleteAccountCommand(account.Id));
 
             await SendAsync(new EditAccountCommand
             {

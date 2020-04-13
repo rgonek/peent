@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Peent.Domain.Entities;
 using AutoFixture;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Infrastructure
@@ -47,13 +48,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Currency> Build()
         {
-            var currency = new Currency
-            {
-                Name = _name,
-                Code = _code,
-                Symbol = _symbol,
-                DecimalPlaces = _decimalPlaces
-            };
+            var currency = new Currency(_code, _name, _symbol, _decimalPlaces);
 
             await InsertAsync(currency);
 

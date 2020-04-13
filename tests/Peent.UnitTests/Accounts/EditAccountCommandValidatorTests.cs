@@ -3,7 +3,8 @@ using Peent.Application.Accounts.Commands.EditAccount;
 using Peent.CommonTests.Infrastructure;
 using Xunit;
 using AutoFixture;
-using static Peent.UnitTests.Infrastructure.TestFixture;
+using Peent.CommonTests.AutoFixture;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Accounts
 {

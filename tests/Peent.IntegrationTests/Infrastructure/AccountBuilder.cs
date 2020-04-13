@@ -3,6 +3,7 @@ using Peent.Domain.Entities;
 using AutoFixture;
 using Peent.Application.Accounts.Commands.CreateAccount;
 using Peent.Application.Infrastructure.Extensions;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Infrastructure
@@ -75,17 +76,10 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Account> Build()
         {
-            var account = new Account
-            {
-                Name = _name,
-                Description = _description,
-                Type = _type,
-                WorkspaceId = UserAccessor.User.GetWorkspaceId()
-            };
             if (_currency.Id == 0)
-                account.Currency = _currency;
-            else
-                account.CurrencyId = _currency.Id;
+                await InsertAsync(_currency);
+
+            var account = new Account(_name, _description, _type, _currency.Id, UserAccessor.User.GetWorkspaceId());
 
             await InsertAsync(account);
 

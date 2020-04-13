@@ -42,9 +42,9 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             if (existingAccount != null)
                 throw DuplicateException.Create<Account>(x => x.Name, command.Name);
 
-            account.Name = command.Name;
-            account.Description = command.Description;
-            account.CurrencyId = command.CurrencyId;
+            account.SetName(command.Name);
+            account.SetDescription(command.Description);
+            account.SetCurrency(command.CurrencyId);
 
             _db.Update(account);
             await _db.SaveChangesAsync(token);

@@ -6,6 +6,7 @@ using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Currencies.Commands.DeleteCurrency;
 using Peent.IntegrationTests.Infrastructure;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies

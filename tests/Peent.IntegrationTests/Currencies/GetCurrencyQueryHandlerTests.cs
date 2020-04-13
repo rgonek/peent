@@ -6,6 +6,7 @@ using Peent.Application.Currencies.Commands.CreateCurrency;
 using Peent.Application.Exceptions;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 

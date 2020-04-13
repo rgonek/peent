@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
 using FakeItEasy;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +13,15 @@ using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.Application.Interfaces;
 using Peent.Common.Time;
+using Peent.CommonTests.Infrastructure;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 using Respawn;
 
 namespace Peent.IntegrationTests.Infrastructure
 {
-    public class DatabaseFixture
+    public class DatabaseFixture : TestFixture
     {
-        public static readonly Fixture F = new Fixture();
         private static readonly Checkpoint _checkpoint;
         private static readonly IConfigurationRoot _configuration;
         private static readonly IServiceScopeFactory _scopeFactory;
@@ -41,8 +41,6 @@ namespace Peent.IntegrationTests.Infrastructure
             var provider = services.BuildServiceProvider();
             _scopeFactory = provider.GetService<IServiceScopeFactory>();
             _checkpoint = new Checkpoint();
-
-            F.Configure();
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -232,11 +230,8 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user)
         {
-            var workspace = new Workspace
-            {
-                CreationDate = Clock.UtcNow,
-                CreatedById = user.Id
-            };
+            var workspace = new Workspace();
+            workspace.SetCreatedBy(user.Id);
             await InsertAsync(workspace);
 
             return workspace;

@@ -45,7 +45,7 @@ namespace Peent.IntegrationTests.Accounts
             var user = await CreateUserAsync();
             SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account;
-            await SendAsync(new DeleteAccountCommand {Id = account.Id});
+            await SendAsync(new DeleteAccountCommand(account.Id));
 
             Invoking(async () => await SendAsync(new GetAccountQuery { Id = account.Id }))
                 .Should().Throw<NotFoundException>();

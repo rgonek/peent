@@ -49,15 +49,13 @@ namespace Peent.Persistence
                     case EntityState.Added:
                         if (string.IsNullOrEmpty(entry.Entity.CreatedById))
                         {
-                            entry.Entity.CreatedById = _userAccessor.User.GetUserId();
-                            entry.Entity.CreationDate = Clock.UtcNow;
+                            entry.Entity.SetCreatedBy(_userAccessor.User.GetUserId());
                         }
                         break;
                     case EntityState.Modified:
                         if (string.IsNullOrEmpty(entry.Entity.LastModifiedById))
                         {
-                            entry.Entity.LastModifiedById = _userAccessor.User.GetUserId();
-                            entry.Entity.LastModificationDate = Clock.UtcNow;
+                            entry.Entity.SetModifiedBy(_userAccessor.User.GetUserId());
                         }
                         break;
                 }

@@ -6,6 +6,7 @@ using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Tags.Queries.GetTagsList;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags

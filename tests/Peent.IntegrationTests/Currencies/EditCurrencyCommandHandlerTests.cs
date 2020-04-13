@@ -7,6 +7,7 @@ using Xunit;
 using AutoFixture;
 using Peent.Application.Currencies.Commands.EditCurrency;
 using Peent.IntegrationTests.Infrastructure;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 

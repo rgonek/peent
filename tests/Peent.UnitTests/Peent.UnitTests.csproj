@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Peent.CommonTests\Peent.CommonTests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
+
 </Project>

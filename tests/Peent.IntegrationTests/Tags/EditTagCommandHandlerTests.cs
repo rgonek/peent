@@ -10,6 +10,7 @@ using Peent.Application.Tags.Commands.DeleteTag;
 using Peent.Application.Tags.Commands.EditTag;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
+using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 using static FluentAssertions.FluentActions;
 
