@@ -1,77 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnsureThat;
 using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
     public class Transaction : AuditableEntity
     {
-        public Transaction()
+        public long Id { get; private set; }
+
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public DateTime Date { get; private set; }
+        public int CategoryId { get; private set; }
+        public Category Category { get; private set; }
+        public TransactionType Type { get; private set; }
+
+        private readonly List<TransactionTag> _transactionTags;
+        public IReadOnlyCollection<TransactionTag> TransactionTags => _transactionTags.AsReadOnly();
+
+        private readonly List<TransactionEntry> _entries;
+        public IReadOnlyCollection<TransactionEntry> Entries => _entries.AsReadOnly();
+
+        #region Ctors
+        private Transaction() { }
+
+        public Transaction(string title, DateTime date, int categoryId, IEnumerable<TransactionEntry> entries)
+            : this(title, date, null, categoryId, entries)
         {
-            TransactionTags = new HashSet<TransactionTag>();
-            Entries = new HashSet<TransactionEntry>();
         }
 
-        public long Id { get; set; }
-
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime Date { get; set; }
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
-        public ICollection<TransactionTag> TransactionTags { get; }
-        public ICollection<TransactionEntry> Entries { get; }
-        public TransactionType Type { get; set; }
-
-        public void AddTags(List<Tag> tags)
+        public Transaction(string title, DateTime date, string description, int categoryId, IEnumerable<TransactionEntry> entries)
+            : this(title, date, description, categoryId, entries, Enumerable.Empty<TransactionTag>())
         {
+        }
+
+        public Transaction(string title, DateTime date, int categoryId, IEnumerable<TransactionEntry> entries, IEnumerable<TransactionTag> transactionTags)
+            : this(title, date, null, categoryId, entries, transactionTags)
+        {
+        }
+
+        #endregion
+
+        public Transaction(
+            string title,
+            DateTime date,
+            string description,
+            int categoryId,
+            IEnumerable<TransactionEntry> entries,
+            IEnumerable<TransactionTag> transactionTags)
+        {
+            Ensure.That(title, nameof(title)).IsNotNullOrWhiteSpace();
+            Ensure.That(categoryId, nameof(categoryId)).IsPositive();
+            Ensure.That(entries, nameof(entries)).IsNotNull();
+            Ensure.That(entries.Count(), nameof(entries)).Is(2);
+
+            Title = title;
+            Date = date;
+            Description = description;
+            CategoryId = categoryId;
+            _transactionTags = (transactionTags ?? Enumerable.Empty<TransactionTag>()).ToList();
+            _entries = entries.ToList();
+            Type = GetTransactionType(
+                Entries.First().Account,
+                Entries.Last().Account);
+        }
+
+        public void SetTitle(string title)
+        {
+            Ensure.That(title, nameof(title)).IsNotNullOrWhiteSpace();
+
+            Title = title;
+        }
+
+        public void SetDate(DateTime date) => Date = date;
+
+        public void SetDescription(string description) => Description = description;
+
+        public void SetCategory(int categoryId)
+        {
+            Ensure.That(categoryId, nameof(categoryId)).IsPositive();
+
+            CategoryId = categoryId;
+        }
+
+        public void AddTags(IEnumerable<Tag> tags)
+        {
+            Ensure.That(tags, nameof(tags)).IsNotNull();
+
             foreach (var tag in tags)
                 AddTag(tag);
         }
 
         public void AddTag(Tag tag)
         {
-            TransactionTags.Add(new TransactionTag
-            {
-                Tag = tag,
-                Transaction = this
-            });
+            Ensure.That(tag, nameof(tag)).IsNotNull();
+
+            AddTag(tag.Id);
         }
 
-        public void AddEntry(Account account, int currencyId, decimal amount)
+        public void AddTag(int tagId)
         {
-            Entries.Add(new TransactionEntry
-            {
-                Transaction = this,
-                Account = account,
-                CurrencyId = currencyId,
-                Amount = amount
-            });
+            Ensure.That(tagId, nameof(tagId)).IsPositive();
 
-            if (Entries.Count == 2)
-                Type = GetTransactionType(
-                    Entries.First().Account,
-                    Entries.Last().Account);
+            _transactionTags.Add(new TransactionTag(this, tagId));
         }
 
-        private TransactionType GetTransactionType(Account sourceAccount, Account destinationAccount)
-        {
-            if (sourceAccount.Type == AccountType.Asset)
-                return destinationAccount.Type == AccountType.Asset
+        private static TransactionType GetTransactionType(Account sourceAccount, Account destinationAccount)
+            => sourceAccount.Type switch
+            {
+                AccountType.Asset => (destinationAccount.Type == AccountType.Asset
                     ? TransactionType.Transfer
-                    : TransactionType.Withdrawal;
-
-            if (sourceAccount.Type == AccountType.Revenue)
-                return TransactionType.Deposit;
-
-            if (sourceAccount.Type == AccountType.InitialBalance)
-                return TransactionType.OpeningBalance;
-
-            if (sourceAccount.Type == AccountType.Reconciliation)
-                return TransactionType.Reconciliation;
-
-            throw new InvalidOperationException();
-        }
+                    : TransactionType.Withdrawal),
+                AccountType.Revenue => TransactionType.Deposit,
+                AccountType.InitialBalance => TransactionType.OpeningBalance,
+                AccountType.Reconciliation => TransactionType.Reconciliation,
+                _ => throw new InvalidOperationException($"Cannot determine transation type. Source type {sourceAccount.Type}, destination type {destinationAccount.Type}.")
+            };
     }
 }

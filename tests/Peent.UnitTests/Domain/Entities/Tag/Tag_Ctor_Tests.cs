@@ -7,11 +7,11 @@ using Peent.Common;
 using Peent.CommonTests.AutoFixture;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
-using Sut = Peent.Domain.Entities.Category;
+using Sut = Peent.Domain.Entities.Tag;
 
-namespace Peent.UnitTests.Domain.Entities.Category
+namespace Peent.UnitTests.Domain.Entities.Tag
 {
-    public class Category_Ctor_Tests
+    public class Tag_Ctor_Tests
     {
         [Theory]
         [InlineData(null)]
@@ -36,9 +36,9 @@ namespace Peent.UnitTests.Domain.Entities.Category
             var customizer = new FixedConstructorParameter<string>(
                 name, nameof(Sut.Name).FirstDown());
 
-            var account = Create<Sut>(customizer);
+            var tag = Create<Sut>(customizer);
 
-            account.Name.Should().Be(name);
+            tag.Name.Should().Be(name);
         }
 
         [Theory]
@@ -54,9 +54,25 @@ namespace Peent.UnitTests.Domain.Entities.Category
             fixture.Customize<Sut>(c =>
                 c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
 
-            var account = fixture.Create<Sut>();
+            var tag = fixture.Create<Sut>();
 
-            account.Description.Should().Be(description);
+            tag.Description.Should().Be(description);
+        }
+
+        [Fact]
+        public void when_date_is_null__does_not_throw()
+        {
+            DateTime? date = null;
+            var parameterName = nameof(Sut.Date).FirstDown();
+            var customizer = new FixedConstructorParameter<DateTime?>(
+                date, parameterName);
+            var fixture = Fixture(customizer);
+            fixture.Customize<Sut>(c =>
+                c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
+
+            var tag = fixture.Create<Sut>();
+
+            tag.Date.Should().Be(date);
         }
 
         [Theory]
@@ -81,9 +97,9 @@ namespace Peent.UnitTests.Domain.Entities.Category
             var customizer = new FixedConstructorParameter<int>(
                 workspaceId, nameof(Sut.WorkspaceId).FirstDown());
 
-            var category = Create<Sut>(customizer);
+            var tag = Create<Sut>(customizer);
 
-            category.WorkspaceId.Should().Be(workspaceId);
+            tag.WorkspaceId.Should().Be(workspaceId);
         }
 
         [Fact]
@@ -91,13 +107,15 @@ namespace Peent.UnitTests.Domain.Entities.Category
         {
             var name = F.Create<string>();
             var description = F.Create<string>();
+            var date = F.Create<DateTime?>();
             var workspaceId = F.Create<int>();
 
-            var account = new Sut(name, description, workspaceId);
+            var tag = new Sut(name, description, date, workspaceId);
 
-            account.Name.Should().Be(name);
-            account.Description.Should().Be(description);
-            account.WorkspaceId.Should().Be(workspaceId);
+            tag.Name.Should().Be(name);
+            tag.Description.Should().Be(description);
+            tag.Date.Should().Be(date);
+            tag.WorkspaceId.Should().Be(workspaceId);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<string>(
                 code, parameterName);
 
-            Action act = () => CreateCurrency(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -36,7 +36,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<string>(
                 code, nameof(Sut.Code).FirstDown());
 
-            var account = CreateCurrency(customizer);
+            var account = Create<Sut>(customizer);
 
             account.Code.Should().Be(code);
         }
@@ -51,7 +51,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<string>(
                 name, parameterName);
 
-            Action act = () => CreateCurrency(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -64,7 +64,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<string>(
                 name, nameof(Sut.Name).FirstDown());
 
-            var account = CreateCurrency(customizer);
+            var account = Create<Sut>(customizer);
 
             account.Name.Should().Be(name);
         }
@@ -79,7 +79,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<string>(
                 symbol, parameterName);
 
-            Action act = () => CreateCurrency(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -92,7 +92,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<string>(
                 symbol, nameof(Sut.Symbol).FirstDown());
 
-            var account = CreateCurrency(customizer);
+            var account = Create<Sut>(customizer);
 
             account.Symbol.Should().Be(symbol);
         }
@@ -105,7 +105,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<ushort>(
                 decimalPlaces, parameterName);
 
-            Action act = () => CreateCurrency(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -118,7 +118,7 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             var customizer = new FixedConstructorParameter<ushort>(
                 decimalPlaces, nameof(Sut.DecimalPlaces).FirstDown());
 
-            var account = CreateCurrency(customizer);
+            var account = Create<Sut>(customizer);
 
             account.DecimalPlaces.Should().Be(decimalPlaces);
         }
@@ -137,23 +137,6 @@ namespace Peent.UnitTests.Domain.Entities.Currency
             account.Name.Should().Be(name);
             account.Symbol.Should().Be(symbol);
             account.DecimalPlaces.Should().Be(decimalPlaces);
-        }
-
-        private Sut CreateCurrency(params ISpecimenBuilder[] specimenBuilders)
-        {
-            var fixture = Fixture(specimenBuilders);
-
-            try
-            {
-                return fixture.Create<Sut>();
-            }
-            catch (ObjectCreationException e)
-            {
-                if (e.InnerException is TargetInvocationException exception)
-                    if (exception.InnerException != null)
-                        throw exception.InnerException;
-                throw;
-            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Peent.UnitTests.Domain.Entities.ApplicationUser
             var customizer = new FixedConstructorParameter<string>(
                 firstName, parameterName);
 
-            Action act = () => CreateApplicationUser(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -36,26 +36,9 @@ namespace Peent.UnitTests.Domain.Entities.ApplicationUser
             var customizer = new FixedConstructorParameter<string>(
                 firstName, nameof(Sut.FirstName).FirstDown());
 
-            var account = CreateApplicationUser(customizer);
+            var account = Create<Sut>(customizer);
 
             account.FirstName.Should().Be(firstName);
-        }
-
-        private Sut CreateApplicationUser(params ISpecimenBuilder[] specimenBuilders)
-        {
-            var fixture = Fixture(specimenBuilders);
-
-            try
-            {
-                return fixture.Create<Sut>();
-            }
-            catch (ObjectCreationException e)
-            {
-                if (e.InnerException is TargetInvocationException exception)
-                    if (exception.InnerException != null)
-                        throw exception.InnerException;
-                throw;
-            }
         }
     }
 }

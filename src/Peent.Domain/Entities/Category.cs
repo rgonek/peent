@@ -12,21 +12,25 @@ namespace Peent.Domain.Entities
         public int WorkspaceId { get; private set; }
         public Workspace Workspace { get; private set; }
 
+        #region Ctors
+
         private Category() { }
 
         public Category(string name, int workspaceId)
+            : this(name, null, workspaceId)
+        {
+        }
+
+        #endregion
+
+        public Category(string name, string description, int workspaceId)
         {
             Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             Ensure.That(workspaceId, nameof(workspaceId)).IsPositive();
 
             Name = name;
-            WorkspaceId = workspaceId;
-        }
-
-        public Category(string name, string description, int workspaceId)
-            : this(name, workspaceId)
-        {
             Description = description;
+            WorkspaceId = workspaceId;
         }
 
         public void SetName(string name)
@@ -36,9 +40,6 @@ namespace Peent.Domain.Entities
             Name = name;
         }
 
-        public void SetDescription(string description)
-        {
-            Description = description;
-        }
+        public void SetDescription(string description) => Description = description;
     }
 }

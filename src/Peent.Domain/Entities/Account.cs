@@ -19,9 +19,17 @@ namespace Peent.Domain.Entities
         public int CurrencyId { get; private set; }
         public Currency Currency { get; private set; }
 
+        #region Ctors
         private Account() { }
 
         public Account(string name, AccountType type, int currencyId, int workspaceId)
+            : this(name, null, type, currencyId, workspaceId)
+        {
+        }
+
+        #endregion
+
+        public Account(string name, string description, AccountType type, int currencyId, int workspaceId)
         {
             Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             Ensure.That(type, nameof(type)).IsNotDefault();
@@ -29,15 +37,10 @@ namespace Peent.Domain.Entities
             Ensure.That(currencyId, nameof(currencyId)).IsPositive();
 
             Name = name;
+            Description = description;
             WorkspaceId = workspaceId;
             Type = type;
             CurrencyId = currencyId;
-        }
-
-        public Account(string name, string description, AccountType type, int currencyId, int workspaceId)
-            : this(name, type, currencyId, workspaceId)
-        {
-            Description = description;
         }
 
         public void SetName(string name)
@@ -47,10 +50,7 @@ namespace Peent.Domain.Entities
             Name = name;
         }
 
-        public void SetDescription(string description)
-        {
-            Description = description;
-        }
+        public void SetDescription(string description) => Description = description;
 
         public void SetCurrency(int currencyId)
         {

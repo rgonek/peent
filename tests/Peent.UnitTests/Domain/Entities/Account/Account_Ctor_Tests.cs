@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using AutoFixture;
 using AutoFixture.Kernel;
 using EnumsNET;
@@ -27,7 +26,7 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<string>(
                 name, parameterName);
 
-            Action act = () => CreateAccount(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -40,7 +39,7 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<string>(
                 name, nameof(Sut.Name).FirstDown());
 
-            var account = CreateAccount(customizer);
+            var account = Create<Sut>(customizer);
 
             account.Name.Should().Be(name);
         }
@@ -70,7 +69,7 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<AccountType>(
                 AccountType.Unknown, parameterName);
 
-            Action act = () => CreateAccount(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -91,7 +90,7 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<AccountType>(
                 type, nameof(Sut.Type).FirstDown());
 
-            var account = CreateAccount(customizer);
+            var account = Create<Sut>(customizer);
 
             account.Type.Should().Be(type);
         }
@@ -105,7 +104,7 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<int>(
                 currencyId, parameterName);
 
-            Action act = () => CreateAccount(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
@@ -118,7 +117,7 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<int>(
                 currencyId, nameof(Sut.CurrencyId).FirstDown());
 
-            var account = CreateAccount(customizer);
+            var account = Create<Sut>(customizer);
 
             account.CurrencyId.Should().Be(currencyId);
         }
@@ -132,19 +131,22 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var customizer = new FixedConstructorParameter<int>(
                 currencyId, parameterName);
 
-            Action act = () => CreateAccount(customizer);
+            Action act = () => Create<Sut>(customizer);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
         }
 
         [Fact]
-        public void when_workspace_id_is_positive__throws_argument_exception()
+        public void when_workspace_id_is_positive__does_not_throw()
         {
+            var workspaceId = F.Create<int>();
             var customizer = new FixedConstructorParameter<int>(
-                F.Create<int>(), nameof(Sut.WorkspaceId).FirstDown());
+                workspaceId, nameof(Sut.WorkspaceId).FirstDown());
 
-            CreateAccount(customizer);
+            var account = Create<Sut>(customizer);
+
+            account.WorkspaceId.Should().Be(workspaceId);
         }
 
         [Fact]
@@ -163,23 +165,6 @@ namespace Peent.UnitTests.Domain.Entities.Account
             account.Type.Should().Be(type);
             account.CurrencyId.Should().Be(currencyId);
             account.WorkspaceId.Should().Be(workspaceId);
-        }
-
-        private Sut CreateAccount(params ISpecimenBuilder[] specimenBuilders)
-        {
-            var fixture = Fixture(specimenBuilders);
-
-            try
-            {
-                return fixture.Create<Sut>();
-            }
-            catch (ObjectCreationException e)
-            {
-                if (e.InnerException is TargetInvocationException exception)
-                    if (exception.InnerException != null)
-                        throw exception.InnerException;
-                throw;
-            }
         }
     }
 }

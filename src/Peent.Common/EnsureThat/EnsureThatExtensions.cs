@@ -4,13 +4,16 @@ namespace EnsureThat
 {
     public static class EnsureThatExtensions
     {
-        public static Param<int> IsPositive(this Param<int> param)
+        public static Param<T> IsPositive<T>(this Param<T> param)
+            where T : struct, IComparable<T>
         {
-            return param.IsGreaterThan(0);
+            return param.IsGreaterThan(default(T));
         }
-        public static Param<ushort> IsPositive(this Param<ushort> param)
+
+        public static Param<T> IsNotZero<T>(this Param<T> param)
+            where T : struct, IComparable<T>
         {
-            return param.IsGreaterThan<ushort>(0);
+            return param.IsNotDefault();
         }
 
         public static Param<T> IsGreaterThan<T>(this Param<T> param, T limit)

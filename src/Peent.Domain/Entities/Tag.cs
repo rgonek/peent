@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EnsureThat;
 using Peent.Domain.Common;
 
@@ -16,9 +15,10 @@ namespace Peent.Domain.Entities
         public int WorkspaceId { get; private set; }
         public Workspace Workspace { get; private set; }
 
-        private HashSet<TransactionTag> _transactionTags;
-        public IEnumerable<TransactionTag> TransactionTags => _transactionTags?.ToList();
+        private readonly List<TransactionTag> _transactionTags;
+        public IReadOnlyCollection<TransactionTag> TransactionTags => _transactionTags.AsReadOnly();
 
+        #region Ctors
         private Tag() { }
 
         public Tag(string name, int workspaceId)
@@ -36,6 +36,8 @@ namespace Peent.Domain.Entities
         {
         }
 
+        #endregion
+
         public Tag(string name, string description, DateTime? date, int workspaceId)
         {
             Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
@@ -45,6 +47,8 @@ namespace Peent.Domain.Entities
             Description = description;
             Date = date;
             WorkspaceId = workspaceId;
+
+            _transactionTags = new List<TransactionTag>();
         }
 
         public void SetName(string name)
@@ -54,14 +58,8 @@ namespace Peent.Domain.Entities
             Name = name;
         }
 
-        public void SetDescription(string description)
-        {
-            Description = description;
-        }
+        public void SetDescription(string description) => Description = description;
 
-        public void SetDate(DateTime? date)
-        {
-            Date = date;
-        }
+        public void SetDate(DateTime? date) => Date = date;
     }
 }

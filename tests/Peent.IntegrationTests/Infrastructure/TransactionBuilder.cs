@@ -12,14 +12,14 @@ namespace Peent.IntegrationTests.Infrastructure
 {
     public class TransactionBuilder
     {
-        public string _title;
-        public string _description;
-        public DateTime _date;
-        public int _categoryId;
-        public IList<int> _tagIds;
-        public int _sourceAccountId;
-        public int _destinationAccountId;
-        public decimal _amount;
+        private string _title;
+        private string _description;
+        private DateTime _date;
+        private int _categoryId;
+        private IList<int> _tagIds;
+        private Account _sourceAccount;
+        private Account _destinationAccount;
+        private decimal _amount;
 
         public TransactionBuilder WithRandomData()
         {
@@ -50,13 +50,13 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public TransactionBuilder From(Account account)
         {
-            _sourceAccountId = account.Id;
+            _sourceAccount = account;
             return this;
         }
 
         public TransactionBuilder To(Account account)
         {
-            _destinationAccountId = account.Id;
+            _destinationAccount = account;
             return this;
         }
 
@@ -80,8 +80,8 @@ namespace Peent.IntegrationTests.Infrastructure
                 CategoryId = _categoryId,
                 Date = _date,
                 Description = _description,
-                SourceAccountId = _sourceAccountId,
-                DestinationAccountId = _destinationAccountId,
+                SourceAccountId = _sourceAccount.Id,
+                DestinationAccountId = _destinationAccount.Id,
                 TagIds = _tagIds,
                 Title = _title
             };
@@ -89,10 +89,14 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Transaction> Build()
         {
-            var transaction = new Transaction
+            var sourceEntry = new TransactionEntry(_sourceAccount, -_amount, _sourceAccount.CurrencyId);
+            var destinationEntry = new TransactionEntry(_destinationAccount, _amount, _sourceAccount.CurrencyId);
+            var transaction = new Transaction(_title, _date, _description, _categoryId,
+                new[] {sourceEntry, destinationEntry});
+            foreach (var tagId in _tagIds)
             {
-                Description = _description
-            };
+                transaction.AddTag(tagId);
+            }
 
             await InsertAsync(transaction);
 

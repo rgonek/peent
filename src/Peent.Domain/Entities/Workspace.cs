@@ -4,6 +4,10 @@ namespace Peent.Domain.Entities
 {
     public class Workspace : AuditableEntity
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
+
+        public Workspace()
+        {
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoFixture;
+﻿using System.Reflection;
+using AutoFixture;
 using AutoFixture.Kernel;
 using Microsoft.EntityFrameworkCore.Internal;
 using Peent.CommonTests.AutoFixture;
@@ -28,6 +29,28 @@ namespace Peent.CommonTests.Infrastructure
             }
 
             return fixture;
+        }
+
+        public static T Create<T>(params ISpecimenBuilder[] specimenBuilders)
+        {
+            var fixture = Fixture(specimenBuilders);
+
+            return Create<T>(fixture);
+        }
+
+        public static T Create<T>(IFixture fixture)
+        {
+            try
+            {
+                return fixture.Create<T>();
+            }
+            catch (ObjectCreationException e)
+            {
+                if (e.InnerException is TargetInvocationException exception)
+                    if (exception.InnerException != null)
+                        throw exception.InnerException;
+                throw;
+            }
         }
     }
 }

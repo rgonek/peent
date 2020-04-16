@@ -26,6 +26,9 @@ namespace Peent.Persistence.Configurations
                 .HasForeignKey(x => x.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Metadata.FindNavigation(nameof(Tag.TransactionTags))
+                .SetPropertyAccessMode(PropertyAccessMode.Field);
+
             builder.ConfigureAuditInfo();
         }
     }

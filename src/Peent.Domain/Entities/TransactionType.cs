@@ -1,6 +1,6 @@
 ﻿namespace Peent.Domain.Entities
 {
-    public enum TransactionType :short
+    public enum TransactionType : short
     {
         Unknown = 0,
         Withdrawal = 1,
