@@ -41,34 +41,36 @@ namespace Peent.Api.Infrastructure.ModelBinders
                     PaginationInfoModelBinder.PageIndexQueryParameter,
                     PaginationInfoModelBinder.PageSizeQueryParameter
                 })
-                .Select(x => x.ToLower());
+                .Select(x => x.ToLower())
+                .ToList();
 
             if (filterKeys.Any())
             {
-                if (filterKeys.Except(new[] { FilterInfo.Global.ToLower() }).Any())
-                {
-                    var allowedFields = GetAllowedFields(bindingContext.Result.Model);
-
-                    var invalidKeys = filterKeys
-                        .Except(allowedFields.Union(new[] { FilterInfo.Global.ToLower() }))
-                        .ToList();
-                    if (invalidKeys.Any())
-                    {
-                        throw new NotAllowedFilterFieldsException(invalidKeys);
-                    }
-                }
+                ThrowsOnInvalidKeys(bindingContext, filterKeys);
 
                 foreach (var key in filterKeys)
                 {
                     var valueResult = bindingContext.ValueProvider.GetValue(key);
                     if (valueResult != ValueProviderResult.None)
                     {
-                        filtersContainer.Filters.Add(new FilterInfo
-                        {
-                            Field = key,
-                            Values = valueResult.Values
-                        });
+                        filtersContainer.Filters.Add(new FilterInfo(key, valueResult.Values));
                     }
+                }
+            }
+        }
+
+        private static void ThrowsOnInvalidKeys(ModelBindingContext bindingContext, IList<string> filterKeys)
+        {
+            if (filterKeys.Except(new[] { FilterInfo.Global.ToLower() }).Any())
+            {
+                var allowedFields = GetAllowedFields(bindingContext.Result.Model);
+
+                var invalidKeys = filterKeys
+                    .Except(allowedFields.Union(new[] { FilterInfo.Global.ToLower() }))
+                    .ToList();
+                if (invalidKeys.Any())
+                {
+                    throw new NotAllowedFilterFieldsException(invalidKeys);
                 }
             }
         }

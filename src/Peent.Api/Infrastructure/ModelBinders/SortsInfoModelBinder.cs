@@ -51,33 +51,38 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
             if (sortKeys.Any())
             {
-                var sortInfos = new List<SortInfo>();
-                foreach (var sortKey in sortKeys)
-                {
-                    var sortDirection = sortKey.StartsWith(DescendingPrefix) ? SortDirection.Desc : SortDirection.Asc;
-                    var sortField = sortKey.TrimStart(DescendingPrefix);
+                var sortInfos = Parse(sortKeys).ToList();
 
-                    sortInfos.Add(new SortInfo
-                    {
-                        Field = sortField,
-                        Direction = sortDirection
-                    });
-                }
-
-                var allowedFields = GetAllowedFields(bindingContext.Result.Model);
-
-                var invalidKeys = sortInfos.Select(x => x.Field)
-                    .Except(allowedFields)
-                    .ToList();
-                if (invalidKeys.Any())
-                {
-                    throw new NotAllowedSortFieldsException(invalidKeys);
-                }
+                ThrowsOnInvalidKeys(bindingContext, sortInfos);
 
                 foreach (var sortInfo in sortInfos)
                 {
                     sortContainer.Sort.Add(sortInfo);
                 }
+            }
+        }
+
+        private static IEnumerable<SortInfo> Parse(IList<string> sortKeys)
+        {
+            foreach (var sortKey in sortKeys)
+            {
+                var sortDirection = sortKey.StartsWith(DescendingPrefix) ? SortDirection.Desc : SortDirection.Asc;
+                var sortField = sortKey.TrimStart(DescendingPrefix);
+
+                yield return new SortInfo(sortField, sortDirection);
+            }
+        }
+
+        private static void ThrowsOnInvalidKeys(ModelBindingContext bindingContext, IList<SortInfo> sortInfos)
+        {
+            var allowedFields = GetAllowedFields(bindingContext.Result.Model);
+
+            var invalidKeys = sortInfos.Select(x => x.Field)
+                .Except(allowedFields)
+                .ToList();
+            if (invalidKeys.Any())
+            {
+                throw new NotAllowedSortFieldsException(invalidKeys);
             }
         }
 
