@@ -2,12 +2,12 @@
 
 namespace Peent.Application.Common
 {
-    public class SortInfo
+    public class SortDto
     {
         public string Field { get; }
         public SortDirection Direction { get; }
 
-        public SortInfo(string field, SortDirection direction = SortDirection.Asc)
+        public SortDto(string field, SortDirection direction = SortDirection.Asc)
         {
             Ensure.That(field, nameof(field)).IsNotNullOrWhiteSpace();
 

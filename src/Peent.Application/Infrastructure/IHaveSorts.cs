@@ -3,8 +3,8 @@ using Peent.Application.Common;
 
 namespace Peent.Application.Infrastructure
 {
-    public interface IHaveSortsInfo
+    public interface IHaveSorts
     {
-        IList<SortInfo> Sort { get; }
+        IList<SortDto> Sort { get; }
     }
 }

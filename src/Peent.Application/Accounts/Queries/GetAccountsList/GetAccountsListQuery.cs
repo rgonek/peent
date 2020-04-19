@@ -8,14 +8,14 @@ using Peent.Application.Infrastructure;
 namespace Peent.Application.Accounts.Queries.GetAccountsList
 {
     public class GetAccountsListQuery : IRequest<PagedResult<AccountModel>>,
-        IHavePaginationInfo, IHaveFiltersInfo, IHaveSortsInfo, IHaveAllowedFields
+        IHavePagination, IHaveFilters, IHaveSorts, IHaveAllowedFields
     {
         public int PageSize { get; set; } = 10;
 
         public int PageIndex { get; set; } = 1;
 
-        public IList<SortInfo> Sort { get; } = new List<SortInfo>();
-        public IList<FilterInfo> Filters { get; } = new List<FilterInfo>();
+        public IList<SortDto> Sort { get; } = new List<SortDto>();
+        public IList<FilterDto> Filters { get; } = new List<FilterDto>();
 
         public IEnumerable<string> AllowedFields => new[]
         {

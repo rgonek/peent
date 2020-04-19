@@ -1,6 +1,6 @@
 ﻿namespace Peent.Application.Infrastructure
 {
-    public interface IHavePaginationInfo
+    public interface IHavePagination
     {
         int PageSize { get; set; }
         int PageIndex { get; set; }

@@ -11,11 +11,11 @@ using Peent.Common;
 
 namespace Peent.Api.Infrastructure.ModelBinders
 {
-    public class FiltersInfoModelBinder : IModelBinder
+    public class FiltersModelBinder : IModelBinder
     {
         private readonly IModelBinder _worker;
 
-        public FiltersInfoModelBinder(IModelBinder worker)
+        public FiltersModelBinder(IModelBinder worker)
         {
             _worker = worker;
         }
@@ -28,7 +28,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
                 return;
             }
 
-            var filtersContainer = bindingContext.Result.Model as IHaveFiltersInfo;
+            var filtersContainer = bindingContext.Result.Model as IHaveFilters;
             if (filtersContainer == null)
             {
                 throw new InvalidOperationException($"Expected {bindingContext.ModelName} to have been bound by ComplexTypeModelBinder");
@@ -37,9 +37,9 @@ namespace Peent.Api.Infrastructure.ModelBinders
             var filterKeys = bindingContext.HttpContext.Request.Query.Keys
                 .Except(new[]
                 {
-                    SortsInfoModelBinder.SortQueryParameter,
-                    PaginationInfoModelBinder.PageIndexQueryParameter,
-                    PaginationInfoModelBinder.PageSizeQueryParameter
+                    SortsModelBinder.SortQueryParameter,
+                    PaginationModelBinder.PageIndexQueryParameter,
+                    PaginationModelBinder.PageSizeQueryParameter
                 })
                 .Select(x => x.ToLower())
                 .ToList();
@@ -53,7 +53,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
                     var valueResult = bindingContext.ValueProvider.GetValue(key);
                     if (valueResult != ValueProviderResult.None)
                     {
-                        filtersContainer.Filters.Add(new FilterInfo(key, valueResult.Values));
+                        filtersContainer.Filters.Add(new FilterDto(key, valueResult.Values));
                     }
                 }
             }
@@ -61,12 +61,12 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
         private static void ThrowsOnInvalidKeys(ModelBindingContext bindingContext, IList<string> filterKeys)
         {
-            if (filterKeys.Except(new[] { FilterInfo.Global.ToLower() }).Any())
+            if (filterKeys.Except(new[] { FilterDto.Global.ToLower() }).Any())
             {
                 var allowedFields = GetAllowedFields(bindingContext.Result.Model);
 
                 var invalidKeys = filterKeys
-                    .Except(allowedFields.Union(new[] { FilterInfo.Global.ToLower() }))
+                    .Except(allowedFields.Union(new[] { FilterDto.Global.ToLower() }))
                     .ToList();
                 if (invalidKeys.Any())
                 {

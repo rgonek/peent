@@ -5,14 +5,14 @@ using Peent.Application.Infrastructure;
 
 namespace Peent.Api.Infrastructure.ModelBinders
 {
-    public class PaginationInfoModelBinder : IModelBinder
+    public class PaginationModelBinder : IModelBinder
     {
         public const string PageIndexQueryParameter = "page";
         public const string PageSizeQueryParameter = "page_size";
 
         private readonly IModelBinder _worker;
 
-        public PaginationInfoModelBinder(IModelBinder worker)
+        public PaginationModelBinder(IModelBinder worker)
         {
             _worker = worker;
         }
@@ -25,7 +25,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
                 return;
             }
 
-            var pagingContainer = bindingContext.Result.Model as IHavePaginationInfo;
+            var pagingContainer = bindingContext.Result.Model as IHavePagination;
             if (pagingContainer == null)
             {
                 throw new InvalidOperationException($"Expected {bindingContext.ModelName} to have been bound by ComplexTypeModelBinder");

@@ -48,9 +48,9 @@ namespace Peent.Api
                 {
                     var workerProvider = options.ModelBinderProviders.First(p => p.GetType() == typeof(ComplexTypeModelBinderProvider));
                     var workerProviderIndex = options.ModelBinderProviders.IndexOf(workerProvider);
-                    var paginationBinderProvider = new PaginationInfoModelBinderProvider(workerProvider);
-                    var sortsBinderProvider = new SortsInfoModelBinderProvider(paginationBinderProvider);
-                    var filtersBinderProvider = new FiltersInfoModelBinderProvider(sortsBinderProvider);
+                    var paginationBinderProvider = new PaginationModelBinderProvider(workerProvider);
+                    var sortsBinderProvider = new SortsModelBinderProvider(paginationBinderProvider);
+                    var filtersBinderProvider = new FiltersModelBinderProvider(sortsBinderProvider);
                     options.ModelBinderProviders.Insert(workerProviderIndex, paginationBinderProvider);
                     options.ModelBinderProviders.Insert(workerProviderIndex, sortsBinderProvider);
                     options.ModelBinderProviders.Insert(workerProviderIndex, filtersBinderProvider);

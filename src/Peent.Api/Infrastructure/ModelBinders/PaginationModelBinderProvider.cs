@@ -4,11 +4,11 @@ using Peent.Application.Infrastructure;
 
 namespace Peent.Api.Infrastructure.ModelBinders
 {
-    public class PaginationInfoModelBinderProvider : IModelBinderProvider
+    public class PaginationModelBinderProvider : IModelBinderProvider
     {
         private readonly IModelBinderProvider _workerProvider;
 
-        public PaginationInfoModelBinderProvider(IModelBinderProvider workerProvider)
+        public PaginationModelBinderProvider(IModelBinderProvider workerProvider)
         {
             _workerProvider = workerProvider;
         }
@@ -17,8 +17,8 @@ namespace Peent.Api.Infrastructure.ModelBinders
         {
             Ensure.That(context, nameof(context)).IsNotNull();
 
-            return typeof(IHavePaginationInfo).IsAssignableFrom(context.Metadata.ModelType)
-                ? new PaginationInfoModelBinder(_workerProvider.GetBinder(context))
+            return typeof(IHavePagination).IsAssignableFrom(context.Metadata.ModelType)
+                ? new PaginationModelBinder(_workerProvider.GetBinder(context))
                 : null;
         }
     }

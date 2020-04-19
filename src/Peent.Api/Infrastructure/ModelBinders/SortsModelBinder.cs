@@ -11,7 +11,7 @@ using Peent.Common;
 
 namespace Peent.Api.Infrastructure.ModelBinders
 {
-    public class SortsInfoModelBinder : IModelBinder
+    public class SortsModelBinder : IModelBinder
     {
         public const string SortQueryParameter = "sort";
         public const char DescendingPrefix = '-';
@@ -19,7 +19,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
         private readonly IModelBinder _worker;
 
-        public SortsInfoModelBinder(IModelBinder worker)
+        public SortsModelBinder(IModelBinder worker)
         {
             _worker = worker;
         }
@@ -32,7 +32,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
                 return;
             }
 
-            var sortContainer = bindingContext.Result.Model as IHaveSortsInfo;
+            var sortContainer = bindingContext.Result.Model as IHaveSorts;
             if (sortContainer == null)
             {
                 throw new InvalidOperationException($"Expected {bindingContext.ModelName} to have been bound by ComplexTypeModelBinder");
@@ -51,33 +51,33 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
             if (sortKeys.Any())
             {
-                var sortInfos = Parse(sortKeys).ToList();
+                var sorts = Parse(sortKeys).ToList();
 
-                ThrowsOnInvalidKeys(bindingContext, sortInfos);
+                ThrowsOnInvalidKeys(bindingContext, sorts);
 
-                foreach (var sortInfo in sortInfos)
+                foreach (var sort in sorts)
                 {
-                    sortContainer.Sort.Add(sortInfo);
+                    sortContainer.Sort.Add(sort);
                 }
             }
         }
 
-        private static IEnumerable<SortInfo> Parse(IList<string> sortKeys)
+        private static IEnumerable<SortDto> Parse(IList<string> sortKeys)
         {
             foreach (var sortKey in sortKeys)
             {
                 var sortDirection = sortKey.StartsWith(DescendingPrefix) ? SortDirection.Desc : SortDirection.Asc;
                 var sortField = sortKey.TrimStart(DescendingPrefix);
 
-                yield return new SortInfo(sortField, sortDirection);
+                yield return new SortDto(sortField, sortDirection);
             }
         }
 
-        private static void ThrowsOnInvalidKeys(ModelBindingContext bindingContext, IList<SortInfo> sortInfos)
+        private static void ThrowsOnInvalidKeys(ModelBindingContext bindingContext, IList<SortDto> sorts)
         {
             var allowedFields = GetAllowedFields(bindingContext.Result.Model);
 
-            var invalidKeys = sortInfos.Select(x => x.Field)
+            var invalidKeys = sorts.Select(x => x.Field)
                 .Except(allowedFields)
                 .ToList();
             if (invalidKeys.Any())

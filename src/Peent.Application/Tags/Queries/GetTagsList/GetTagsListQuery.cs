@@ -8,13 +8,13 @@ using Peent.Application.Tags.Models;
 namespace Peent.Application.Tags.Queries.GetTagsList
 {
     public class GetTagsListQuery : IRequest<PagedResult<TagModel>>,
-        IHavePaginationInfo, IHaveFiltersInfo, IHaveSortsInfo
+        IHavePagination, IHaveFilters, IHaveSorts
     {
         public int PageSize { get; set; } = 10;
 
         public int PageIndex { get; set; } = 1;
 
-        public IList<SortInfo> Sort { get; } = new List<SortInfo>();
-        public IList<FilterInfo> Filters { get; } = new List<FilterInfo>();
+        public IList<SortDto> Sort { get; } = new List<SortDto>();
+        public IList<FilterDto> Filters { get; } = new List<FilterDto>();
     }
 }

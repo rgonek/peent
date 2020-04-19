@@ -17,7 +17,7 @@ namespace Peent.Application.Infrastructure.Extensions
             {
                 CurrentPage = page,
                 PageSize = pageSize,
-                RowCount = query.Count()
+                RowCount = await query.CountAsync(token)
             };
 
             var pageCount = (double)result.RowCount / pageSize;

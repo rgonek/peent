@@ -3,8 +3,8 @@ using Peent.Application.Common;
 
 namespace Peent.Application.Infrastructure
 {
-    public interface IHaveFiltersInfo
+    public interface IHaveFilters
     {
-        IList<FilterInfo> Filters { get; }
+        IList<FilterDto> Filters { get; }
     }
 }

@@ -48,11 +48,11 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
             return accountsPaged;
         }
 
-        private IOrderedQueryable<Account> Sort(IOrderedQueryable<Account> accountsQuery, IList<SortInfo> sortInfo)
+        private IOrderedQueryable<Account> Sort(IOrderedQueryable<Account> accountsQuery, IList<SortDto> sorts)
         {
-            for (var i = 0; i < sortInfo.Count; i++)
+            for (var i = 0; i < sorts.Count; i++)
             {
-                var sort = sortInfo[i];
+                var sort = sorts[i];
                 accountsQuery = sort.Field.FirstUp() switch
                 {
                     nameof(Account.Name) => accountsQuery.SortBy(x => x.Name, sort.Direction, i),
@@ -66,7 +66,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
             return accountsQuery;
         }
 
-        private IQueryable<Account> Filter(IQueryable<Account> accountsQuery, IList<FilterInfo> filters)
+        private IQueryable<Account> Filter(IQueryable<Account> accountsQuery, IList<FilterDto> filters)
         {
             foreach (var filter in filters.Where(x => x.Values.Any(y => y.HasValue())))
             {
@@ -78,7 +78,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
                         .Where(x => x.Description.Contains(filter.Values.FirstOrDefault())),
                     nameof(Account.Type) => accountsQuery
                         .Where(x => filter.Values.Select(y => Enums.Parse<AccountType>(y, true)).Contains(x.Type)),
-                    FilterInfo.Global => accountsQuery
+                    FilterDto.Global => accountsQuery
                         .Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
                                                 x.Description.Contains(filter.Values.FirstOrDefault())),
                     _ => accountsQuery

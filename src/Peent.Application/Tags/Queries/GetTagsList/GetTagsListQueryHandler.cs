@@ -45,11 +45,11 @@ namespace Peent.Application.Tags.Queries.GetTagsList
             return tagsPaged;
         }
 
-        private IOrderedQueryable<Tag> Sort(IOrderedQueryable<Tag> tagsQuery, IList<SortInfo> sortInfo)
+        private IOrderedQueryable<Tag> Sort(IOrderedQueryable<Tag> tagsQuery, IList<SortDto> sorts)
         {
-            for (var i = 0; i < sortInfo.Count; i++)
+            for (var i = 0; i < sorts.Count; i++)
             {
-                var sort = sortInfo[i];
+                var sort = sorts[i];
                 tagsQuery = sort.Field.FirstUp() switch
                 {
                     nameof(Tag.Name) => tagsQuery.SortBy(x => x.Name, sort.Direction, i),
@@ -62,7 +62,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
             return tagsQuery;
         }
 
-        private IQueryable<Tag> Filter(IQueryable<Tag> tagsQuery, IList<FilterInfo> filters)
+        private IQueryable<Tag> Filter(IQueryable<Tag> tagsQuery, IList<FilterDto> filters)
         {
             foreach (var filter in filters.Where(x => x.Values.Any(y => y.HasValue())))
             {
@@ -71,7 +71,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
                     nameof(Tag.Name) => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault())),
                     nameof(Tag.Description) => tagsQuery.Where(x =>
                         x.Description.Contains(filter.Values.FirstOrDefault())),
-                    FilterInfo.Global => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
+                    FilterDto.Global => tagsQuery.Where(x => x.Name.Contains(filter.Values.FirstOrDefault()) ||
                                                 x.Description.Contains(filter.Values.FirstOrDefault())),
                     _ => tagsQuery
                 };

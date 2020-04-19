@@ -4,11 +4,11 @@ using Peent.Application.Infrastructure;
 
 namespace Peent.Api.Infrastructure.ModelBinders
 {
-    public class SortsInfoModelBinderProvider : IModelBinderProvider
+    public class FiltersModelBinderProvider : IModelBinderProvider
     {
         private readonly IModelBinderProvider _workerProvider;
 
-        public SortsInfoModelBinderProvider(IModelBinderProvider workerProvider)
+        public FiltersModelBinderProvider(IModelBinderProvider workerProvider)
         {
             _workerProvider = workerProvider;
         }
@@ -17,8 +17,8 @@ namespace Peent.Api.Infrastructure.ModelBinders
         {
             Ensure.That(context, nameof(context)).IsNotNull();
 
-            return typeof(IHaveSortsInfo).IsAssignableFrom(context.Metadata.ModelType)
-                ? new SortsInfoModelBinder(_workerProvider.GetBinder(context))
+            return typeof(IHaveFilters).IsAssignableFrom(context.Metadata.ModelType)
+                ? new FiltersModelBinder(_workerProvider.GetBinder(context))
                 : null;
         }
     }

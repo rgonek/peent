@@ -52,11 +52,11 @@ namespace Peent.Application.Transactions.Queries.GetTransactionsList
             return transactionsPaged;
         }
 
-        private IOrderedQueryable<Transaction> Sort(IOrderedQueryable<Transaction> transactionsQuery, IList<SortInfo> sortInfo)
+        private IOrderedQueryable<Transaction> Sort(IOrderedQueryable<Transaction> transactionsQuery, IList<SortDto> sorts)
         {
-            for (var i = 0; i < sortInfo.Count; i++)
+            for (var i = 0; i < sorts.Count; i++)
             {
-                var sort = sortInfo[i];
+                var sort = sorts[i];
                 transactionsQuery = sort.Field.FirstUp() switch
                 {
                     nameof(Transaction.Title) => transactionsQuery.SortBy(x => x.Title, sort.Direction, i),
@@ -71,7 +71,7 @@ namespace Peent.Application.Transactions.Queries.GetTransactionsList
             return transactionsQuery;
         }
 
-        private IQueryable<Transaction> Filter(IQueryable<Transaction> transactionsQuery, IList<FilterInfo> filters)
+        private IQueryable<Transaction> Filter(IQueryable<Transaction> transactionsQuery, IList<FilterDto> filters)
         {
             foreach (var filter in filters.Where(x => x.Values.Any(y => y.HasValue())))
             {
@@ -82,7 +82,7 @@ namespace Peent.Application.Transactions.Queries.GetTransactionsList
                     nameof(Transaction.Description) => transactionsQuery.Where(x => x.Description.Contains(filter.Values.FirstOrDefault())),
                     //nameof(Transaction.Date) => transactionsQuery.Where(x => x.Description.Contains(filter.Values.FirstOrDefault())),
                     nameof(Transaction.Type) => transactionsQuery.Where(x => x.Type.ToString().ToLower() == filter.Values.FirstOrDefault()),
-                    FilterInfo.Global => transactionsQuery.Where(x => x.Title.Contains(filter.Values.FirstOrDefault()) ||
+                    FilterDto.Global => transactionsQuery.Where(x => x.Title.Contains(filter.Values.FirstOrDefault()) ||
                                                                       x.Description.Contains(filter.Values.FirstOrDefault()) ||
                                                                       x.Category.Name.Contains(filter.Values.FirstOrDefault()) ||
                                                                       x.Type.ToString().ToLower() == filter.Values.FirstOrDefault()),
