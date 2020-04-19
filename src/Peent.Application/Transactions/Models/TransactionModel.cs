@@ -5,6 +5,7 @@ using Peent.Application.Accounts.Models;
 using Peent.Application.Categories.Models;
 using Peent.Application.Tags.Models;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Application.Transactions.Models
 {

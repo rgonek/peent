@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 
-namespace Peent.Domain.Entities
+namespace Peent.Domain.Entities.TransactionAggregate
 {
     public class TransactionTag
     {

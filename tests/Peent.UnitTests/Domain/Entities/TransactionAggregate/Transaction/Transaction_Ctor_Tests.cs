@@ -9,9 +9,9 @@ using Peent.CommonTests.AutoFixture;
 using Peent.Domain.Entities;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
-using Sut = Peent.Domain.Entities.Transaction;
+using Sut = Peent.Domain.Entities.TransactionAggregate.Transaction;
 
-namespace Peent.UnitTests.Domain.Entities.Transaction
+namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
 {
     public class Transaction_Ctor_Tests
     {
@@ -21,12 +21,12 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
         {
             _fixture.Customizations.Insert(0, new FixedConstructorParameter<AccountType>(
                 AccountType.Asset, nameof(Peent.Domain.Entities.Account.Type).FirstDown()));
-            var entries = new List<Peent.Domain.Entities.TransactionEntry>
+            var entries = new List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>
             {
-                _fixture.Create<Peent.Domain.Entities.TransactionEntry>(),
-                _fixture.Create<Peent.Domain.Entities.TransactionEntry>()
+                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>(),
+                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>()
             };
-            _fixture.Customizations.Add(new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionEntry>>(
+            _fixture.Customizations.Add(new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
                 entries, nameof(Sut.Entries).FirstDown()));
         }
 
@@ -110,8 +110,8 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
         public void when_entries_are_null__throws_argument_exception()
         {
             var parameterName = nameof(Sut.Entries).FirstDown();
-            IEnumerable<Peent.Domain.Entities.TransactionEntry> entries = null;
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionEntry>>(
+            IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry> entries = null;
+            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
                 entries, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
@@ -125,8 +125,8 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
         public void when_entries_are_empty__throws_argument_exception()
         {
             var parameterName = nameof(Sut.Entries).FirstDown();
-            var entries = Enumerable.Empty<Peent.Domain.Entities.TransactionEntry>();
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionEntry>>(
+            var entries = Enumerable.Empty<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>();
+            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
                 entries, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
@@ -143,12 +143,12 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
         public void when_entries_are_different_length_than_two__throws_argument_exception(int count)
         {
             var parameterName = nameof(Sut.Entries).FirstDown();
-            var entries = new List<Peent.Domain.Entities.TransactionEntry>();
+            var entries = new List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>();
             for (int i = 0; i < count; i++)
             {
-                entries.Add(_fixture.Create<Peent.Domain.Entities.TransactionEntry>());
+                entries.Add(_fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>());
             }
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionEntry>>(
+            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
                 entries, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
@@ -162,12 +162,12 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
         public void when_there_are_two_entries__does_not_throw()
         {
             var parameterName = nameof(Sut.Entries).FirstDown();
-            var entries = new List<Peent.Domain.Entities.TransactionEntry>
+            var entries = new List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>
             {
-                _fixture.Create<Peent.Domain.Entities.TransactionEntry>(),
-                _fixture.Create<Peent.Domain.Entities.TransactionEntry>()
+                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>(),
+                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>()
             };
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionEntry>>(
+            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
                 entries, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
@@ -180,7 +180,7 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
         public void when_tags_are_null__does_not_throw()
         {
             var parameterName = nameof(Sut.TransactionTags).FirstDown();
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionTag>>(
+            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionTag>>(
                 null, parameterName);
             _fixture.Customizations.Add(customizer);
             _fixture.Customize<Sut>(c =>
@@ -198,8 +198,8 @@ namespace Peent.UnitTests.Domain.Entities.Transaction
             var date = _fixture.Create<DateTime>();
             var description = _fixture.Create<string>();
             var categoryId = _fixture.Create<int>();
-            var transactionTags = _fixture.Create<List<Peent.Domain.Entities.TransactionTag>>();
-            var entries = _fixture.Create<List<Peent.Domain.Entities.TransactionEntry>>().Take(2);
+            var transactionTags = _fixture.Create<List<Peent.Domain.Entities.TransactionAggregate.TransactionTag>>();
+            var entries = _fixture.Create<List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>().Take(2);
 
             var transaction = new Sut(title, date, description, categoryId, entries, transactionTags);
 

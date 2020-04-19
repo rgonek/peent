@@ -4,7 +4,7 @@ using System.Linq;
 using EnsureThat;
 using Peent.Domain.Common;
 
-namespace Peent.Domain.Entities
+namespace Peent.Domain.Entities.TransactionAggregate
 {
     public class Transaction : AuditableEntity
     {

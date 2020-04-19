@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EnsureThat;
 using Peent.Domain.Common;
+using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Domain.Entities
 {

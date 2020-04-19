@@ -4,9 +4,9 @@ using FluentAssertions;
 using Peent.Common;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
-using Sut = Peent.Domain.Entities.Transaction;
+using Sut = Peent.Domain.Entities.TransactionAggregate.Transaction;
 
-namespace Peent.UnitTests.Domain.Entities.Transaction
+namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
 {
     public class Transaction_SetTitle_Tests
     {

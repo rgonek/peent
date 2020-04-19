@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Persistence.Configurations
 {

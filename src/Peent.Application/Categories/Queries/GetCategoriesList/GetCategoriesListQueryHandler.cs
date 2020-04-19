@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Categories.Models;
 using Peent.Application.Common;
-using Peent.Application.DynamicQuery;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Application.Interfaces;
 using Peent.Common;
@@ -29,8 +27,8 @@ namespace Peent.Application.Categories.Queries.GetCategoriesList
         public async Task<PagedResult<CategoryModel>> Handle(GetCategoriesListQuery query, CancellationToken token)
         {
             dynamic categoriesQuery = _db.Categories
-                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
-            .OrderBy(x => x.CreationDate);
+                //.Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
+                .OrderBy(x => x.CreationDate);
 
             if (query.Sort.Any())
                 categoriesQuery = Sort(categoriesQuery, query.Sort);

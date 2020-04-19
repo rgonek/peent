@@ -11,6 +11,7 @@ using Peent.Application.Interfaces;
 using Peent.Application.Transactions.Models;
 using Peent.Common;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Application.Transactions.Queries.GetTransactionsList
 {

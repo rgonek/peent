@@ -9,6 +9,7 @@ using Peent.Application.Interfaces;
 using Peent.Common.Time;
 using Peent.Domain.Common;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Persistence
 {

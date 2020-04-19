@@ -5,9 +5,9 @@ using Peent.Common;
 using Peent.CommonTests.AutoFixture;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
-using Sut = Peent.Domain.Entities.TransactionTag;
+using Sut = Peent.Domain.Entities.TransactionAggregate.TransactionTag;
 
-namespace Peent.UnitTests.Domain.Entities.TransactionTag
+namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionTag
 {
     public class TransactionTag_Ctor_Tests
     {

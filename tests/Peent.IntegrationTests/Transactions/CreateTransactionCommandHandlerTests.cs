@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;

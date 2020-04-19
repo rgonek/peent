@@ -3,12 +3,11 @@ using AutoFixture;
 using FluentAssertions;
 using Peent.Common;
 using Peent.CommonTests.AutoFixture;
-using Peent.Domain.Entities;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
-using Sut = Peent.Domain.Entities.TransactionEntry;
+using Sut = Peent.Domain.Entities.TransactionAggregate.TransactionEntry;
 
-namespace Peent.UnitTests.Domain.Entities.TransactionEntry
+namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionEntry
 {
     public class TransactionEntry_Ctor_Tests
     {
@@ -133,7 +132,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionEntry
         [Fact]
         public void when_transaction_is_null__throws_argument_exception()
         {
-            Peent.Domain.Entities.Transaction transaction = null;
+            Peent.Domain.Entities.TransactionAggregate.Transaction transaction = null;
 
             Action act = () => CreateTransactionEntry(transaction);
 
@@ -144,14 +143,14 @@ namespace Peent.UnitTests.Domain.Entities.TransactionEntry
         [Fact]
         public void when_transaction_is_not_null__does_not_throw()
         {
-            var transaction = F.Create<Peent.Domain.Entities.Transaction>();
+            var transaction = F.Create<Peent.Domain.Entities.TransactionAggregate.Transaction>();
 
             var transactionEntry = CreateTransactionEntry(transaction);
 
             transactionEntry.Transaction.Should().Be(transaction);
         }
 
-        private static Sut CreateTransactionEntry(Peent.Domain.Entities.Transaction transaction)
+        private static Sut CreateTransactionEntry(Peent.Domain.Entities.TransactionAggregate.Transaction transaction)
         {
             return new Sut(
                 transaction,

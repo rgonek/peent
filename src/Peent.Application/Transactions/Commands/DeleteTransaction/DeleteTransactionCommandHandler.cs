@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Application.Transactions.Commands.DeleteTransaction
 {

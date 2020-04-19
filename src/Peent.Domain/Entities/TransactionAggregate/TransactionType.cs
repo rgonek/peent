@@ -1,4 +1,4 @@
-﻿namespace Peent.Domain.Entities
+﻿namespace Peent.Domain.Entities.TransactionAggregate
 {
     public enum TransactionType : short
     {

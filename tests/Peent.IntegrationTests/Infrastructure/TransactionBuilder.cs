@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Peent.Application.Transactions.Commands.CreateTransaction;
 using AutoFixture;
 using Peent.Domain.Entities;
+using Peent.Domain.Entities.TransactionAggregate;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
