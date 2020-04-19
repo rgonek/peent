@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EnsureThat;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Peent.Application.Infrastructure;
 
@@ -15,17 +15,11 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            Ensure.That(context, nameof(context)).IsNotNull();
 
-            if (typeof(IHavePaginationInfo).IsAssignableFrom(context.Metadata.ModelType))
-            {
-                return new PaginationInfoModelBinder(_workerProvider.GetBinder(context));
-            }
-
-            return null;
+            return typeof(IHavePaginationInfo).IsAssignableFrom(context.Metadata.ModelType)
+                ? new PaginationInfoModelBinder(_workerProvider.GetBinder(context))
+                : null;
         }
     }
 }

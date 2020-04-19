@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EnsureThat;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Peent.Application.Infrastructure;
 
@@ -15,17 +15,11 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            Ensure.That(context, nameof(context)).IsNotNull();
 
-            if (typeof(IHaveSortsInfo).IsAssignableFrom(context.Metadata.ModelType))
-            {
-                return new SortsInfoModelBinder(_workerProvider.GetBinder(context));
-            }
-
-            return null;
+            return typeof(IHaveSortsInfo).IsAssignableFrom(context.Metadata.ModelType)
+                ? new SortsInfoModelBinder(_workerProvider.GetBinder(context))
+                : null;
         }
     }
 }

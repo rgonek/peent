@@ -1,4 +1,5 @@
 ﻿using System;
+using EnsureThat;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
@@ -9,17 +10,11 @@ namespace Peent.Api.Infrastructure.ModelBinders
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            Ensure.That(context, nameof(context)).IsNotNull();
 
-            if (context.Metadata.ModelType == typeof(DateTime) || context.Metadata.ModelType == typeof(DateTime?))
-            {
-                return new BinderTypeModelBinder(typeof(DateTimeBinder));
-            }
-
-            return null;
+            return context.Metadata.ModelType == typeof(DateTime) || context.Metadata.ModelType == typeof(DateTime?)
+                ? new BinderTypeModelBinder(typeof(DateTimeBinder))
+                : null;
         }
     }
 }
