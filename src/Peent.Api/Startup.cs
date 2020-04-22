@@ -13,9 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Peent.Api.Infrastructure;
 using Peent.Api.Infrastructure.ModelBinders;
+using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
-using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 

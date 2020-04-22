@@ -2,7 +2,7 @@
 
 namespace Peent.Domain.Entities
 {
-    public class Currency
+    public class Currency : IEntity<int>
     {
         public int Id { get; private set; }
 

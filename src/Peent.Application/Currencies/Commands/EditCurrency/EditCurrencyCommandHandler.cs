@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
-using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Currencies.Commands.EditCurrency

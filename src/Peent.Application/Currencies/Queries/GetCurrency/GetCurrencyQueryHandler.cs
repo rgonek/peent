@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
-using Peent.Application.Interfaces;
 using Peent.Application.Currencies.Models;
 using Peent.Domain.Entities;
 

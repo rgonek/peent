@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
-using Peent.Application.Interfaces;
 using Peent.Common.Time;
 using Peent.Domain.Entities;
 using Peent.Domain.ValueObjects;

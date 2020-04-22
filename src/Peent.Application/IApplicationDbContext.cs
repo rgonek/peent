@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
 
-namespace Peent.Application.Interfaces
+namespace Peent.Application
 {
     public interface IApplicationDbContext
     {

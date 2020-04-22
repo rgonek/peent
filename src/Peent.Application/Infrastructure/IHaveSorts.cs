@@ -5,6 +5,6 @@ namespace Peent.Application.Infrastructure
 {
     public interface IHaveSorts
     {
-        IList<SortDto> Sort { get; }
+        IList<SortDto> Sorts { get; }
     }
 }

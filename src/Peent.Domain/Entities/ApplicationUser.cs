@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Peent.Domain.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IEntity<string>
     {
         [PersonalData]
         public string FirstName { get; private set; }

@@ -13,7 +13,7 @@ namespace Peent.Application.Transactions.Queries.GetTransactionsList
 
         public int PageIndex { get; set; } = 1;
 
-        public IList<SortDto> Sort { get; } = new List<SortDto>();
+        public IList<SortDto> Sorts { get; } = new List<SortDto>();
         public IList<FilterDto> Filters { get; } = new List<FilterDto>();
     }
 }

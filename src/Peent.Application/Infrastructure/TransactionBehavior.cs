@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Peent.Application.Interfaces;
 
 namespace Peent.Application.Infrastructure
 {

@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
 using Peent.Application.Infrastructure.Extensions;
-using Peent.Application.Interfaces;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Accounts.Commands.DeleteAccount
@@ -15,10 +14,7 @@ namespace Peent.Application.Accounts.Commands.DeleteAccount
         private readonly IUserAccessor _userAccessor;
 
         public DeleteAccountCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-        {
-            _db = db;
-            _userAccessor = userAccessor;
-        }
+            => (_db, _userAccessor) = (db, userAccessor);
 
         public async Task<Unit> Handle(DeleteAccountCommand command, CancellationToken token)
         {

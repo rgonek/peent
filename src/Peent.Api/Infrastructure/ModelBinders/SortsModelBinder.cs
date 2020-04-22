@@ -57,7 +57,7 @@ namespace Peent.Api.Infrastructure.ModelBinders
 
                 foreach (var sort in sorts)
                 {
-                    sortContainer.Sort.Add(sort);
+                    sortContainer.Sorts.Add(sort);
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
 
         public int PageIndex { get; set; } = 1;
 
-        public IList<SortDto> Sort { get; } = new List<SortDto>();
+        public IList<SortDto> Sorts { get; } = new List<SortDto>();
         public IList<FilterDto> Filters { get; } = new List<FilterDto>();
 
         public IEnumerable<string> AllowedFields => new[]

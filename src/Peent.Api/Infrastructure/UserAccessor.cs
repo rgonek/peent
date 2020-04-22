@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Peent.Application.Interfaces;
+using Peent.Application;
 
 namespace Peent.Api.Infrastructure
 {
