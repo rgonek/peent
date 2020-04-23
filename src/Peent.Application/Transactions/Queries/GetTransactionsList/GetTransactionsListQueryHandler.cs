@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Peent.Application.Common;
 using Peent.Application.DynamicQuery;
 using Peent.Application.Infrastructure.Extensions;
+using Peent.Application.Specifications;
 using Peent.Application.Transactions.Models;
+using Peent.Application.Transactions.Specifications;
 
 namespace Peent.Application.Transactions.Queries.GetTransactionsList
 {
@@ -18,12 +19,7 @@ namespace Peent.Application.Transactions.Queries.GetTransactionsList
 
         public async Task<PagedResult<TransactionModel>> Handle(GetTransactionsListQuery query, CancellationToken token)
             => await _db.Transactions
-                .Include(x => x.Category)
-                .Include(x => x.Entries)
-                .ThenInclude(x => x.Account)
-                .ThenInclude(x => x.Currency)
-                .Include(x => x.TransactionTags)
-                .ThenInclude(x => x.Tag)
+                .Specify(new TransactionDetails())
                 .ApplyFilters(query)
                 .ApplySort(query)
                 .GetPagedAsync(

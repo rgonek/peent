@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Exceptions;
+using Peent.Application.Specifications;
 using Peent.Application.Transactions.Models;
+using Peent.Application.Transactions.Specifications;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Transactions.Queries.GetTransaction
@@ -22,12 +24,7 @@ namespace Peent.Application.Transactions.Queries.GetTransaction
         public async Task<TransactionModel> Handle(GetTransactionQuery query, CancellationToken token)
         {
             var transaction = await _db.Transactions
-                .Include(x => x.Category)
-                .Include(x => x.Entries)
-                .Include("Entries.Account")
-                .Include("Entries.Account.Currency")
-                .Include(x => x.TransactionTags)
-                .Include("TransactionTags.Tag")
+                .Specify(new TransactionDetails())
                 .SingleOrDefaultAsync(x => x.Id == query.Id,
                     cancellationToken: token);
 
