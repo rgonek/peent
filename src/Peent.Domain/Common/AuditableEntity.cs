@@ -7,25 +7,25 @@ namespace Peent.Domain.Common
 {
     public class AuditableEntity : IHaveAuditInfo
     {
-        public CreationInfo CreationInfo { get; private set; }
-        public ModificationInfo LastModificationInfo { get; private set; }
+        public AuditInfo Created { get; private set; }
+        public AuditInfo LastModified { get; private set; }
 
-        public void SetCreatedBy(string createdById)
+        public void SetCreatedBy(ApplicationUser createdBy)
         {
-            if (CreationInfo != null)
+            if (Created != null)
             {
                 //throw
             }
-            CreationInfo = CreationInfo.For(createdById);
+            Created = AuditInfo.For(createdBy);
         }
 
-        public void SetModifiedBy(string modifiedById)
+        public void SetModifiedBy(ApplicationUser modifiedBy)
         {
-            if (CreationInfo == null)
+            if (LastModified == null)
             {
                 //throw
             }
-            LastModificationInfo = ModificationInfo.For(modifiedById);
+            LastModified = AuditInfo.For(modifiedBy);
         }
     }
 }

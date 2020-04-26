@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using AutoFixture;
 using FakeItEasy;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
-using Peent.Common.Time;
 using Peent.CommonTests.Infrastructure;
 using Peent.Domain.Entities;
 using Peent.Persistence;
@@ -40,7 +38,13 @@ namespace Peent.IntegrationTests.Infrastructure
             ConfigureServices(services);
             var provider = services.BuildServiceProvider();
             _scopeFactory = provider.GetService<IServiceScopeFactory>();
-            _checkpoint = new Checkpoint();
+            _checkpoint = new Checkpoint
+            {
+                TablesToIgnore = new[]
+                {
+                    "__EFMigrationsHistory"
+                }
+            };
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -231,7 +235,7 @@ namespace Peent.IntegrationTests.Infrastructure
         public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user)
         {
             var workspace = new Workspace();
-            workspace.SetCreatedBy(user.Id);
+            workspace.SetCreatedBy(user);
             await InsertAsync(workspace);
 
             return workspace;

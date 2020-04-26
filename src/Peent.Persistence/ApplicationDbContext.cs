@@ -40,22 +40,27 @@ namespace Peent.Persistence
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.SetCreatedBy(_userAccessor.User.GetUserId());
+                        entry.Entity.SetCreatedBy(await GetCurrentUser(cancellationToken));
                         break;
                     case EntityState.Modified:
-                        entry.Entity.SetModifiedBy(_userAccessor.User.GetUserId());
+                        entry.Entity.SetModifiedBy(await GetCurrentUser(cancellationToken));
                         break;
                 }
             }
 
-            return base.SaveChangesAsync(cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task<ApplicationUser> GetCurrentUser(CancellationToken cancellationToken)
+        {
+            return await Users.SingleAsync(x => x.Id == _userAccessor.User.GetUserId(), cancellationToken);
         }
 
         public async Task BeginTransactionAsync()

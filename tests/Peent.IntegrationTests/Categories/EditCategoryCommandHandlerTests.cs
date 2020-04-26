@@ -51,7 +51,7 @@ namespace Peent.IntegrationTests.Categories
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.LastModificationInfo.LastModifiedById.Should().Be(user2.Id);
+            category.LastModified.By.Should().Be(user2.Id);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace Peent.IntegrationTests.Categories
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.LastModificationInfo.LastModifiedById.Should().Be(user.Id);
+            category.LastModified.By.Should().Be(user.Id);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Peent.IntegrationTests.Categories
                 await SendAsync(command);
 
                 var category = await FindAsync<Category>(categoryId);
-                category.LastModificationInfo.LastModificationDate.Should().Be(utcNow);
+                category.LastModified.On.Should().Be(utcNow);
             }
         }
 

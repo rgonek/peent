@@ -4,7 +4,7 @@ namespace Peent.Domain.Common
 {
     public interface IHaveAuditInfo
     {
-        public CreationInfo CreationInfo { get; }
-        public ModificationInfo LastModificationInfo { get; }
+        public AuditInfo Created { get; }
+        public AuditInfo LastModified { get; }
     }
 }

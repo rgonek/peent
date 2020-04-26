@@ -15,7 +15,7 @@ namespace Peent.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0-preview8.19405.11")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -157,29 +157,12 @@ namespace Peent.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnName("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
-
-                    b.Property<DateTime?>("LastModificationDate")
-                        .HasColumnName("LastModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnName("LastModifiedById")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -194,11 +177,7 @@ namespace Peent.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
-
                     b.HasIndex("CurrencyId");
-
-                    b.HasIndex("LastModifiedById");
 
                     b.HasIndex("WorkspaceId");
 
@@ -282,26 +261,9 @@ namespace Peent.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnName("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
-
-                    b.Property<DateTime?>("LastModificationDate")
-                        .HasColumnName("LastModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnName("LastModifiedById")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -312,10 +274,6 @@ namespace Peent.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastModifiedById");
 
                     b.HasIndex("WorkspaceId");
 
@@ -360,29 +318,12 @@ namespace Peent.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnName("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
-
-                    b.Property<DateTime?>("LastModificationDate")
-                        .HasColumnName("LastModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnName("LastModifiedById")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -394,16 +335,12 @@ namespace Peent.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastModifiedById");
-
                     b.HasIndex("WorkspaceId");
 
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Peent.Domain.Entities.Transaction", b =>
+            modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.Transaction", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -413,29 +350,12 @@ namespace Peent.Persistence.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnName("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasMaxLength(2000);
-
-                    b.Property<DateTime?>("LastModificationDate")
-                        .HasColumnName("LastModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnName("LastModifiedById")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -449,14 +369,10 @@ namespace Peent.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastModifiedById");
-
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("Peent.Domain.Entities.TransactionEntry", b =>
+            modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.TransactionEntry", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -469,15 +385,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(38,18)");
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnName("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
@@ -486,14 +393,6 @@ namespace Peent.Persistence.Migrations
 
                     b.Property<int?>("ForeignCurrencyId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("LastModificationDate")
-                        .HasColumnName("LastModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnName("LastModifiedById")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<long>("TransactionId")
                         .HasColumnType("bigint");
@@ -505,13 +404,9 @@ namespace Peent.Persistence.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("CreatedById");
-
                     b.HasIndex("CurrencyId");
 
                     b.HasIndex("ForeignCurrencyId");
-
-                    b.HasIndex("LastModifiedById");
 
                     b.HasIndex("TransactionId");
 
@@ -520,7 +415,7 @@ namespace Peent.Persistence.Migrations
                     b.ToTable("TransactionEntries");
                 });
 
-            modelBuilder.Entity("Peent.Domain.Entities.TransactionTag", b =>
+            modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.TransactionTag", b =>
                 {
                     b.Property<int>("TagId")
                         .HasColumnType("int");
@@ -542,28 +437,7 @@ namespace Peent.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnName("CreatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnName("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LastModificationDate")
-                        .HasColumnName("LastModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedById")
-                        .HasColumnName("LastModifiedById")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastModifiedById");
 
                     b.ToTable("Workspaces");
                 });
@@ -621,71 +495,200 @@ namespace Peent.Persistence.Migrations
 
             modelBuilder.Entity("Peent.Domain.Entities.Account", b =>
                 {
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Peent.Domain.Entities.Currency", "Currency")
                         .WithMany()
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("LastModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
                         .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
+                        {
+                            b1.Property<int>("AccountId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("AccountId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Accounts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountId");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "LastModified", b1 =>
+                        {
+                            b1.Property<int>("AccountId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("AccountId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Accounts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AccountId");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+                        });
                 });
 
             modelBuilder.Entity("Peent.Domain.Entities.Category", b =>
                 {
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("LastModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
                         .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
+                        {
+                            b1.Property<int>("CategoryId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("CategoryId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Categories");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CategoryId");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "LastModified", b1 =>
+                        {
+                            b1.Property<int>("CategoryId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("CategoryId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Categories");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CategoryId");
+                        });
                 });
 
             modelBuilder.Entity("Peent.Domain.Entities.Tag", b =>
                 {
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("LastModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
                         .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
+                        {
+                            b1.Property<int>("TagId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("TagId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Tags");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TagId");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "LastModified", b1 =>
+                        {
+                            b1.Property<int>("TagId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("TagId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Tags");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TagId");
+                        });
                 });
 
-            modelBuilder.Entity("Peent.Domain.Entities.Transaction", b =>
+            modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.Transaction", b =>
                 {
                     b.HasOne("Peent.Domain.Entities.Category", "Category")
                         .WithMany()
@@ -693,30 +696,67 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
+                        {
+                            b1.Property<long>("TransactionId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("LastModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("TransactionId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Transactions");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransactionId");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "LastModified", b1 =>
+                        {
+                            b1.Property<long>("TransactionId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("TransactionId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Transactions");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransactionId");
+                        });
                 });
 
-            modelBuilder.Entity("Peent.Domain.Entities.TransactionEntry", b =>
+            modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.TransactionEntry", b =>
                 {
                     b.HasOne("Peent.Domain.Entities.Account", "Account")
                         .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Peent.Domain.Entities.Currency", "Currency")
@@ -730,23 +770,72 @@ namespace Peent.Persistence.Migrations
                         .HasForeignKey("ForeignCurrencyId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("LastModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Peent.Domain.Entities.Transaction", "Transaction")
+                    b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", "Transaction")
                         .WithMany()
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.Transaction", null)
+                    b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", null)
                         .WithMany("Entries")
                         .HasForeignKey("TransactionId1");
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
+                        {
+                            b1.Property<long>("TransactionEntryId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("TransactionEntryId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("TransactionEntries");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransactionEntryId");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "LastModified", b1 =>
+                        {
+                            b1.Property<long>("TransactionEntryId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("TransactionEntryId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("TransactionEntries");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransactionEntryId");
+                        });
                 });
 
-            modelBuilder.Entity("Peent.Domain.Entities.TransactionTag", b =>
+            modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.TransactionTag", b =>
                 {
                     b.HasOne("Peent.Domain.Entities.Tag", "Tag")
                         .WithMany("TransactionTags")
@@ -754,7 +843,7 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.Transaction", "Transaction")
+                    b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", "Transaction")
                         .WithMany("TransactionTags")
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -763,16 +852,59 @@ namespace Peent.Persistence.Migrations
 
             modelBuilder.Entity("Peent.Domain.Entities.Workspace", b =>
                 {
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
+                        {
+                            b1.Property<int>("WorkspaceId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasOne("Peent.Domain.Entities.ApplicationUser", "LastModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("LastModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("WorkspaceId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Workspaces");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WorkspaceId");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "LastModified", b1 =>
+                        {
+                            b1.Property<int>("WorkspaceId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<string>("ById")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<DateTime>("On")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("WorkspaceId");
+
+                            b1.HasIndex("ById");
+
+                            b1.ToTable("Workspaces");
+
+                            b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
+                                .WithMany()
+                                .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WorkspaceId");
+                        });
                 });
 #pragma warning restore 612, 618
         }

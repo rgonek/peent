@@ -31,7 +31,7 @@ namespace Peent.Application.DynamicQuery.Sorts
 
             if (typeof(IHaveAuditInfo).IsAssignableFrom(requestedType))
             {
-                return new Sort(nameof(IHaveAuditInfo.CreationInfo) + "." + nameof(IHaveAuditInfo.CreationInfo.CreationDate));
+                return new Sort(nameof(IHaveAuditInfo.Created) + "." + nameof(IHaveAuditInfo.Created.On));
             }
             if (typeof(IEntity<>).IsAssignableFromRawGeneric(requestedType))
             {

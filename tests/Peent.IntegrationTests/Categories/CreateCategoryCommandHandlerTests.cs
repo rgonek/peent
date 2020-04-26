@@ -41,7 +41,7 @@ namespace Peent.IntegrationTests.Categories
             var categoryId = await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.CreationInfo.CreatedById.Should().Be(user.Id);
+            category.Created.By.Should().Be(user);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Peent.IntegrationTests.Categories
                 var categoryId = await SendAsync(command);
 
                 var category = await FindAsync<Category>(categoryId);
-                category.CreationInfo.CreationDate.Should().Be(utcNow);
+                category.Created.On.Should().Be(utcNow);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Peent.IntegrationTests.Categories
             var category = await FindAsync<Category>(categoryId);
             category.WorkspaceId.Should().Be(workspace.Id);
             var fetchedWorkspace = await FindAsync<Workspace>(workspace.Id);
-            fetchedWorkspace.CreationInfo.CreatedById.Should().Be(user.Id);
+            fetchedWorkspace.Created.By.Should().Be(user);
         }
 
         [Fact]
