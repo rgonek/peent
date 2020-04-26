@@ -92,37 +92,37 @@ namespace Peent.UnitTests.Transactions
         [Fact]
         public void when_source_account_id_is_0__should_have_error()
         {
-            _validator.ShouldHaveValidationErrorFor(x => x.SourceAccountId, 0);
+            _validator.ShouldHaveValidationErrorFor(x => x.FromAccountId, 0);
         }
 
         [Fact]
         public void when_source_account_id_is_negative__should_have_error()
         {
-            _validator.ShouldHaveValidationErrorFor(x => x.SourceAccountId, -1);
+            _validator.ShouldHaveValidationErrorFor(x => x.FromAccountId, -1);
         }
 
         [Fact]
         public void when_source_account_id_is_greater_than_0__should_not_have_error()
         {
-            _validator.ShouldNotHaveValidationErrorFor(x => x.SourceAccountId, 1);
+            _validator.ShouldNotHaveValidationErrorFor(x => x.FromAccountId, 1);
         }
 
         [Fact]
         public void when_destination_account_id_is_0__should_have_error()
         {
-            _validator.ShouldHaveValidationErrorFor(x => x.DestinationAccountId, 0);
+            _validator.ShouldHaveValidationErrorFor(x => x.ToAccountId, 0);
         }
 
         [Fact]
         public void when_destination_account_id_is_negative__should_have_error()
         {
-            _validator.ShouldHaveValidationErrorFor(x => x.DestinationAccountId, -1);
+            _validator.ShouldHaveValidationErrorFor(x => x.ToAccountId, -1);
         }
 
         [Fact]
         public void when_destination_account_id_is_greater_than_0__should_not_have_error()
         {
-            _validator.ShouldNotHaveValidationErrorFor(x => x.DestinationAccountId, 1);
+            _validator.ShouldNotHaveValidationErrorFor(x => x.ToAccountId, 1);
         }
 
         [Fact]

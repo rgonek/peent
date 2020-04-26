@@ -8,25 +8,18 @@ namespace Peent.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.HasKey(x => x.Id);
-
             builder.Property(x => x.Name)
                 .HasMaxLength(1000)
                 .IsRequired();
             builder.Property(x => x.Description)
                 .HasMaxLength(2000);
 
-            builder.HasOne(x => x.Workspace)
-                .WithMany()
-                .HasForeignKey(x => x.WorkspaceId)
-                .IsRequired();
-
             builder.HasOne(x => x.Currency)
                 .WithMany()
-                .HasForeignKey(x => x.CurrencyId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.ConfigureWorkspace();
             builder.ConfigureAuditInfo();
         }
     }

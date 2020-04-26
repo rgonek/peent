@@ -16,19 +16,7 @@ namespace Peent.Persistence.Configurations
             builder.Property(x => x.Description)
                 .HasMaxLength(2000);
 
-            builder.HasOne(x => x.Workspace)
-                .WithMany()
-                .HasForeignKey(x => x.WorkspaceId)
-                .IsRequired();
-
-            builder.HasMany(x => x.TransactionTags)
-                .WithOne()
-                .HasForeignKey(x => x.TagId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Metadata.FindNavigation(nameof(Tag.TransactionTags))
-                .SetPropertyAccessMode(PropertyAccessMode.Field);
-
+            builder.ConfigureWorkspace();
             builder.ConfigureAuditInfo();
         }
     }

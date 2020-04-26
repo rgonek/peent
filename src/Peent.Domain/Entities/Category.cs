@@ -3,14 +3,13 @@ using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Category : AuditableEntity, IEntity<int>
+    public class Category : AuditableEntity, IEntity<int>, IHaveWorkspace
     {
         public int Id { get; private set; }
 
         public string Name { get; private set; }
         public string Description { get; private set; }
         public int WorkspaceId { get; private set; }
-        public Workspace Workspace { get; private set; }
 
         #region Ctors
 
@@ -25,10 +24,9 @@ namespace Peent.Domain.Entities
 
         public Category(string name, string description, int workspaceId)
         {
-            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             Ensure.That(workspaceId, nameof(workspaceId)).IsPositive();
 
-            Name = name;
+            SetName(name);
             Description = description;
             WorkspaceId = workspaceId;
         }

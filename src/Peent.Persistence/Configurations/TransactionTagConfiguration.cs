@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Persistence.Configurations
@@ -17,12 +16,10 @@ namespace Peent.Persistence.Configurations
 
             builder.HasOne(x => x.Tag)
                 .WithMany(x => x.TransactionTags)
-                .HasForeignKey(x => x.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Transaction)
                 .WithMany(x => x.TransactionTags)
-                .HasForeignKey(x => x.TransactionId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

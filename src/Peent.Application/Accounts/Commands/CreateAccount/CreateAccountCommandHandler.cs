@@ -24,15 +24,18 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
                     x.Type == command.Type,
                     token);
-
             if (existingAccount != null)
                 throw DuplicateException.Create<Account>(x => x.Name, command.Name);
+
+            var currency = await _db.Currencies.SingleOrDefaultAsync(x => x.Id == command.CurrencyId, token);
+            if (currency == null)
+                throw NotFoundException.Create<Currency>(x => x.Id, command.CurrencyId);
 
             var account = new Account(
                 command.Name,
                 command.Description,
                 command.Type,
-                command.CurrencyId,
+                currency,
                 _userAccessor.User.GetWorkspaceId());
 
             _db.Accounts.Add(account);

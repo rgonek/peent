@@ -397,9 +397,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<long>("TransactionId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("TransactionId1")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
@@ -409,8 +406,6 @@ namespace Peent.Persistence.Migrations
                     b.HasIndex("ForeignCurrencyId");
 
                     b.HasIndex("TransactionId");
-
-                    b.HasIndex("TransactionId1");
 
                     b.ToTable("TransactionEntries");
                 });
@@ -501,7 +496,7 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
+                    b.HasOne("Peent.Domain.Entities.Workspace", null)
                         .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -564,7 +559,7 @@ namespace Peent.Persistence.Migrations
 
             modelBuilder.Entity("Peent.Domain.Entities.Category", b =>
                 {
-                    b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
+                    b.HasOne("Peent.Domain.Entities.Workspace", null)
                         .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -627,7 +622,7 @@ namespace Peent.Persistence.Migrations
 
             modelBuilder.Entity("Peent.Domain.Entities.Tag", b =>
                 {
-                    b.HasOne("Peent.Domain.Entities.Workspace", "Workspace")
+                    b.HasOne("Peent.Domain.Entities.Workspace", null)
                         .WithMany()
                         .HasForeignKey("WorkspaceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -771,14 +766,10 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", null)
                         .WithMany("Entries")
-                        .HasForeignKey("TransactionId1");
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Peent.Domain.ValueObjects.AuditInfo", "Created", b1 =>
                         {

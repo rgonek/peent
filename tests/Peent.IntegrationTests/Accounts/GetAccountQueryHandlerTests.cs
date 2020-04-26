@@ -26,7 +26,7 @@ namespace Peent.IntegrationTests.Accounts
             accountModel.Name.Should().Be(account.Name);
             accountModel.Description.Should().Be(account.Description);
             accountModel.Type.Should().Be(account.Type);
-            accountModel.Currency.Id.Should().Be(account.CurrencyId);
+            accountModel.Currency.Should().Be(account.Currency);
         }
 
         [Fact]

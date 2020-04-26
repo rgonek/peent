@@ -20,12 +20,10 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task should_edit_account()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account;
             var command = F.Build<EditAccountCommand>()
                 .With(x => x.Id, account.Id)
-                .With(x => x.CurrencyId, account.CurrencyId)
+                .With(x => x.CurrencyId, account.Currency.Id)
                 .Create();
 
             await SendAsync(command);
@@ -33,44 +31,38 @@ namespace Peent.IntegrationTests.Accounts
             account = await FindAsync<Account>(account.Id);
             account.Name.Should().Be(command.Name);
             account.Description.Should().Be(command.Description);
-            account.CurrencyId.Should().Be(command.CurrencyId);
+            account.Currency.Id.Should().Be(command.CurrencyId);
         }
 
         [Fact]
         public async Task should_edit_account_by_another_user_in_the_same_workspace()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             Account account = An.Account;
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, workspace);
+            var context = await SetUpAuthenticationContext(_context.Workspace);
             var command = F.Build<EditAccountCommand>()
                 .With(x => x.Id, account.Id)
-                .With(x => x.CurrencyId, account.CurrencyId)
+                .With(x => x.CurrencyId, account.Currency.Id)
                 .Create();
 
             await SendAsync(command);
 
             account = await FindAsync<Account>(account.Id);
-            account.LastModified.By.Should().Be(user2);
+            account.LastModified.By.Should().Be(context.User);
         }
 
         [Fact]
         public async Task when_account_is_edited__lastModifiedBy_is_set_to_current_user()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account;
             var command = F.Build<EditAccountCommand>()
                 .With(x => x.Id, account.Id)
-                .With(x => x.CurrencyId, account.CurrencyId)
+                .With(x => x.CurrencyId, account.Currency.Id)
                 .Create();
 
             await SendAsync(command);
 
             account = await FindAsync<Account>(account.Id);
-            account.LastModified.By.Should().Be(user.Id);
+            account.LastModified.By.Should().Be(_context.User);
         }
 
         [Fact]
@@ -79,12 +71,10 @@ namespace Peent.IntegrationTests.Accounts
             var utcNow = new DateTime(2019, 02, 02, 11, 28, 32);
             using (new ClockOverride(() => utcNow, () => utcNow.AddHours(2)))
             {
-                var user = await CreateUserAsync();
-                SetCurrentUser(user, await CreateWorkspaceAsync(user));
                 Account account = An.Account;
                 var command = F.Build<EditAccountCommand>()
                     .With(x => x.Id, account.Id)
-                    .With(x => x.CurrencyId, account.CurrencyId)
+                    .With(x => x.CurrencyId, account.Currency.Id)
                     .Create();
 
                 await SendAsync(command);
@@ -95,10 +85,8 @@ namespace Peent.IntegrationTests.Accounts
         }
 
         [Fact]
-        public async Task when_account_with_given_name_exists__throws()
+        public async Task When_account_with_given_name_exists__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account.OfAssetType();
             Account account2 = An.Account.OfAssetType();
 
@@ -106,15 +94,13 @@ namespace Peent.IntegrationTests.Accounts
             {
                 Id = account.Id,
                 Name = account2.Name,
-                CurrencyId = account.CurrencyId
+                CurrencyId = account.Currency.Id
             })).Should().Throw<DuplicateException>();
         }
 
         [Fact]
         public async Task when_account_with_given_name_exists_but_is_deleted__do_not_throw()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Account account = An.Account;
             Account account2 = An.Account;
             await SendAsync(new DeleteAccountCommand(account.Id));
@@ -123,27 +109,23 @@ namespace Peent.IntegrationTests.Accounts
             {
                 Id = account2.Id,
                 Name = account.Name,
-                CurrencyId = account2.CurrencyId
+                CurrencyId = account2.Currency.Id
             });
         }
 
         [Fact]
         public async Task when_account_with_given_name_exists_in_another_workspace__do_not_throw()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             Account account = An.Account;
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+            await SetUpAuthenticationContext();
             Account account2 = An.Account;
-            SetCurrentUser(user, workspace);
+            SetCurrentAuthenticationContext(_context);
 
             await SendAsync(new EditAccountCommand
             {
                 Id = account.Id,
                 Name = account2.Name,
-                CurrencyId = account.CurrencyId
+                CurrencyId = account.Currency.Id
             });
         }
     }

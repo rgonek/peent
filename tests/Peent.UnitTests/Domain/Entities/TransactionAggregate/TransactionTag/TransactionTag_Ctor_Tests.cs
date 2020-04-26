@@ -11,14 +11,12 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionTag
 {
     public class TransactionTag_Ctor_Tests
     {
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_transaction_id_is_not_positive__throws_argument_exception(long transactionId)
+        [Fact]
+        public void when_transaction_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.TransactionId).FirstDown();
-            var customizer = new FixedConstructorParameter<long>(
-                transactionId, parameterName);
+            var parameterName = nameof(Sut.Transaction).FirstDown();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.TransactionAggregate.Transaction>(
+                null, parameterName);
 
             Action act = () => Create<Sut>(customizer);
 
@@ -27,25 +25,23 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionTag
         }
 
         [Fact]
-        public void when_transaction_id_is_positive__does_not_throw()
+        public void when_transaction_is_not_null__does_not_throw()
         {
-            var transactionId = F.Create<long>();
-            var customizer = new FixedConstructorParameter<long>(
-                transactionId, nameof(Sut.TransactionId).FirstDown());
+            var transaction = F.Create<Peent.Domain.Entities.TransactionAggregate.Transaction>();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.TransactionAggregate.Transaction>(
+                transaction, nameof(Sut.Transaction).FirstDown());
 
             var transactionTag = Create<Sut>(customizer);
 
-            transactionTag.TransactionId.Should().Be(transactionId);
+            transactionTag.Transaction.Should().Be(transaction);
         }
 
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_tag_id_is_not_positive__throws_argument_exception(int tagId)
+        [Fact]
+        public void when_tag_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.TagId).FirstDown();
-            var customizer = new FixedConstructorParameter<int>(
-                tagId, parameterName);
+            var parameterName = nameof(Sut.Tag).FirstDown();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Tag>(
+                null, parameterName);
 
             Action act = () => Create<Sut>(customizer);
 
@@ -54,15 +50,15 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionTag
         }
 
         [Fact]
-        public void when_tag_id_is_positive__does_not_throw()
+        public void when_tag_is_not_null__does_not_throw()
         {
-            var tagId = F.Create<int>();
-            var customizer = new FixedConstructorParameter<int>(
-                tagId, nameof(Sut.TagId).FirstDown());
+            var tag = F.Create<Peent.Domain.Entities.Tag>();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Tag>(
+                tag, nameof(Sut.Tag).FirstDown());
 
             var transactionTag = Create<Sut>(customizer);
 
-            transactionTag.TagId.Should().Be(tagId);
+            transactionTag.Tag.Should().Be(tag);
         }
     }
 }

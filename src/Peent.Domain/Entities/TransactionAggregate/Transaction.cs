@@ -13,7 +13,6 @@ namespace Peent.Domain.Entities.TransactionAggregate
         public string Title { get; private set; }
         public string Description { get; private set; }
         public DateTime Date { get; private set; }
-        public int CategoryId { get; private set; }
         public Category Category { get; private set; }
         public TransactionType Type { get; private set; }
 
@@ -29,11 +28,11 @@ namespace Peent.Domain.Entities.TransactionAggregate
         public Transaction(
             string title,
             DateTime date,
-            int categoryId,
+            Category category,
             decimal amount,
             Account fromAccount,
             Account toAccount)
-            : this(title, date, null, categoryId, amount, fromAccount, toAccount)
+            : this(title, date, null, category, amount, fromAccount, toAccount)
         {
         }
 
@@ -41,23 +40,23 @@ namespace Peent.Domain.Entities.TransactionAggregate
             string title,
             DateTime date,
             string description,
-            int categoryId,
+            Category category,
             decimal amount,
             Account fromAccount,
             Account toAccount)
-            : this(title, date, description, categoryId, amount, fromAccount, toAccount, Enumerable.Empty<TransactionTag>())
+            : this(title, date, description, category, amount, fromAccount, toAccount, Enumerable.Empty<Tag>())
         {
         }
 
         public Transaction(
             string title,
             DateTime date,
-            int categoryId,
+            Category category,
             decimal amount,
             Account fromAccount,
             Account toAccount,
-            IEnumerable<TransactionTag> transactionTags)
-            : this(title, date, null, categoryId, amount, fromAccount, toAccount, transactionTags)
+            IEnumerable<Tag> tags)
+            : this(title, date, null, category, amount, fromAccount, toAccount, tags)
         {
         }
 
@@ -67,27 +66,25 @@ namespace Peent.Domain.Entities.TransactionAggregate
             string title,
             DateTime date,
             string description,
-            int categoryId,
+            Category category,
             decimal amount,
             Account fromAccount,
             Account toAccount,
-            IEnumerable<TransactionTag> transactionTags)
+            IEnumerable<Tag> tags)
         {
-            Ensure.That(title, nameof(title)).IsNotNullOrWhiteSpace();
-            Ensure.That(categoryId, nameof(categoryId)).IsPositive();
             Ensure.That(amount, nameof(amount)).IsPositive();
             Ensure.That(fromAccount, nameof(fromAccount)).IsNotNull();
-            Ensure.That(fromAccount.CurrencyId, nameof(fromAccount.CurrencyId)).IsPositive();
+            Ensure.That(fromAccount.Currency, nameof(fromAccount.Currency)).IsNotNull();
             Ensure.That(toAccount, nameof(toAccount)).IsNotNull();
-            Ensure.That(toAccount.CurrencyId, nameof(toAccount.CurrencyId)).IsPositive();
+            Ensure.That(toAccount.Currency, nameof(toAccount.Currency)).IsNotNull();
 
-            Title = title;
-            Date = date;
-            Description = description;
-            CategoryId = categoryId;
-            _transactionTags = (transactionTags ?? Enumerable.Empty<TransactionTag>()).ToList();
-            _entries.Add(new TransactionEntry(fromAccount, amount, fromAccount.CurrencyId));
-            _entries.Add(new TransactionEntry(toAccount, -amount, toAccount.CurrencyId));
+            SetTitle(title);
+            SetDate(date);
+            SetDescription(description);
+            SetCategory(category);
+            AddTags(tags ?? Enumerable.Empty<Tag>());
+            _entries.Add(new TransactionEntry(fromAccount, amount, fromAccount.Currency));
+            _entries.Add(new TransactionEntry(toAccount, -amount, toAccount.Currency));
             Type = GetTransactionType(
                 Entries.First().Account,
                 Entries.Last().Account);
@@ -104,11 +101,11 @@ namespace Peent.Domain.Entities.TransactionAggregate
 
         public void SetDescription(string description) => Description = description;
 
-        public void SetCategory(int categoryId)
+        public void SetCategory(Category category)
         {
-            Ensure.That(categoryId, nameof(categoryId)).IsPositive();
+            Ensure.That(category, nameof(category)).IsNotNull();
 
-            CategoryId = categoryId;
+            Category = category;
         }
 
         public void AddTags(IEnumerable<Tag> tags)
@@ -123,14 +120,7 @@ namespace Peent.Domain.Entities.TransactionAggregate
         {
             Ensure.That(tag, nameof(tag)).IsNotNull();
 
-            AddTag(tag.Id);
-        }
-
-        public void AddTag(int tagId)
-        {
-            Ensure.That(tagId, nameof(tagId)).IsPositive();
-
-            _transactionTags.Add(new TransactionTag(this, tagId));
+            _transactionTags.Add(new TransactionTag(this, tag));
         }
 
         private static TransactionType GetTransactionType(Account sourceAccount, Account destinationAccount)

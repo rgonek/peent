@@ -1,5 +1,6 @@
 ﻿using EnsureThat;
 using Microsoft.AspNetCore.Identity;
+using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {

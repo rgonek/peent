@@ -16,8 +16,8 @@ namespace Peent.IntegrationTests.Infrastructure
         private string _title;
         private string _description;
         private DateTime _date;
-        private int _categoryId;
-        private IList<int> _tagIds;
+        private Category _category;
+        private IList<Tag> _tags;
         private Account _fromAccount;
         private Account _toAccount;
         private decimal _amount;
@@ -63,13 +63,13 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public TransactionBuilder Tagged(params Tag[] tags)
         {
-            _tagIds = tags.Select(x => x.Id).ToList();
+            _tags = tags.ToList();
             return this;
         }
 
         public TransactionBuilder WithCategory(Category category)
         {
-            _categoryId = category.Id;
+            _category = category;
             return this;
         }
 
@@ -78,24 +78,20 @@ namespace Peent.IntegrationTests.Infrastructure
             return new CreateTransactionCommand
             {
                 Amount = _amount,
-                CategoryId = _categoryId,
+                CategoryId = _category.Id,
                 Date = _date,
                 Description = _description,
-                SourceAccountId = _fromAccount.Id,
-                DestinationAccountId = _toAccount.Id,
-                TagIds = _tagIds,
+                FromAccountId = _fromAccount.Id,
+                ToAccountId = _toAccount.Id,
+                TagIds = _tags.Select(x => x.Id).ToList(),
                 Title = _title
             };
         }
 
         public async Task<Transaction> Build()
         {
-            var transaction = new Transaction(_title, _date, _description, _categoryId,
-                _amount, _fromAccount, _toAccount);
-            foreach (var tagId in _tagIds)
-            {
-                transaction.AddTag(tagId);
-            }
+            var transaction = new Transaction(_title, _date, _description, _category,
+                _amount, _fromAccount, _toAccount, _tags);
 
             await InsertAsync(transaction);
 

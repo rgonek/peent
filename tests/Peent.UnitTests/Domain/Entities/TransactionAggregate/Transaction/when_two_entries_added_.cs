@@ -5,6 +5,7 @@ using Peent.CommonTests.AutoFixture;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
 using Xunit;
+using AutoFixture;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using TransactionEntryEntity = Peent.Domain.Entities.TransactionAggregate.TransactionEntry;
 
@@ -82,7 +83,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
             var customizer = new FixedConstructorParameter<AccountType>(
                 type, nameof(Peent.Domain.Entities.Account.Type).FirstDown());
 
-            return new TransactionEntryEntity(Create<Peent.Domain.Entities.Account>(customizer), 1, 1);
+            return new TransactionEntryEntity(Create<Peent.Domain.Entities.Account>(customizer), 1, F.Create<Peent.Domain.Entities.Currency>());
         }
     }
 }

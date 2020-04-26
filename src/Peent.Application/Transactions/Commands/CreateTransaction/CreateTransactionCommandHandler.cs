@@ -21,9 +21,7 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
 
         public async Task<long> Handle(CreateTransactionCommand command, CancellationToken token)
         {
-            var category = await _db.Categories
-                .Where(x => x.Id == command.CategoryId)
-                .SingleOrDefaultAsync(token);
+            var category = await _db.Categories.SingleOrDefaultAsync(x => x.Id == command.CategoryId, token);
             if (category == null)
                 throw NotFoundException.Create<Category>(x => x.Id, command.CategoryId);
 
@@ -39,21 +37,15 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
                         string.Join(", ", command.TagIds));
             }
 
-            var sourceAccount = await _db.Accounts
-                .Where(x => x.Id == command.SourceAccountId)
-                .SingleOrDefaultAsync(token);
-            if (sourceAccount == null)
-                throw NotFoundException.Create<Account>(x => x.Id, command.SourceAccountId);
+            var fromAccount = await _db.Accounts.SingleOrDefaultAsync(x => x.Id == command.FromAccountId, token);
+            if (fromAccount == null)
+                throw NotFoundException.Create<Account>(x => x.Id, command.FromAccountId);
 
-            var destinationAccount = await _db.Accounts
-                .Where(x => x.Id == command.DestinationAccountId)
-                .SingleOrDefaultAsync(token);
-            if (destinationAccount == null)
-                throw NotFoundException.Create<Account>(x => x.Id, command.DestinationAccountId);
+            var toAccount = await _db.Accounts.SingleOrDefaultAsync(x => x.Id == command.ToAccountId, token);
+            if (toAccount == null)
+                throw NotFoundException.Create<Account>(x => x.Id, command.ToAccountId);
 
-            var transaction = new Transaction(command.Title, command.Date, command.Description, command.CategoryId, command.Amount, sourceAccount, destinationAccount);
-            if (tags.Any())
-                transaction.AddTags(tags);
+            var transaction = new Transaction(command.Title, command.Date, command.Description, category, command.Amount, fromAccount, toAccount, tags);
 
             _db.Transactions.Add(transaction);
 

@@ -27,7 +27,7 @@ namespace Peent.IntegrationTests.Transactions
             var transactionId = await SendAsync(command);
 
             var transaction = await FindAsync(transactionId);
-            transaction.CategoryId.Should().Be(command.CategoryId);
+            transaction.Category.Id.Should().Be(command.CategoryId);
             transaction.Title.Should().Be(command.Title);
             transaction.Description.Should().Be(command.Description);
             transaction.Date.Should().Be(command.Date);

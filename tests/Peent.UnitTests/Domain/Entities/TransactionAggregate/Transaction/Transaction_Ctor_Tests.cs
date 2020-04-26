@@ -78,13 +78,11 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
             transaction.Description.Should().Be(description);
         }
 
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_category_id_is_not_positive__throws_argument_exception(int categoryId)
+        [Fact]
+        public void when_category_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.CategoryId).FirstDown();
-            var customizer = new FixedConstructorParameter<int>(categoryId, parameterName);
+            var parameterName = nameof(Sut.Category).FirstDown();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Category>(null, parameterName);
             _fixture.Customizations.Add(customizer);
 
             Action act = () => Create<Sut>(_fixture);
@@ -94,16 +92,16 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         }
 
         [Fact]
-        public void when_category_id_is_positive__does_not_throw()
+        public void when_category_is_not_null__does_not_throw()
         {
-            var categoryId = _fixture.Create<int>();
-            var customizer = new FixedConstructorParameter<int>(
-                categoryId, nameof(Sut.CategoryId).FirstDown());
+            var category = _fixture.Create<Peent.Domain.Entities.Category>();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Category>(
+                category, nameof(Sut.Category).FirstDown());
             _fixture.Customizations.Add(customizer);
 
             var account = Create<Sut>(_fixture);
 
-            account.CategoryId.Should().Be(categoryId);
+            account.Category.Should().Be(category);
         }
 
         [Fact]
@@ -140,7 +138,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         public void when_tags_are_null__does_not_throw()
         {
             var parameterName = nameof(Sut.TransactionTags).FirstDown();
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionTag>>(
+            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.Tag>>(
                 null, parameterName);
             _fixture.Customizations.Add(customizer);
             _fixture.Customize<Sut>(c =>
@@ -157,21 +155,21 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
             var title = _fixture.Create<string>();
             var date = _fixture.Create<DateTime>();
             var description = _fixture.Create<string>();
-            var categoryId = _fixture.Create<int>();
-            var transactionTags = _fixture.Create<List<Peent.Domain.Entities.TransactionAggregate.TransactionTag>>();
+            var category = _fixture.Create<Peent.Domain.Entities.Category>();
+            var tags = _fixture.Create<List<Peent.Domain.Entities.Tag>>();
             var amount = _fixture.Create<decimal>();
             var fromAccount = _fixture.Create<Peent.Domain.Entities.Account>();
             var toAccount = _fixture.Create<Peent.Domain.Entities.Account>();
 
-            var transaction = new Sut(title, date, description, categoryId, amount, fromAccount, toAccount, transactionTags);
+            var transaction = new Sut(title, date, description, category, amount, fromAccount, toAccount, tags);
 
             transaction.Title.Should().Be(title);
             transaction.Date.Should().Be(date);
             transaction.Description.Should().Be(description);
-            transaction.CategoryId.Should().Be(categoryId);
+            transaction.Category.Should().Be(category);
             // TODO: check entries
             //transaction.Entries.Should().BeEquivalentTo(entries);
-            transaction.TransactionTags.Should().BeEquivalentTo(transactionTags);
+            transaction.TransactionTags.Select(x => x.Tag).Should().BeEquivalentTo(tags);
         }
     }
 }

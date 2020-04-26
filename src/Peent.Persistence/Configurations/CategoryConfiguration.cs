@@ -16,11 +16,7 @@ namespace Peent.Persistence.Configurations
             builder.Property(x => x.Description)
                 .HasMaxLength(2000);
 
-            builder.HasOne(x => x.Workspace)
-                .WithMany()
-                .HasForeignKey(x => x.WorkspaceId)
-                .IsRequired();
-
+            builder.ConfigureWorkspace();
             builder.ConfigureAuditInfo();
         }
     }

@@ -75,14 +75,12 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionEntry
             transactionEntry.Amount.Should().Be(amount);
         }
 
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_currency_id_is_not_positive__throws_argument_exception(int currencyId)
+        [Fact]
+        public void when_currency_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.CurrencyId).FirstDown();
-            var customizer = new FixedConstructorParameter<int>(
-                currencyId, parameterName);
+            var parameterName = nameof(Sut.Currency).FirstDown();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Currency>(
+                null, parameterName);
 
             Action act = () => Create<Sut>(customizer);
 
@@ -93,40 +91,13 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionEntry
         [Fact]
         public void when_currency_id_is_positive__does_not_throw()
         {
-            var currencyId = F.Create<int>();
-            var customizer = new FixedConstructorParameter<int>(
-                currencyId, nameof(Sut.CurrencyId).FirstDown());
+            var currency = F.Create<Peent.Domain.Entities.Currency>();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Currency>(
+                currency, nameof(Sut.Currency).FirstDown());
 
             var transactionEntry = Create<Sut>(customizer);
 
-            transactionEntry.CurrencyId.Should().Be(currencyId);
-        }
-
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_transaction_id_is_not_positive__throws_argument_exception(long transactionId)
-        {
-            var parameterName = nameof(Sut.TransactionId).FirstDown();
-            var customizer = new FixedConstructorParameter<long>(
-                transactionId, parameterName);
-
-            Action act = () => Create<Sut>(customizer);
-
-            act.Should().Throw<ArgumentException>()
-                .WithMessage($"*{parameterName}*");
-        }
-
-        [Fact]
-        public void when_transaction_id_is_positive__does_not_throw()
-        {
-            var transactionId = F.Create<int>();
-            var customizer = new FixedConstructorParameter<long>(
-                transactionId, nameof(Sut.TransactionId).FirstDown());
-
-            var transactionEntry = Create<Sut>(customizer);
-
-            transactionEntry.TransactionId.Should().Be(transactionId);
+            transactionEntry.Currency.Should().Be(currency);
         }
 
         [Fact]
@@ -156,7 +127,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.TransactionEntry
                 transaction,
                 F.Create<Peent.Domain.Entities.Account>(),
                 F.Create<decimal>(),
-                F.Create<int>());
+                F.Create<Peent.Domain.Entities.Currency>());
         }
     }
 }

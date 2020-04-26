@@ -6,7 +6,7 @@ using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Domain.Entities
 {
-    public class Tag : AuditableEntity, IEntity<int>
+    public class Tag : AuditableEntity, IEntity<int>, IHaveWorkspace
     {
         public int Id { get; private set; }
 
@@ -14,7 +14,6 @@ namespace Peent.Domain.Entities
         public string Description { get; private set; }
         public DateTime? Date { get; private set; }
         public int WorkspaceId { get; private set; }
-        public Workspace Workspace { get; private set; }
 
         private readonly List<TransactionTag> _transactionTags;
         public IReadOnlyCollection<TransactionTag> TransactionTags => _transactionTags.AsReadOnly();
@@ -41,15 +40,12 @@ namespace Peent.Domain.Entities
 
         public Tag(string name, string description, DateTime? date, int workspaceId)
         {
-            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             Ensure.That(workspaceId, nameof(workspaceId)).IsPositive();
 
-            Name = name;
-            Description = description;
-            Date = date;
+            SetName(name);
+            SetDescription(description);
+            SetDate(date);
             WorkspaceId = workspaceId;
-
-            _transactionTags = new List<TransactionTag>();
         }
 
         public void SetName(string name)

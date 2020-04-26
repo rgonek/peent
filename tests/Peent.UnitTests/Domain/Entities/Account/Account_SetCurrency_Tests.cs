@@ -10,28 +10,27 @@ namespace Peent.UnitTests.Domain.Entities.Account
 {
     public class Account_SetCurrency_Tests
     {
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_currency_id_is_not_positive__throws_argument_exception(int newCurrencyId)
+
+        [Fact]
+        public void when_currency_is_null__throws_argument_exception()
         {
             var account = F.Create<Sut>();
 
-            Action act = () => account.SetCurrency(newCurrencyId);
+            Action act = () => account.SetCurrency(null);
 
             act.Should().Throw<ArgumentException>()
-                .WithMessage($"*{nameof(Sut.CurrencyId).FirstDown()}*");
+                .WithMessage($"*{nameof(Sut.Currency).FirstDown()}*");
         }
 
         [Fact]
-        public void when_currency_id_is_positive__does_not_throw()
+        public void when_currency_is_not_null__does_not_throw()
         {
             var account = F.Create<Sut>();
-            var newCurrencyId = F.Create<int>();
+            var newCurrency = F.Create<Peent.Domain.Entities.Currency>();
 
-            account.SetCurrency(newCurrencyId);
+            account.SetCurrency(newCurrency);
 
-            account.CurrencyId.Should().Be(newCurrencyId);
+            account.Currency.Should().Be(newCurrency);
         }
     }
 }

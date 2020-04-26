@@ -79,7 +79,7 @@ namespace Peent.IntegrationTests.Infrastructure
             if (_currency.Id == 0)
                 await InsertAsync(_currency);
 
-            var account = new Account(_name, _description, _type, _currency.Id, UserAccessor.User.GetWorkspaceId());
+            var account = new Account(_name, _description, _type, _currency, UserAccessor.User.GetWorkspaceId());
 
             await InsertAsync(account);
 

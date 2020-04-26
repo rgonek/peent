@@ -1,4 +1,5 @@
 ﻿using EnsureThat;
+using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
@@ -15,15 +16,10 @@ namespace Peent.Domain.Entities
 
         public Currency(string code, string name, string symbol, ushort decimalPlaces)
         {
-            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
-            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
-            Ensure.That(symbol, nameof(symbol)).IsNotNullOrWhiteSpace();
-            Ensure.That(decimalPlaces, nameof(decimalPlaces)).IsPositive();
-
-            Code = code;
-            Name = name;
-            Symbol = symbol;
-            DecimalPlaces = decimalPlaces;
+            SetCode(code);
+            SetName(name);
+            SetSymbol(symbol);
+            SetDecimalPlaces(decimalPlaces);
         }
 
         public void SetCode(string code)

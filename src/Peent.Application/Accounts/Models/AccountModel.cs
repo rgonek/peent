@@ -20,7 +20,7 @@ namespace Peent.Application.Accounts.Models
             Name = account.Name;
             Description = account.Description;
             Type = account.Type;
-            CurrencyId = account.CurrencyId;
+            CurrencyId = account.Currency.Id;
             Currency = new CurrencyModel(account.Currency);
         }
     }

@@ -37,13 +37,16 @@ namespace Peent.Application.Accounts.Commands.EditAccount
                     x.Type == account.Type &&
                     x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
                     token);
-
             if (existingAccount != null)
                 throw DuplicateException.Create<Account>(x => x.Name, command.Name);
 
+            var currency = await _db.Currencies.SingleOrDefaultAsync(x => x.Id == command.CurrencyId, token);
+            if (currency == null)
+                throw NotFoundException.Create<Currency>(x => x.Id, command.CurrencyId);
+
             account.SetName(command.Name);
             account.SetDescription(command.Description);
-            account.SetCurrency(command.CurrencyId);
+            account.SetCurrency(currency);
 
             _db.Update(account);
             await _db.SaveChangesAsync(token);

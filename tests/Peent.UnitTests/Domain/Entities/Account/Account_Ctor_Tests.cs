@@ -95,14 +95,13 @@ namespace Peent.UnitTests.Domain.Entities.Account
             account.Type.Should().Be(type);
         }
 
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_currency_id_is_not_positive__throws_argument_exception(int currencyId)
+        [Fact]
+        public void when_currency_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.CurrencyId).FirstDown();
-            var customizer = new FixedConstructorParameter<int>(
-                currencyId, parameterName);
+            Peent.Domain.Entities.Currency currency = null;
+            var parameterName = nameof(Sut.Currency).FirstDown();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Currency>(
+                currency, parameterName);
 
             Action act = () => Create<Sut>(customizer);
 
@@ -111,15 +110,15 @@ namespace Peent.UnitTests.Domain.Entities.Account
         }
 
         [Fact]
-        public void when_currency_id_is_positive__does_not_throw()
+        public void when_currency_is_not_null__does_not_throw()
         {
-            var currencyId = F.Create<int>();
-            var customizer = new FixedConstructorParameter<int>(
-                currencyId, nameof(Sut.CurrencyId).FirstDown());
+            var currency = F.Create<Peent.Domain.Entities.Currency>();
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Currency>(
+                currency, nameof(Sut.Currency).FirstDown());
 
             var account = Create<Sut>(customizer);
 
-            account.CurrencyId.Should().Be(currencyId);
+            account.Currency.Should().Be(currency);
         }
 
         [Theory]
@@ -155,15 +154,15 @@ namespace Peent.UnitTests.Domain.Entities.Account
             var name = F.Create<string>();
             var description = F.Create<string>();
             var type = F.Create<AccountType>();
-            var currencyId = F.Create<int>();
+            var currency = F.Create<Peent.Domain.Entities.Currency>();
             var workspaceId = F.Create<int>();
 
-            var account = new Sut(name, description, type, currencyId, workspaceId);
+            var account = new Sut(name, description, type, currency, workspaceId);
 
             account.Name.Should().Be(name);
             account.Description.Should().Be(description);
             account.Type.Should().Be(type);
-            account.CurrencyId.Should().Be(currencyId);
+            account.Currency.Should().Be(currency);
             account.WorkspaceId.Should().Be(workspaceId);
         }
     }

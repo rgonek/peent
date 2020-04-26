@@ -232,26 +232,40 @@ namespace Peent.IntegrationTests.Infrastructure
             return user;
         }
 
-        public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user)
+        public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user = null)
         {
             var workspace = new Workspace();
-            workspace.SetCreatedBy(user);
             await InsertAsync(workspace);
 
             return workspace;
         }
 
-        public static ClaimsPrincipal SetCurrentUser(ApplicationUser user, Workspace workspace)
+        public static ClaimsPrincipal SetCurrentUser(ApplicationUser user, Workspace workspace = null)
         {
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(KnownClaims.WorkspaceId, workspace.Id.ToString()),
+                new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString()),
             }, "mock"));
             FakeItEasy.A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
 
             return claimsPrincipal;
+        }
+
+        public static async Task<AuthenticationContext> SetUpAuthenticationContext(Workspace workspace = null)
+        {
+            var user = await CreateUserAsync();
+            SetCurrentUser(user);
+            workspace ??= await CreateWorkspaceAsync();
+            SetCurrentUser(user, workspace);
+
+            return new AuthenticationContext(user, workspace);
+        }
+
+        public static void SetCurrentAuthenticationContext(AuthenticationContext context)
+        {
+            SetCurrentUser(context.User, context.Workspace);
         }
     }
 }

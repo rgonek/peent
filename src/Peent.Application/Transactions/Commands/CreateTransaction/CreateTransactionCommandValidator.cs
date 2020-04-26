@@ -19,15 +19,15 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
                 .NotEmpty()
                 .GreaterThan(0);
 
-            RuleFor(x => x.SourceAccountId)
+            RuleFor(x => x.FromAccountId)
                 .NotEmpty()
                 .GreaterThan(0)
-                .NotEqual(x => x.DestinationAccountId);
+                .NotEqual(x => x.ToAccountId);
 
-            RuleFor(x => x.DestinationAccountId)
+            RuleFor(x => x.ToAccountId)
                 .NotEmpty()
                 .GreaterThan(0)
-                .NotEqual(x => x.SourceAccountId);
+                .NotEqual(x => x.FromAccountId);
 
             RuleFor(x => x.Amount)
                 .NotEmpty()

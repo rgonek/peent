@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Nito.AsyncEx;
 using Xunit;
+using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Infrastructure
 {
@@ -9,6 +10,12 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly AsyncLock Mutex = new AsyncLock();
 
         private static bool _initialized;
+        protected readonly AuthenticationContext _context;
+
+        protected IntegrationTestBase()
+        {
+            _context = SetUpAuthenticationContext().GetAwaiter().GetResult();
+        }
 
         public virtual async Task InitializeAsync()
         {

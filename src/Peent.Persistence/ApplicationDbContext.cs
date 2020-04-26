@@ -44,13 +44,14 @@ namespace Peent.Persistence
         {
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
+                var currentUser = await GetCurrentUser(cancellationToken);
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.SetCreatedBy(await GetCurrentUser(cancellationToken));
+                        entry.Entity.SetCreatedBy(currentUser);
                         break;
                     case EntityState.Modified:
-                        entry.Entity.SetModifiedBy(await GetCurrentUser(cancellationToken));
+                        entry.Entity.SetModifiedBy(currentUser);
                         break;
                 }
             }
@@ -60,7 +61,8 @@ namespace Peent.Persistence
 
         private async Task<ApplicationUser> GetCurrentUser(CancellationToken cancellationToken)
         {
-            return await Users.SingleAsync(x => x.Id == _userAccessor.User.GetUserId(), cancellationToken);
+            var userId = _userAccessor.User.GetUserId();
+            return await Users.SingleAsync(x => x.Id == userId, cancellationToken);
         }
 
         public async Task BeginTransactionAsync()

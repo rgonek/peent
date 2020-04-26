@@ -17,8 +17,6 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task should_create_account()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
@@ -27,20 +25,18 @@ namespace Peent.IntegrationTests.Accounts
             account.Name.Should().Be(command.Name);
             account.Description.Should().Be(command.Description);
             account.Type.Should().Be(command.Type);
-            account.CurrencyId.Should().Be(command.CurrencyId);
+            account.Currency.Id.Should().Be(command.CurrencyId);
         }
 
         [Fact]
         public async Task when_account_is_created__createdBy_is_set_to_current_user()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.Created.By.Should().Be(user);
+            account.Created.By.Should().Be(_context.User);
         }
 
         [Fact]
@@ -49,8 +45,6 @@ namespace Peent.IntegrationTests.Accounts
             var utcNow = new DateTime(2019, 02, 02, 11, 28, 32);
             using (new ClockOverride(() => utcNow, () => utcNow.AddHours(2)))
             {
-                var user = await CreateUserAsync();
-                SetCurrentUser(user, await CreateWorkspaceAsync(user));
                 var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
                 var accountId = await SendAsync(command);
@@ -63,24 +57,19 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task when_account_is_created__workspace_is_set_to_current_user_workspace()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.WorkspaceId.Should().Be(workspace.Id);
-            var fetchedWorkspace = await FindAsync<Workspace>(workspace.Id);
-            fetchedWorkspace.Created.By.Should().Be(user);
+            account.WorkspaceId.Should().Be(_context.Workspace.Id);
+            var fetchedWorkspace = await FindAsync<Workspace>(_context.Workspace.Id);
+            fetchedWorkspace.Created.By.Should().Be(_context.User);
         }
 
         [Fact]
         public async Task when_account_with_given_name_exists__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             await SendAsync(command);
@@ -92,22 +81,17 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task when_account_with_given_name_exists_in_another_workspace__do_not_throw()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             await SendAsync(command);
 
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+            await SetUpAuthenticationContext();
             await SendAsync(command);
         }
 
         [Fact]
         public async Task when_account_with_given_name_exists_but_is_deleted__do_not_throw()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
             var accountId = await SendAsync(command);
             await SendAsync(new DeleteAccountCommand(accountId));
