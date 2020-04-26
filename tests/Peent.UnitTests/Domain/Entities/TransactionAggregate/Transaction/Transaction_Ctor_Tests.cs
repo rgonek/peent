@@ -107,12 +107,12 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         }
 
         [Fact]
-        public void when_entries_are_null__throws_argument_exception()
+        public void when_from_account_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.Entries).FirstDown();
-            IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry> entries = null;
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
-                entries, parameterName);
+            var parameterName = "from" + nameof(Peent.Domain.Entities.Account).FirstDown();
+            Peent.Domain.Entities.Account account = null;
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Account>(
+                account, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
             Action act = () => Create<Sut>(_fixture);
@@ -122,58 +122,18 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         }
 
         [Fact]
-        public void when_entries_are_empty__throws_argument_exception()
+        public void when_to_account_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.Entries).FirstDown();
-            var entries = Enumerable.Empty<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>();
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
-                entries, parameterName);
+            var parameterName = "to" + nameof(Peent.Domain.Entities.Account).FirstDown();
+            Peent.Domain.Entities.Account account = null;
+            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Account>(
+                account, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
             Action act = () => Create<Sut>(_fixture);
 
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"*{parameterName}*");
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(3)]
-        [InlineData(4)]
-        public void when_entries_are_different_length_than_two__throws_argument_exception(int count)
-        {
-            var parameterName = nameof(Sut.Entries).FirstDown();
-            var entries = new List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>();
-            for (int i = 0; i < count; i++)
-            {
-                entries.Add(_fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>());
-            }
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
-                entries, parameterName);
-            _fixture.Customizations.Insert(1, customizer);
-
-            Action act = () => Create<Sut>(_fixture);
-
-            act.Should().Throw<ArgumentException>()
-                .WithMessage($"*{parameterName}*");
-        }
-
-        [Fact]
-        public void when_there_are_two_entries__does_not_throw()
-        {
-            var parameterName = nameof(Sut.Entries).FirstDown();
-            var entries = new List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>
-            {
-                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>(),
-                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>()
-            };
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
-                entries, parameterName);
-            _fixture.Customizations.Insert(1, customizer);
-
-            var transaction = Create<Sut>(_fixture);
-
-            transaction.Entries.Should().BeEquivalentTo(entries);
         }
 
         [Fact]
@@ -199,15 +159,18 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
             var description = _fixture.Create<string>();
             var categoryId = _fixture.Create<int>();
             var transactionTags = _fixture.Create<List<Peent.Domain.Entities.TransactionAggregate.TransactionTag>>();
-            var entries = _fixture.Create<List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>().Take(2);
+            var amount = _fixture.Create<decimal>();
+            var fromAccount = _fixture.Create<Peent.Domain.Entities.Account>();
+            var toAccount = _fixture.Create<Peent.Domain.Entities.Account>();
 
-            var transaction = new Sut(title, date, description, categoryId, entries, transactionTags);
+            var transaction = new Sut(title, date, description, categoryId, amount, fromAccount, toAccount, transactionTags);
 
             transaction.Title.Should().Be(title);
             transaction.Date.Should().Be(date);
             transaction.Description.Should().Be(description);
             transaction.CategoryId.Should().Be(categoryId);
-            transaction.Entries.Should().BeEquivalentTo(entries);
+            // TODO: check entries
+            //transaction.Entries.Should().BeEquivalentTo(entries);
             transaction.TransactionTags.Should().BeEquivalentTo(transactionTags);
         }
     }

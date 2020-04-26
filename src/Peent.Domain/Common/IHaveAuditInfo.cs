@@ -1,16 +1,10 @@
-﻿using System;
-using Peent.Domain.Entities;
+﻿using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Common
 {
     public interface IHaveAuditInfo
     {
-        DateTime CreationDate { get; }
-        string CreatedById { get; }
-        ApplicationUser CreatedBy { get; }
-
-        DateTime? LastModificationDate { get; }
-        string LastModifiedById { get; }
-        ApplicationUser LastModifiedBy { get; }
+        public CreationInfo CreationInfo { get; }
+        public ModificationInfo LastModificationInfo { get; }
     }
 }

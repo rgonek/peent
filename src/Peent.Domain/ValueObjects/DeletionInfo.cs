@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Peent.Common.Time;
+using Peent.Domain.Common;
 using Peent.Domain.Entities;
-using Peent.Domain.Infrastructure;
 
 namespace Peent.Domain.ValueObjects
 {

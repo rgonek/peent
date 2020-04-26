@@ -42,7 +42,7 @@ namespace Peent.IntegrationTests.Tags
             var tagId = await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.CreatedById.Should().Be(user.Id);
+            tag.CreationInfo.CreatedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace Peent.IntegrationTests.Tags
                 var tagId = await SendAsync(command);
 
                 var tag = await FindAsync<Tag>(tagId);
-                tag.CreationDate.Should().Be(utcNow);
+                tag.CreationInfo.CreationDate.Should().Be(utcNow);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Peent.IntegrationTests.Tags
             var tag = await FindAsync<Tag>(tagId);
             tag.WorkspaceId.Should().Be(workspace.Id);
             var fetchedWorkspace = await FindAsync<Workspace>(workspace.Id);
-            fetchedWorkspace.CreatedById.Should().Be(user.Id);
+            fetchedWorkspace.CreationInfo.CreatedById.Should().Be(user.Id);
         }
 
         [Fact]

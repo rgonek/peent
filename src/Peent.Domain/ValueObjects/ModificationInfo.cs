@@ -1,35 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using Peent.Common.Time;
+using Peent.Domain.Common;
 using Peent.Domain.Entities;
-using Peent.Domain.Infrastructure;
 
 namespace Peent.Domain.ValueObjects
 {
     public class ModificationInfo : ValueObject
     {
-        protected ModificationInfo() { }
+        private ModificationInfo() { }
 
-        public ModificationInfo(ApplicationUser lastModifiedBy)
+        public static ModificationInfo For(string userId)
         {
-            LastModificationDate = Clock.UtcNow;
-            LastModifiedBy = lastModifiedBy;
+            return new ModificationInfo
+            {
+                LastModifiedById = userId,
+                LastModificationDate = Clock.UtcNow
+            };
         }
 
-        public ModificationInfo(string lastModifiedById)
-        {
-            LastModificationDate = Clock.UtcNow;
-            LastModifiedById = lastModifiedById;
-        }
-
-        public virtual DateTime? LastModificationDate { get; protected internal set; }
-        public virtual string LastModifiedById { get; protected set; }
-        public virtual ApplicationUser LastModifiedBy { get; protected internal set; }
+        public virtual DateTime? LastModificationDate { get; private set; }
+        public virtual string LastModifiedById { get; private set; }
+        //public virtual ApplicationUser LastModifiedBy { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return LastModificationDate;
-            yield return LastModifiedBy;
+            yield return LastModifiedById;
         }
     }
 }

@@ -51,12 +51,7 @@ namespace Peent.Application.Transactions.Commands.EditTransaction
             if (destinationAccount == null)
                 throw NotFoundException.Create<Account>(x => x.Id, command.DestinationAccountId);
 
-            var entries = new List<TransactionEntry>
-            {
-                new TransactionEntry(sourceAccount, -command.Amount, sourceAccount.CurrencyId),
-                new TransactionEntry(destinationAccount, command.Amount, destinationAccount.CurrencyId)
-            };
-            var transaction = new Transaction(command.Title, command.Date, command.Description, command.CategoryId, entries);
+            var transaction = new Transaction(command.Title, command.Date, command.Description, command.CategoryId, command.Amount, sourceAccount, destinationAccount);
             if (tags.Any())
                 transaction.AddTags(tags);
 

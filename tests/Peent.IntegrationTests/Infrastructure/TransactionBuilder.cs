@@ -18,8 +18,8 @@ namespace Peent.IntegrationTests.Infrastructure
         private DateTime _date;
         private int _categoryId;
         private IList<int> _tagIds;
-        private Account _sourceAccount;
-        private Account _destinationAccount;
+        private Account _fromAccount;
+        private Account _toAccount;
         private decimal _amount;
 
         public TransactionBuilder WithRandomData()
@@ -51,13 +51,13 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public TransactionBuilder From(Account account)
         {
-            _sourceAccount = account;
+            _fromAccount = account;
             return this;
         }
 
         public TransactionBuilder To(Account account)
         {
-            _destinationAccount = account;
+            _toAccount = account;
             return this;
         }
 
@@ -81,8 +81,8 @@ namespace Peent.IntegrationTests.Infrastructure
                 CategoryId = _categoryId,
                 Date = _date,
                 Description = _description,
-                SourceAccountId = _sourceAccount.Id,
-                DestinationAccountId = _destinationAccount.Id,
+                SourceAccountId = _fromAccount.Id,
+                DestinationAccountId = _toAccount.Id,
                 TagIds = _tagIds,
                 Title = _title
             };
@@ -90,10 +90,8 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Transaction> Build()
         {
-            var sourceEntry = new TransactionEntry(_sourceAccount, -_amount, _sourceAccount.CurrencyId);
-            var destinationEntry = new TransactionEntry(_destinationAccount, _amount, _sourceAccount.CurrencyId);
             var transaction = new Transaction(_title, _date, _description, _categoryId,
-                new[] {sourceEntry, destinationEntry});
+                _amount, _fromAccount, _toAccount);
             foreach (var tagId in _tagIds)
             {
                 transaction.AddTag(tagId);

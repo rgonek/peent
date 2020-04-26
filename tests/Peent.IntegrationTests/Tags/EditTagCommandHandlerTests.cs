@@ -52,7 +52,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.LastModifiedById.Should().Be(user2.Id);
+            tag.LastModificationInfo.LastModifiedById.Should().Be(user2.Id);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.LastModifiedById.Should().Be(user.Id);
+            tag.LastModificationInfo.LastModifiedById.Should().Be(user.Id);
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace Peent.IntegrationTests.Tags
                 await SendAsync(command);
 
                 var tag = await FindAsync<Tag>(tagId);
-                tag.LastModificationDate.Should().Be(utcNow);
+                tag.LastModificationInfo.LastModificationDate.Should().Be(utcNow);
             }
         }
 

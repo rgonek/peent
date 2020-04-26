@@ -10,25 +10,21 @@ namespace Peent.Persistence.Configurations
         public static void ConfigureAuditInfo<T>(this EntityTypeBuilder<T> builder)
             where T : class, IHaveAuditInfo
         {
-            builder.Property(y => y.CreationDate)
-                    .HasColumnName(nameof(CreationInfo.CreationDate))
-                    .IsRequired();
-            builder.Property(y => y.CreatedById)
-                    .HasColumnName(nameof(CreationInfo.CreatedById))
-                    .IsRequired();
-            builder.HasOne(y => y.CreatedBy)
-                    .WithMany()
-                    .HasForeignKey(y => y.CreatedById)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Property(y => y.LastModificationDate)
-                .HasColumnName(nameof(ModificationInfo.LastModificationDate));
-            builder.Property(y => y.LastModifiedById)
-                .HasColumnName(nameof(ModificationInfo.LastModifiedById));
-            builder.HasOne(y => y.LastModifiedBy)
-                .WithMany()
-                .HasForeignKey(y => y.LastModifiedById)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.OwnsOne(x => x.CreationInfo, b =>
+            {
+                b.Property(x => x.CreationDate)
+                    .IsRequired()
+                    .HasColumnName(nameof(CreationInfo.CreationDate));
+                b.Property(x => x.CreatedById)
+                    .IsRequired()
+                    .HasColumnName(nameof(CreationInfo.CreatedById));
+            });
+            builder.OwnsOne(x => x.LastModificationInfo, b =>
+            {
+                b.Property(x => x.LastModificationDate).HasColumnName(nameof(ModificationInfo.LastModificationDate));
+                b.Property(x => x.LastModifiedById).HasColumnName(nameof(ModificationInfo.LastModifiedById));
+            });
+            builder.OwnsOne(x => x.LastModificationInfo);
         }
     }
 }

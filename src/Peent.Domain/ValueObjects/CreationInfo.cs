@@ -1,35 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using Peent.Common.Time;
+using Peent.Domain.Common;
 using Peent.Domain.Entities;
-using Peent.Domain.Infrastructure;
 
 namespace Peent.Domain.ValueObjects
 {
     public class CreationInfo : ValueObject
     {
-        protected CreationInfo() { }
+        private CreationInfo() { }
 
-        public CreationInfo(ApplicationUser createdBy)
+        public static CreationInfo For(string userId)
         {
-            CreationDate = Clock.UtcNow;
-            CreatedBy = createdBy;
+            return new CreationInfo
+            {
+                CreatedById = userId,
+                CreationDate = Clock.UtcNow
+            };
         }
 
-        public CreationInfo(string createdById)
-        {
-            CreationDate = Clock.UtcNow;
-            CreatedById = createdById;
-        }
-
-        public virtual DateTime CreationDate { get; protected set; }
-        public virtual string CreatedById { get; protected set; }
-        public virtual ApplicationUser CreatedBy { get; protected set; }
+        public virtual DateTime CreationDate { get; private set; }
+        public virtual string CreatedById { get; private set; }
+        //public virtual ApplicationUser CreatedBy { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return CreationDate;
-            yield return CreatedBy;
+            yield return CreatedById;
         }
     }
 }

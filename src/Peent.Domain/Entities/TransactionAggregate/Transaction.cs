@@ -26,18 +26,38 @@ namespace Peent.Domain.Entities.TransactionAggregate
         #region Ctors
         private Transaction() { }
 
-        public Transaction(string title, DateTime date, int categoryId, IEnumerable<TransactionEntry> entries)
-            : this(title, date, null, categoryId, entries)
+        public Transaction(
+            string title,
+            DateTime date,
+            int categoryId,
+            decimal amount,
+            Account fromAccount,
+            Account toAccount)
+            : this(title, date, null, categoryId, amount, fromAccount, toAccount)
         {
         }
 
-        public Transaction(string title, DateTime date, string description, int categoryId, IEnumerable<TransactionEntry> entries)
-            : this(title, date, description, categoryId, entries, Enumerable.Empty<TransactionTag>())
+        public Transaction(
+            string title,
+            DateTime date,
+            string description,
+            int categoryId,
+            decimal amount,
+            Account fromAccount,
+            Account toAccount)
+            : this(title, date, description, categoryId, amount, fromAccount, toAccount, Enumerable.Empty<TransactionTag>())
         {
         }
 
-        public Transaction(string title, DateTime date, int categoryId, IEnumerable<TransactionEntry> entries, IEnumerable<TransactionTag> transactionTags)
-            : this(title, date, null, categoryId, entries, transactionTags)
+        public Transaction(
+            string title,
+            DateTime date,
+            int categoryId,
+            decimal amount,
+            Account fromAccount,
+            Account toAccount,
+            IEnumerable<TransactionTag> transactionTags)
+            : this(title, date, null, categoryId, amount, fromAccount, toAccount, transactionTags)
         {
         }
 
@@ -48,20 +68,26 @@ namespace Peent.Domain.Entities.TransactionAggregate
             DateTime date,
             string description,
             int categoryId,
-            IEnumerable<TransactionEntry> entries,
+            decimal amount,
+            Account fromAccount,
+            Account toAccount,
             IEnumerable<TransactionTag> transactionTags)
         {
             Ensure.That(title, nameof(title)).IsNotNullOrWhiteSpace();
             Ensure.That(categoryId, nameof(categoryId)).IsPositive();
-            Ensure.That(entries, nameof(entries)).IsNotNull();
-            Ensure.That(entries.Count(), nameof(entries)).Is(2);
+            Ensure.That(amount, nameof(amount)).IsPositive();
+            Ensure.That(fromAccount, nameof(fromAccount)).IsNotNull();
+            Ensure.That(fromAccount.CurrencyId, nameof(fromAccount.CurrencyId)).IsPositive();
+            Ensure.That(toAccount, nameof(toAccount)).IsNotNull();
+            Ensure.That(toAccount.CurrencyId, nameof(toAccount.CurrencyId)).IsPositive();
 
             Title = title;
             Date = date;
             Description = description;
             CategoryId = categoryId;
             _transactionTags = (transactionTags ?? Enumerable.Empty<TransactionTag>()).ToList();
-            _entries = entries.ToList();
+            _entries.Add(new TransactionEntry(fromAccount, amount, fromAccount.CurrencyId));
+            _entries.Add(new TransactionEntry(toAccount, -amount, toAccount.CurrencyId));
             Type = GetTransactionType(
                 Entries.First().Account,
                 Entries.Last().Account);

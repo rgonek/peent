@@ -47,16 +47,10 @@ namespace Peent.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        if (string.IsNullOrEmpty(entry.Entity.CreatedById))
-                        {
-                            entry.Entity.SetCreatedBy(_userAccessor.User.GetUserId());
-                        }
+                        entry.Entity.SetCreatedBy(_userAccessor.User.GetUserId());
                         break;
                     case EntityState.Modified:
-                        if (string.IsNullOrEmpty(entry.Entity.LastModifiedById))
-                        {
-                            entry.Entity.SetModifiedBy(_userAccessor.User.GetUserId());
-                        }
+                        entry.Entity.SetModifiedBy(_userAccessor.User.GetUserId());
                         break;
                 }
             }
