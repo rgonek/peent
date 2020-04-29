@@ -59,22 +59,6 @@ namespace Peent.UnitTests.Domain.Entities.Tag
             tag.Description.Should().Be(description);
         }
 
-        [Fact]
-        public void when_date_is_null__does_not_throw()
-        {
-            DateTime? date = null;
-            var parameterName = nameof(Sut.Date).FirstDown();
-            var customizer = new FixedConstructorParameter<DateTime?>(
-                date, parameterName);
-            var fixture = Fixture(customizer);
-            fixture.Customize<Sut>(c =>
-                c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
-
-            var tag = fixture.Create<Sut>();
-
-            tag.Date.Should().Be(date);
-        }
-
         [Theory]
         [InlineData(-1)]
         [InlineData(0)]
@@ -107,14 +91,12 @@ namespace Peent.UnitTests.Domain.Entities.Tag
         {
             var name = F.Create<string>();
             var description = F.Create<string>();
-            var date = F.Create<DateTime?>();
             var workspaceId = F.Create<int>();
 
-            var tag = new Sut(name, description, date, workspaceId);
+            var tag = new Sut(name, description, workspaceId);
 
             tag.Name.Should().Be(name);
             tag.Description.Should().Be(description);
-            tag.Date.Should().Be(date);
             tag.WorkspaceId.Should().Be(workspaceId);
         }
     }

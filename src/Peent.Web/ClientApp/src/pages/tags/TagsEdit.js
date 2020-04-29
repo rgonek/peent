@@ -18,12 +18,6 @@ function TagsEdit({ tag, loading, onSubmitTag, onFetchTag }) {
     const formSchema = yup.object({
         name: yup.string().required().max(1000),
         description: yup.string().max(2000),
-        date: yup
-            .date()
-            .nullable()
-            .transform((cv, ov) => {
-                return ov === "" ? undefined : cv;
-            }),
     });
     const onSubmit = (data) => {
         onSubmitTag(id, data);
@@ -67,19 +61,6 @@ function TagsEdit({ tag, loading, onSubmitTag, onFetchTag }) {
                     />
                     <Form.Control.Feedback type="invalid">
                         {errors.description && errors.description.message}
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control
-                        type="date"
-                        name="date"
-                        defaultValue={tag.date}
-                        isInvalid={!!errors.date}
-                        ref={register}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        {errors.date && errors.date.message}
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" variant="primary" disabled={loading}>

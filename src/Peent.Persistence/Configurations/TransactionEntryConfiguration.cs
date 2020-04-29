@@ -8,7 +8,13 @@ namespace Peent.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TransactionEntry> builder)
         {
+            builder.ToTable("TransactionEntries");
+
             builder.HasKey(x => x.Id);
+
+            builder.HasOne(x => x.Transaction)
+                .WithMany(x => x.Entries)
+                .IsRequired();
 
             builder.HasOne(x => x.Account)
                 .WithMany()

@@ -15,7 +15,6 @@ namespace Peent.Application
         DbSet<Currency> Currencies { get; set; }
         DbSet<Tag> Tags { get; set; }
         DbSet<Transaction> Transactions { get; set; }
-        DbSet<TransactionEntry> TransactionEntries { get; set; }
         DbSet<Workspace> Workspaces { get; set; }
 
         DbSet<TEntity> Set<TEntity>() where TEntity : class;

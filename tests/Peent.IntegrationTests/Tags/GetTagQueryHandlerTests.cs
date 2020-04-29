@@ -28,7 +28,6 @@ namespace Peent.IntegrationTests.Tags
             tagModel.Id.Should().Be(tagId);
             tagModel.Name.Should().Be(command.Name);
             tagModel.Description.Should().Be(command.Description);
-            tagModel.Date.Should().Be(command.Date);
         }
 
         [Fact]

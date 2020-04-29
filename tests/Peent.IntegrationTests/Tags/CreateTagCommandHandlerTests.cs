@@ -29,7 +29,6 @@ namespace Peent.IntegrationTests.Tags
             var tag = await FindAsync<Tag>(tagId);
             tag.Name.Should().Be(command.Name);
             tag.Description.Should().Be(command.Description);
-            tag.Date.Should().Be(command.Date);
         }
 
         [Fact]

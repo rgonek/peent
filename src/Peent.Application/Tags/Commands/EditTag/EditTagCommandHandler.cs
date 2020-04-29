@@ -44,7 +44,6 @@ namespace Peent.Application.Tags.Commands.EditTag
 
             tag.SetName(command.Name);
             tag.SetDescription(command.Description);
-            tag.SetDate(command.Date);
 
             _db.Update(tag);
             await _db.SaveChangesAsync(token);

@@ -12,7 +12,6 @@ namespace Peent.IntegrationTests.Infrastructure
     {
         private string _name;
         private string _description;
-        private DateTime _date;
 
         public TagBuilder WithRandomData()
         {
@@ -33,15 +32,9 @@ namespace Peent.IntegrationTests.Infrastructure
             return this;
         }
 
-        public TagBuilder At(DateTime date)
-        {
-            _date = date;
-            return this;
-        }
-
         public async Task<Tag> Build()
         {
-            var tag = new Tag(_name, _description, _date, UserAccessor.User.GetWorkspaceId());
+            var tag = new Tag(_name, _description, UserAccessor.User.GetWorkspaceId());
 
             await InsertAsync(tag);
 

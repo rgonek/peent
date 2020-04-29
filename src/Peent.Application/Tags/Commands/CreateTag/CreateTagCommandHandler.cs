@@ -33,7 +33,6 @@ namespace Peent.Application.Tags.Commands.CreateTag
             var tag = new Tag(
                 command.Name,
                 command.Description,
-                command.Date,
                 _userAccessor.User.GetWorkspaceId());
 
             _db.Tags.Add(tag);

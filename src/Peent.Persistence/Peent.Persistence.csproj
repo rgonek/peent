@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200429193338_test.cs" />
     <Compile Remove="Migrations\20200429193338_test.Designer.cs" />
+    <Compile Remove="Migrations\20200429193758_RemoveTransationEntriesFromContext.cs" />
+    <Compile Remove="Migrations\20200429193758_RemoveTransationEntriesFromContext.Designer.cs" />
+    <Compile Remove="Migrations\20200429194249_RemoveTransationEntriesFromContext.cs" />
+    <Compile Remove="Migrations\20200429194249_RemoveTransationEntriesFromContext.Designer.cs" />
+    <Compile Remove="Migrations\20200429194450_RemoveTransationEntriesFromContext.cs" />
+    <Compile Remove="Migrations\20200429194450_RemoveTransationEntriesFromContext.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

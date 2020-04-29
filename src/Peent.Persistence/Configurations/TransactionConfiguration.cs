@@ -18,6 +18,10 @@ namespace Peent.Persistence.Configurations
             builder.Property(x => x.Date)
                 .IsRequired();
 
+            builder.HasMany(x => x.Entries)
+                .WithOne(x => x.Transaction)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasOne(x => x.Category)
                 .WithMany()
                 .IsRequired();

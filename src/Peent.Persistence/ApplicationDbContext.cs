@@ -18,7 +18,7 @@ namespace Peent.Persistence
         private readonly IUserAccessor _userAccessor;
 
         public ApplicationDbContext(
-            DbContextOptions<ApplicationDbContext> options,
+            DbContextOptions options,
             IUserAccessor userAccessor)
             : base(options)
         {
@@ -30,7 +30,6 @@ namespace Peent.Persistence
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<TransactionEntry> TransactionEntries { get; set; }
         public DbSet<Workspace> Workspaces { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
