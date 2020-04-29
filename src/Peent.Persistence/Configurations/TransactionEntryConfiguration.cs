@@ -18,15 +18,9 @@ namespace Peent.Persistence.Configurations
                 .WithMany()
                 .IsRequired();
 
-            builder.HasOne(x => x.ForeignCurrency)
-                .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.Property(x => x.Amount)
                 .HasColumnType("decimal(38,18)")
                 .IsRequired();
-            builder.Property(x => x.ForeignAmount)
-                .HasColumnType("decimal(38,18)");
 
             builder.ConfigureAuditInfo();
         }

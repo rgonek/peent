@@ -388,12 +388,6 @@ namespace Peent.Persistence.Migrations
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("ForeignAmount")
-                        .HasColumnType("decimal(38,18)");
-
-                    b.Property<int?>("ForeignCurrencyId")
-                        .HasColumnType("int");
-
                     b.Property<long>("TransactionId")
                         .HasColumnType("bigint");
 
@@ -402,8 +396,6 @@ namespace Peent.Persistence.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("CurrencyId");
-
-                    b.HasIndex("ForeignCurrencyId");
 
                     b.HasIndex("TransactionId");
 
@@ -759,11 +751,6 @@ namespace Peent.Persistence.Migrations
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Peent.Domain.Entities.Currency", "ForeignCurrency")
-                        .WithMany()
-                        .HasForeignKey("ForeignCurrencyId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", "Transaction")
                         .WithMany("Entries")

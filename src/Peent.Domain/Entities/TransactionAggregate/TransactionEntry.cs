@@ -9,11 +9,10 @@ namespace Peent.Domain.Entities.TransactionAggregate
         public long Id { get; private set; }
 
         public Transaction Transaction { get; private set; }
+        public Account Account { get; private set; }
+        
         public decimal Amount { get; private set; }
         public Currency Currency { get; private set; }
-        public decimal? ForeignAmount { get; private set; }
-        public Currency? ForeignCurrency { get; private set; }
-        public Account Account { get; private set; }
 
         private TransactionEntry() { }
 
