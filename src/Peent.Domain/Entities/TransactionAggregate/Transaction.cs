@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnsureThat;
 using Peent.Domain.Common;
+using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Entities.TransactionAggregate
 {
@@ -84,8 +85,8 @@ namespace Peent.Domain.Entities.TransactionAggregate
             SetDescription(description);
             SetCategory(category);
             AddTags(tags ?? Enumerable.Empty<Tag>());
-            _entries.Add(new TransactionEntry(this, fromAccount, amount, fromAccount.Currency));
-            _entries.Add(new TransactionEntry(this, toAccount, -amount, toAccount.Currency));
+            _entries.Add(new TransactionEntry(this, fromAccount, new Money(amount, fromAccount.Currency)));
+            _entries.Add(new TransactionEntry(this, toAccount, new Money(-amount, toAccount.Currency)));
             Type = GetTransactionType(
                 Entries.First().Account,
                 Entries.Last().Account);

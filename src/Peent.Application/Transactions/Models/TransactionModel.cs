@@ -37,9 +37,9 @@ namespace Peent.Application.Transactions.Models
             Type = transaction.Type;
             Tags = transaction.TransactionTags.Select(x => new TagModel(x.Tag)).ToList();
 
-            Amount = Math.Abs(transaction.Entries.First().Amount);
-            SourceAccount = new AccountModel(transaction.Entries.First(x => x.Amount < 0).Account);
-            DestinationAccount = new AccountModel(transaction.Entries.First(x => x.Amount > 0).Account);
+            Amount = Math.Abs(transaction.Entries.First().Money.Amount);
+            SourceAccount = new AccountModel(transaction.Entries.First(x => x.Money.Amount < 0).Account);
+            DestinationAccount = new AccountModel(transaction.Entries.First(x => x.Money.Amount > 0).Account);
         }
     }
 }

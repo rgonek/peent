@@ -4,6 +4,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
+using Peent.Domain.ValueObjects;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
@@ -15,9 +16,11 @@ namespace Peent.IntegrationTests.Transactions
         [Fact]
         public async Task should_create_transaction()
         {
+            Account fromAccount = An.Account.OfAssetType();
+            Account toAccount = An.Account.OfExpenseType();
             var command = A.Transaction
-                .From(An.Account.OfAssetType())
-                .To(An.Account.OfExpenseType())
+                .From(fromAccount)
+                .To(toAccount)
                 .WithCategory(A.Category)
                 .AsCommand();
 
@@ -30,15 +33,22 @@ namespace Peent.IntegrationTests.Transactions
             transaction.Date.Should().Be(command.Date);
             transaction.Entries.Should().HaveCount(2)
                 .And.SatisfyRespectively(
-                    first => { first.Amount.Should().Be(command.Amount); },
-                    second => { second.Amount.Should().Be(-command.Amount); });
+                    first =>
+                    {
+                        first.Money.Should().Be(new Money(command.Amount, fromAccount.Currency));
+                    },
+                    second =>
+                    {
+                        second.Money.Should().Be(new Money(-command.Amount, toAccount.Currency));
+                    });
         }
 
-        private async ValueTask<Transaction> FindAsync(long id)
+        private static async ValueTask<Transaction> FindAsync(long id)
         {
             return await ExecuteDbContextAsync(db => new ValueTask<Transaction>(
                 db.Transactions
                     .Include(x => x.Entries)
+                    .ThenInclude(x => x.Money.Currency)
                     .Include(x => x.Category)
                     .Where(x => x.Id == id)
                     .SingleOrDefaultAsync()));

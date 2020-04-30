@@ -18,6 +18,10 @@
     <Compile Remove="Migrations\20200429195838_Test.Designer.cs" />
     <Compile Remove="Migrations\20200430054604_RemoveUnneededForeignIds.cs" />
     <Compile Remove="Migrations\20200430054604_RemoveUnneededForeignIds.Designer.cs" />
+    <Compile Remove="Migrations\20200430075621_MoneyVO.cs" />
+    <Compile Remove="Migrations\20200430075621_MoneyVO.Designer.cs" />
+    <Compile Remove="Migrations\20200430075813_MoneyVO.cs" />
+    <Compile Remove="Migrations\20200430075813_MoneyVO.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

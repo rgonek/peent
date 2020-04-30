@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using EnsureThat;
 using Peent.Domain.Common;
+using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Entities.TransactionAggregate
 {
@@ -9,22 +10,19 @@ namespace Peent.Domain.Entities.TransactionAggregate
         public Transaction Transaction { get; private set; }
         public Account Account { get; private set; }
         
-        public decimal Amount { get; private set; }
-        public Currency Currency { get; private set; }
+        public Money Money { get; private set; }
 
         private TransactionEntry() { }
 
-        public TransactionEntry(Transaction transaction, Account account, decimal amount, Currency currency)
+        public TransactionEntry(Transaction transaction, Account account, Money money)
         {
             Ensure.That(transaction, nameof(transaction)).IsNotNull();
             Ensure.That(account, nameof(account)).IsNotNull();
-            Ensure.That(amount, nameof(amount)).IsNotZero();
-            Ensure.That(currency, nameof(currency)).IsNotNull();
+            Ensure.That(money, nameof(money)).IsNotNull();
 
             Transaction = transaction;
             Account = account;
-            Amount = amount;
-            Currency = currency;
+            Money = money;
         }
     }
 }

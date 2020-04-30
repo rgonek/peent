@@ -379,20 +379,12 @@ namespace Peent.Persistence.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(38,18)");
-
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
                     b.Property<long>("TransactionId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("TransactionId");
 
@@ -401,10 +393,10 @@ namespace Peent.Persistence.Migrations
 
             modelBuilder.Entity("Peent.Domain.Entities.TransactionAggregate.TransactionTag", b =>
                 {
-                    b.Property<int>("TagId")
+                    b.Property<int?>("TagId")
                         .HasColumnType("int");
 
-                    b.Property<long>("TransactionId")
+                    b.Property<long?>("TransactionId")
                         .HasColumnType("bigint");
 
                     b.HasKey("TagId", "TransactionId");
@@ -743,12 +735,6 @@ namespace Peent.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Peent.Domain.Entities.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Peent.Domain.Entities.TransactionAggregate.Transaction", "Transaction")
                         .WithMany("Entries")
                         .HasForeignKey("TransactionId")
@@ -804,6 +790,37 @@ namespace Peent.Persistence.Migrations
                             b1.HasOne("Peent.Domain.Entities.ApplicationUser", "By")
                                 .WithMany()
                                 .HasForeignKey("ById");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransactionEntryId");
+                        });
+
+                    b.OwnsOne("Peent.Domain.ValueObjects.Money", "Money", b1 =>
+                        {
+                            b1.Property<long>("TransactionEntryId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnName("Amount")
+                                .HasColumnType("decimal(38,18)");
+
+                            b1.Property<int>("CurrencyId")
+                                .HasColumnName("CurrencyId")
+                                .HasColumnType("int");
+
+                            b1.HasKey("TransactionEntryId");
+
+                            b1.HasIndex("CurrencyId");
+
+                            b1.ToTable("TransactionEntries");
+
+                            b1.HasOne("Peent.Domain.Entities.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
                             b1.WithOwner()
                                 .HasForeignKey("TransactionEntryId");
