@@ -8,11 +8,7 @@ namespace Peent.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TransactionTag> builder)
         {
-            builder.HasKey(x => new
-            {
-                x.TagId,
-                x.TransactionId
-            });
+            builder.HasKey("TagId", "TransactionId");
 
             builder.HasOne(x => x.Tag)
                 .WithMany(x => x.TransactionTags)
