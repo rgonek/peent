@@ -8,22 +8,23 @@ namespace Peent.Domain.Entities.TransactionAggregate
 {
     public class Transaction : AuditableEntity<long>
     {
-        public long Id { get; private set; }
-
         public string Title { get; private set; }
         public string Description { get; private set; }
         public DateTime Date { get; private set; }
         public Category Category { get; private set; }
         public TransactionType Type { get; private set; }
 
-        private readonly List<TransactionTag> _transactionTags;
+        private readonly List<TransactionTag> _transactionTags = new List<TransactionTag>();
         public IReadOnlyCollection<TransactionTag> TransactionTags => _transactionTags.AsReadOnly();
 
-        private readonly List<TransactionEntry> _entries;
+        private readonly List<TransactionEntry> _entries = new List<TransactionEntry>();
         public IReadOnlyCollection<TransactionEntry> Entries => _entries.AsReadOnly();
 
         #region Ctors
-        private Transaction() { }
+
+        private Transaction()
+        {
+        }
 
         public Transaction(
             string title,
@@ -83,8 +84,8 @@ namespace Peent.Domain.Entities.TransactionAggregate
             SetDescription(description);
             SetCategory(category);
             AddTags(tags ?? Enumerable.Empty<Tag>());
-            _entries.Add(new TransactionEntry(fromAccount, amount, fromAccount.Currency));
-            _entries.Add(new TransactionEntry(toAccount, -amount, toAccount.Currency));
+            _entries.Add(new TransactionEntry(this, fromAccount, amount, fromAccount.Currency));
+            _entries.Add(new TransactionEntry(this, toAccount, -amount, toAccount.Currency));
             Type = GetTransactionType(
                 Entries.First().Account,
                 Entries.Last().Account);
@@ -125,14 +126,15 @@ namespace Peent.Domain.Entities.TransactionAggregate
 
         private static TransactionType GetTransactionType(Account sourceAccount, Account destinationAccount)
             => sourceAccount.Type switch
-            {
+                {
                 AccountType.Asset => (destinationAccount.Type == AccountType.Asset
                     ? TransactionType.Transfer
                     : TransactionType.Withdrawal),
                 AccountType.Revenue => TransactionType.Deposit,
                 AccountType.InitialBalance => TransactionType.OpeningBalance,
                 AccountType.Reconciliation => TransactionType.Reconciliation,
-                _ => throw new InvalidOperationException($"Cannot determine transation type. Source type {sourceAccount.Type}, destination type {destinationAccount.Type}.")
-            };
+                _ => throw new InvalidOperationException(
+                    $"Cannot determine transation type. Source type {sourceAccount.Type}, destination type {destinationAccount.Type}.")
+                };
     }
 }

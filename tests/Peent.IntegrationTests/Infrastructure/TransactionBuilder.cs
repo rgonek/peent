@@ -83,7 +83,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 Description = _description,
                 FromAccountId = _fromAccount.Id,
                 ToAccountId = _toAccount.Id,
-                TagIds = _tags.Select(x => x.Id).ToList(),
+                TagIds = _tags?.Select(x => x.Id).ToList(),
                 Title = _title
             };
         }

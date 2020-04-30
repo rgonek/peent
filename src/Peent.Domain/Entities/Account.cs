@@ -6,8 +6,6 @@ namespace Peent.Domain.Entities
 {
     public class Account : AuditableEntity<int>, IHaveWorkspace
     {
-        public int Id { get; private set; }
-
         public string Name { get; private set; }
         public string Description { get; private set; }
 

@@ -15,9 +15,6 @@ namespace Peent.IntegrationTests.Transactions
         [Fact]
         public async Task should_create_transaction()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-
             var command = A.Transaction
                 .From(An.Account.OfAssetType())
                 .To(An.Account.OfExpenseType())
@@ -33,8 +30,8 @@ namespace Peent.IntegrationTests.Transactions
             transaction.Date.Should().Be(command.Date);
             transaction.Entries.Should().HaveCount(2)
                 .And.SatisfyRespectively(
-                    first => { first.Amount.Should().Be(-command.Amount); },
-                    second => { second.Amount.Should().Be(command.Amount); });
+                    first => { first.Amount.Should().Be(command.Amount); },
+                    second => { second.Amount.Should().Be(-command.Amount); });
         }
 
         private async ValueTask<Transaction> FindAsync(long id)
@@ -42,6 +39,7 @@ namespace Peent.IntegrationTests.Transactions
             return await ExecuteDbContextAsync(db => new ValueTask<Transaction>(
                 db.Transactions
                     .Include(x => x.Entries)
+                    .Include(x => x.Category)
                     .Where(x => x.Id == id)
                     .SingleOrDefaultAsync()));
         }

@@ -8,6 +8,8 @@ namespace Peent.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
+            builder.HasKey(x => x.Id);
+
             builder.Property(x => x.Name)
                 .HasMaxLength(1000)
                 .IsRequired();

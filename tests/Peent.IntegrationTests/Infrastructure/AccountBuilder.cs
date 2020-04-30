@@ -76,9 +76,6 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Account> Build()
         {
-            if (_currency.Id == 0)
-                await InsertAsync(_currency);
-
             var account = new Account(_name, _description, _type, _currency, UserAccessor.User.GetWorkspaceId());
 
             await InsertAsync(account);

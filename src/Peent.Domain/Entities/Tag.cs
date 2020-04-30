@@ -8,13 +8,11 @@ namespace Peent.Domain.Entities
 {
     public class Tag : AuditableEntity<int>, IHaveWorkspace
     {
-        public int Id { get; private set; }
-
         public string Name { get; private set; }
         public string Description { get; private set; }
         public int WorkspaceId { get; private set; }
 
-        private readonly List<TransactionTag> _transactionTags;
+        private readonly List<TransactionTag> _transactionTags = new List<TransactionTag>();
         public IReadOnlyCollection<TransactionTag> TransactionTags => _transactionTags.AsReadOnly();
 
         #region Ctors

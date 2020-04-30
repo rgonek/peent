@@ -21,7 +21,7 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
 
         public async Task<long> Handle(CreateTransactionCommand command, CancellationToken token)
         {
-            var category = await _db.Categories.SingleOrDefaultAsync(x => x.Id == command.CategoryId, token);
+            var category = await _db.Categories.FindAsync(new object[] { command.CategoryId }, token);
             if (category == null)
                 throw NotFoundException.Create<Category>(x => x.Id, command.CategoryId);
 
@@ -37,15 +37,19 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
                         string.Join(", ", command.TagIds));
             }
 
-            var fromAccount = await _db.Accounts.SingleOrDefaultAsync(x => x.Id == command.FromAccountId, token);
+            var fromAccount = await _db.Accounts.FindAsync(new object[] { command.FromAccountId }, token);
             if (fromAccount == null)
                 throw NotFoundException.Create<Account>(x => x.Id, command.FromAccountId);
 
-            var toAccount = await _db.Accounts.SingleOrDefaultAsync(x => x.Id == command.ToAccountId, token);
+            var toAccount = await _db.Accounts.FindAsync(new object[] { command.ToAccountId }, token);
             if (toAccount == null)
                 throw NotFoundException.Create<Account>(x => x.Id, command.ToAccountId);
 
-            var transaction = new Transaction(command.Title, command.Date, command.Description, category, command.Amount, fromAccount, toAccount, tags);
+            await _db.Entry(fromAccount).Reference(x => x.Currency).LoadAsync(token);
+            await _db.Entry(toAccount).Reference(x => x.Currency).LoadAsync(token);
+
+            var transaction = new Transaction(command.Title, command.Date, command.Description, category,
+                command.Amount, fromAccount, toAccount, tags);
 
             _db.Transactions.Add(transaction);
 

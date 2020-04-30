@@ -6,8 +6,6 @@ namespace Peent.Domain.Entities.TransactionAggregate
 {
     public class TransactionEntry : AuditableEntity<long>
     {
-        public long Id { get; private set; }
-
         public Transaction Transaction { get; private set; }
         public Account Account { get; private set; }
         
@@ -16,23 +14,17 @@ namespace Peent.Domain.Entities.TransactionAggregate
 
         private TransactionEntry() { }
 
-        public TransactionEntry(Account account, decimal amount, Currency currency)
+        public TransactionEntry(Transaction transaction, Account account, decimal amount, Currency currency)
         {
+            Ensure.That(transaction, nameof(transaction)).IsNotNull();
             Ensure.That(account, nameof(account)).IsNotNull();
             Ensure.That(amount, nameof(amount)).IsNotZero();
             Ensure.That(currency, nameof(currency)).IsNotNull();
 
+            Transaction = transaction;
             Account = account;
             Amount = amount;
             Currency = currency;
-        }
-
-        public TransactionEntry(Transaction transaction, Account account, decimal amount, Currency currency)
-            : this(account, amount, currency)
-        {
-            Ensure.That(transaction, nameof(transaction)).IsNotNull();
-
-            Transaction = transaction;
         }
     }
 }

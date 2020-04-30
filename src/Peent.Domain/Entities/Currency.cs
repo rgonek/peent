@@ -5,8 +5,6 @@ namespace Peent.Domain.Entities
 {
     public class Currency : Entity<int>
     {
-        public int Id { get; private set; }
-
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string Symbol { get; private set; }
