@@ -16,8 +16,8 @@ namespace Peent.Application
         DbSet<Tag> Tags { get; set; }
         DbSet<Transaction> Transactions { get; set; }
         DbSet<Workspace> Workspaces { get; set; }
-
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
+        EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
         EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;

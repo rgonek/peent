@@ -1,4 +1,5 @@
-﻿using Peent.Domain.ValueObjects;
+﻿using Peent.Domain.Entities;
+using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Common
 {
@@ -6,5 +7,8 @@ namespace Peent.Domain.Common
     {
         AuditInfo Created { get; }
         AuditInfo LastModified { get; }
+
+        void SetCreatedBy(ApplicationUser user);
+        void SetModifiedBy(ApplicationUser user);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Peent.Domain.Entities
 {
-    public class Workspace : AuditableEntity, IEntity<int>
+    public class Workspace : AuditableEntity<int>
     {
         public int Id { get; private set; }
     }

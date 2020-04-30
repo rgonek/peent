@@ -4,7 +4,7 @@ using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Account : AuditableEntity, IEntity<int>, IHaveWorkspace
+    public class Account : AuditableEntity<int>, IHaveWorkspace
     {
         public int Id { get; private set; }
 

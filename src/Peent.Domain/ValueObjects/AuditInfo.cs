@@ -19,8 +19,8 @@ namespace Peent.Domain.ValueObjects
             };
         }
 
-        public virtual DateTime On { get; private set; }
-        public virtual ApplicationUser By { get; private set; }
+        public DateTime On { get; private set; }
+        public ApplicationUser By { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -12,7 +12,9 @@ using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Infrastructure;
 using Peent.CommonTests.Infrastructure;
+using Peent.Domain.Common;
 using Peent.Domain.Entities;
+using Peent.Domain.ValueObjects;
 using Peent.Persistence;
 using Respawn;
 
@@ -59,7 +61,8 @@ namespace Peent.IntegrationTests.Infrastructure
             services.AddMediatR(typeof(GetCategoryQueryHandler));
         }
 
-        public static Task ResetCheckpoint() => _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+        public static Task ResetCheckpoint() =>
+            _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
 
         public static async ValueTask ExecuteScopeAsync(Func<IServiceProvider, ValueTask> action)
         {
@@ -126,6 +129,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 {
                     db.Set<T>().Add(entity);
                 }
+
                 return new ValueTask(db.SaveChangesAsync());
             });
         }
@@ -153,7 +157,8 @@ namespace Peent.IntegrationTests.Infrastructure
             });
         }
 
-        public static ValueTask InsertAsync<TEntity, TEntity2, TEntity3>(TEntity entity, TEntity2 entity2, TEntity3 entity3)
+        public static ValueTask InsertAsync<TEntity, TEntity2, TEntity3>(TEntity entity, TEntity2 entity2,
+            TEntity3 entity3)
             where TEntity : class
             where TEntity2 : class
             where TEntity3 : class
@@ -168,7 +173,8 @@ namespace Peent.IntegrationTests.Infrastructure
             });
         }
 
-        public static ValueTask InsertAsync<TEntity, TEntity2, TEntity3, TEntity4>(TEntity entity, TEntity2 entity2, TEntity3 entity3, TEntity4 entity4)
+        public static ValueTask InsertAsync<TEntity, TEntity2, TEntity3, TEntity4>(TEntity entity, TEntity2 entity2,
+            TEntity3 entity3, TEntity4 entity4)
             where TEntity : class
             where TEntity2 : class
             where TEntity3 : class
@@ -185,23 +191,19 @@ namespace Peent.IntegrationTests.Infrastructure
             });
         }
 
-        public static ValueTask<T> FindAsync<T>(int id)
+        public static ValueTask<T> FindAsync<T>(params object[] keyValues)
             where T : class
         {
-            return ExecuteDbContextAsync(db => db.Set<T>().FindAsync(id));
-        }
+            return ExecuteDbContextAsync(async db =>
+            {
+                var entity = await db.Set<T>().FindAsync(keyValues);
+                if (entity is IHaveAuditInfo)
+                {
+                    await db.Users.LoadAsync();
+                }
 
-
-        public static ValueTask<T> FindAsync<T>(long id)
-            where T : class
-        {
-            return ExecuteDbContextAsync(db => db.Set<T>().FindAsync(id));
-        }
-
-        public static ValueTask<T> FindAsync<T>(string id)
-            where T : class
-        {
-            return ExecuteDbContextAsync(db => db.Set<T>().FindAsync(id));
+                return entity;
+            });
         }
 
         public static ValueTask<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

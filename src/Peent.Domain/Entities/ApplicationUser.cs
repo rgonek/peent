@@ -1,4 +1,5 @@
-﻿using EnsureThat;
+﻿using System;
+using EnsureThat;
 using Microsoft.AspNetCore.Identity;
 using Peent.Domain.Common;
 
@@ -24,5 +25,55 @@ namespace Peent.Domain.Entities
 
             FirstName = firstName;
         }
+
+        #region Entity
+
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ApplicationUser other))
+                return false;
+
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if (GetRealType() != other.GetRealType())
+                return false;
+
+            if (Id == default || other.Id == default)
+                return false;
+
+            return Equals(Id, other.Id);
+        }
+
+        public static bool operator ==(ApplicationUser a, ApplicationUser b)
+        {
+            if (a is null && b is null)
+                return true;
+
+            if (a is null || b is null)
+                return false;
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(ApplicationUser a, ApplicationUser b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return (GetRealType() + Id).GetHashCode();
+        }
+
+        private Type GetRealType()
+        {
+            var type = GetType();
+
+            return type.ToString().Contains("Castle.Proxies.") ? type.BaseType : type;
+        }
+        
+        #endregion
     }
 }

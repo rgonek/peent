@@ -3,7 +3,7 @@ using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Currency : IEntity<int>
+    public class Currency : Entity<int>
     {
         public int Id { get; private set; }
 

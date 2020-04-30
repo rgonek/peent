@@ -5,7 +5,7 @@ using Peent.Domain.ValueObjects;
 
 namespace Peent.Domain.Common
 {
-    public class AuditableEntity : IHaveAuditInfo
+    public class AuditableEntity<T> : Entity<T>, IHaveAuditInfo
     {
         public AuditInfo Created { get; private set; }
         public AuditInfo LastModified { get; private set; }

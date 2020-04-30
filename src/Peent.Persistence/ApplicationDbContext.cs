@@ -41,16 +41,15 @@ namespace Peent.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            foreach (var entry in ChangeTracker.Entries<IHaveAuditInfo>())
             {
-                var currentUser = await GetCurrentUser(cancellationToken);
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.SetCreatedBy(currentUser);
+                        entry.Entity.SetCreatedBy(await GetCurrentUser(cancellationToken));
                         break;
                     case EntityState.Modified:
-                        entry.Entity.SetModifiedBy(currentUser);
+                        entry.Entity.SetModifiedBy(await GetCurrentUser(cancellationToken));
                         break;
                 }
             }
@@ -61,7 +60,7 @@ namespace Peent.Persistence
         private async Task<ApplicationUser> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = _userAccessor.User.GetUserId();
-            return await Users.SingleAsync(x => x.Id == userId, cancellationToken);
+            return await Users.FindAsync(new object[] { userId }, cancellationToken);
         }
 
         public async Task BeginTransactionAsync()

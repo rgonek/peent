@@ -6,7 +6,7 @@ using Peent.Domain.Entities.TransactionAggregate;
 
 namespace Peent.Domain.Entities
 {
-    public class Tag : AuditableEntity, IEntity<int>, IHaveWorkspace
+    public class Tag : AuditableEntity<int>, IHaveWorkspace
     {
         public int Id { get; private set; }
 

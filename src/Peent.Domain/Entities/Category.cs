@@ -3,7 +3,7 @@ using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class Category : AuditableEntity, IEntity<int>, IHaveWorkspace
+    public class Category : AuditableEntity<int>, IHaveWorkspace
     {
         public int Id { get; private set; }
 

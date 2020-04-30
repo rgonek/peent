@@ -1,4 +1,4 @@
-﻿namespace Peent.Domain.Common
+namespace Peent.Domain.Common
 {
     public interface IEntity<T>
     {

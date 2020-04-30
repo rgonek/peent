@@ -4,7 +4,7 @@ using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities.TransactionAggregate
 {
-    public class TransactionEntry : AuditableEntity, IEntity<long>
+    public class TransactionEntry : AuditableEntity<long>
     {
         public long Id { get; private set; }
 

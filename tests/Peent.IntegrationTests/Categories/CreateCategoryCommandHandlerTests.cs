@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Peent.Domain.Entities;
 using Xunit;
 using AutoFixture;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Peent.Application.Categories.Commands.CreateCategory;
 using Peent.Application.Categories.Commands.DeleteCategory;
 using Peent.Application.Exceptions;
@@ -20,8 +22,6 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_create_category()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateCategoryCommand>();
 
             var categoryId = await SendAsync(command);
@@ -34,14 +34,12 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task when_category_is_created__createdBy_is_set_to_current_user()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateCategoryCommand>();
 
             var categoryId = await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
-            category.Created.By.Should().Be(user);
+            category.Created.By.Should().Be(_context.User);
         }
 
         [Fact]
