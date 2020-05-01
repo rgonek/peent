@@ -6,9 +6,9 @@ namespace Peent.Application.Infrastructure.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
-        public static string GetUserId(this ClaimsPrincipal principal)
+        public static Guid GetUserId(this ClaimsPrincipal principal)
         {
-            return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Guid.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
 
         public static string GetUserName(this ClaimsPrincipal principal)

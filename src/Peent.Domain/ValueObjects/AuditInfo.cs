@@ -8,6 +8,9 @@ namespace Peent.Domain.ValueObjects
 {
     public class AuditInfo : ValueObject
     {
+        public DateTime On { get; private set; }
+        public ApplicationUser By { get; private set; }
+        
         private AuditInfo() { }
 
         public static AuditInfo For(ApplicationUser user)
@@ -18,9 +21,6 @@ namespace Peent.Domain.ValueObjects
                 On = Clock.UtcNow
             };
         }
-
-        public DateTime On { get; private set; }
-        public ApplicationUser By { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

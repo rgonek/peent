@@ -1,6 +1,8 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -9,10 +11,11 @@ using Peent.Application.Infrastructure.Extensions;
 using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
+using Peent.Domain.ValueObjects;
 
 namespace Peent.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
     {
         private IDbContextTransaction _currentTransaction;
         private readonly IUserAccessor _userAccessor;

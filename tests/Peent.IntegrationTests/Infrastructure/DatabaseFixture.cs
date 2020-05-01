@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -152,7 +151,7 @@ namespace Peent.IntegrationTests.Infrastructure
             {
                 db.Set<TEntity>().Attach(entity);
                 db.Entry(entity).State = EntityState.Added;
-                
+
                 db.Set<TEntity2>().Attach(entity2);
                 db.Entry(entity2).State = EntityState.Added;
 
@@ -170,10 +169,10 @@ namespace Peent.IntegrationTests.Infrastructure
             {
                 db.Set<TEntity>().Attach(entity);
                 db.Entry(entity).State = EntityState.Added;
-                
+
                 db.Set<TEntity2>().Attach(entity2);
                 db.Entry(entity2).State = EntityState.Added;
-                
+
                 db.Set<TEntity3>().Attach(entity3);
                 db.Entry(entity3).State = EntityState.Added;
 
@@ -192,13 +191,13 @@ namespace Peent.IntegrationTests.Infrastructure
             {
                 db.Set<TEntity>().Attach(entity);
                 db.Entry(entity).State = EntityState.Added;
-                
+
                 db.Set<TEntity2>().Attach(entity2);
                 db.Entry(entity2).State = EntityState.Added;
-                
+
                 db.Set<TEntity3>().Attach(entity3);
                 db.Entry(entity3).State = EntityState.Added;
-                
+
                 db.Set<TEntity4>().Attach(entity4);
                 db.Entry(entity4).State = EntityState.Added;
 
@@ -264,7 +263,7 @@ namespace Peent.IntegrationTests.Infrastructure
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString()),
             }, "mock"));
             FakeItEasy.A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
@@ -291,7 +290,7 @@ namespace Peent.IntegrationTests.Infrastructure
             var context = new AuthenticationContext(user, workspace);
 
             SetCurrentAuthenticationContext(context);
-            
+
             return context;
         }
     }

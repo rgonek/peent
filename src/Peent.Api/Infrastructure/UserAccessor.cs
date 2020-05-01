@@ -6,7 +6,7 @@ namespace Peent.Api.Infrastructure
 {
     public class UserAccessor : IUserAccessor
     {
-        private IHttpContextAccessor _accessor;
+        private readonly IHttpContextAccessor _accessor;
         public UserAccessor(IHttpContextAccessor accessor)
         {
             _accessor = accessor;

@@ -5,7 +5,7 @@ using Peent.Domain.Common;
 
 namespace Peent.Domain.Entities
 {
-    public class ApplicationUser : IdentityUser, IEntity<string>
+    public class ApplicationUser : IdentityUser<Guid>, IEntity<Guid>
     {
         [PersonalData]
         public string FirstName { get; private set; }
@@ -26,7 +26,7 @@ namespace Peent.Domain.Entities
             FirstName = firstName;
         }
 
-        #region Entity
+        #region Entity Equality
 
 
         public override bool Equals(object obj)
@@ -64,7 +64,7 @@ namespace Peent.Domain.Entities
 
         public override int GetHashCode()
         {
-            return (GetRealType() + Id).GetHashCode();
+            return (GetRealType() + Id.ToString()).GetHashCode();
         }
 
         private Type GetRealType()
