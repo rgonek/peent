@@ -26,6 +26,14 @@ namespace Peent.Domain.Entities
             FirstName = firstName;
         }
 
+        public static ApplicationUser FromId(Guid id)
+        {
+            return new ApplicationUser
+            {
+                Id = id
+            };
+        }
+
         #region Entity Equality
 
 

@@ -15,7 +15,8 @@ using Peent.Domain.ValueObjects;
 
 namespace Peent.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>,
+        IApplicationDbContext
     {
         private IDbContextTransaction _currentTransaction;
         private readonly IUserAccessor _userAccessor;
@@ -38,7 +39,7 @@ namespace Peent.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
@@ -49,21 +50,21 @@ namespace Peent.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.SetCreatedBy(await GetCurrentUser(cancellationToken));
+                    {
+                        entry.Entity.SetCreatedBy(_userAccessor.User.GetUser());
+                        Entry(entry.Entity.Created.By).State = EntityState.Unchanged;
+                    }
                         break;
                     case EntityState.Modified:
-                        entry.Entity.SetModifiedBy(await GetCurrentUser(cancellationToken));
+                    {
+                        entry.Entity.SetModifiedBy(_userAccessor.User.GetUser());
+                        Entry(entry.Entity.LastModified.By).State = EntityState.Unchanged;
+                    }
                         break;
                 }
             }
 
             return await base.SaveChangesAsync(cancellationToken);
-        }
-
-        private async Task<ApplicationUser> GetCurrentUser(CancellationToken cancellationToken)
-        {
-            var userId = _userAccessor.User.GetUserId();
-            return await Users.FindAsync(new object[] { userId }, cancellationToken);
         }
 
         public async Task BeginTransactionAsync()
@@ -73,7 +74,8 @@ namespace Peent.Persistence
                 return;
             }
 
-            _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted).ConfigureAwait(false);
+            _currentTransaction =
+                await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted).ConfigureAwait(false);
         }
 
         public async Task CommitTransactionAsync()
