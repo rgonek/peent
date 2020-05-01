@@ -16,8 +16,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_returns_tags_list()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
@@ -33,18 +31,15 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_returns_tags_list_only_for_given_user()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+
+            await SetUpAuthenticationContext();
             var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
 
-            SetCurrentUser(user, workspace);
+            SetCurrentAuthenticationContext(BaseContext);
             var tagsPaged = await SendAsync(new GetTagsListQuery());
 
             tagsPaged.Results.Should()
@@ -58,8 +53,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_should_not_returns_deleted_tags()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());

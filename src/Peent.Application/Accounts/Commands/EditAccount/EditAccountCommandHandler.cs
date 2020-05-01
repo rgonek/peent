@@ -24,7 +24,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             var account = await _db.Accounts
                 .SingleOrDefaultAsync(x =>
                         x.Id == command.Id &&
-                        x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (account == null)
@@ -35,7 +35,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
                     x.Id != command.Id &&
                     x.Name == command.Name &&
                     x.Type == account.Type &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
             if (existingAccount != null)
                 throw DuplicateException.Create<Account>(x => x.Name, command.Name);
@@ -48,7 +48,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             account.SetDescription(command.Description);
             account.SetCurrency(currency);
 
-            _db.Update(account);
+            _db.Attach(account);
             await _db.SaveChangesAsync(token);
 
             return default;

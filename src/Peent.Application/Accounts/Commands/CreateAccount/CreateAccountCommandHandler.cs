@@ -21,7 +21,7 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
             var existingAccount = await _db.Accounts
                 .SingleOrDefaultAsync(x =>
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId() &&
+                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId() &&
                     x.Type == command.Type,
                     token);
             if (existingAccount != null)
@@ -36,9 +36,9 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                 command.Description,
                 command.Type,
                 currency,
-                _userAccessor.User.GetWorkspaceId());
+                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
 
-            _db.Accounts.Add(account);
+            _db.Accounts.Attach(account);
 
             await _db.SaveChangesAsync(token);
 

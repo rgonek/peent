@@ -10,11 +10,7 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly AsyncLock Mutex = new AsyncLock();
 
         private static bool _initialized;
-        protected AuthenticationContext _context;
-
-        protected IntegrationTestBase()
-        {
-        }
+        protected AuthenticationContext BaseContext;
 
         public virtual async Task InitializeAsync()
         {
@@ -27,7 +23,7 @@ namespace Peent.IntegrationTests.Infrastructure
                     return;
 
                 await ResetCheckpoint();
-                _context = await SetUpAuthenticationContext();
+                BaseContext = await SetUpAuthenticationContext();
 
                 _initialized = true;
             }

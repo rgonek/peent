@@ -34,7 +34,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Tag> Build()
         {
-            var tag = new Tag(_name, _description, UserAccessor.User.GetWorkspaceId());
+            var tag = new Tag(_name, _description, Workspace.FromId(UserAccessor.User.GetWorkspaceId()));
 
             await InsertAsync(tag);
 

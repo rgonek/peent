@@ -16,13 +16,9 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_delete_category()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            var command = new DeleteCategoryCommand
-            {
-                Id = categoryId
-            };
+            var command = new DeleteCategoryCommand(categoryId);
+            
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);
@@ -32,16 +28,10 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_delete_category_by_another_user_in_the_same_workspace()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, workspace);
-            var command = new DeleteCategoryCommand
-            {
-                Id = categoryId
-            };
+            SetCurrentUser(await CreateUserAsync(), BaseContext.Workspace);
+            var command = new DeleteCategoryCommand(categoryId);
+            
             await SendAsync(command);
 
             var category = await FindAsync<Category>(categoryId);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using Peent.Domain.Entities;
 
 namespace Peent.Application.Infrastructure.Extensions
 {
@@ -19,6 +20,11 @@ namespace Peent.Application.Infrastructure.Extensions
         {
             return int.Parse(principal.FindFirst(KnownClaims.WorkspaceId)?.Value ??
                              throw new InvalidOperationException());
+        }
+
+        public static Workspace GetWorkspace(this ClaimsPrincipal principal)
+        {
+            return Workspace.FromId(principal.GetWorkspaceId());
         }
     }
 }

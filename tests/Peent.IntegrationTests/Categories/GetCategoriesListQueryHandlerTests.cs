@@ -16,8 +16,6 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_returns_categories_list()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var categoryId1 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
@@ -33,18 +31,15 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_returns_categories_list_only_for_given_user()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var categoryId1 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+
+            await SetUpAuthenticationContext();
             var categoryId4 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId5 = await SendAsync(F.Create<CreateCategoryCommand>());
 
-            SetCurrentUser(user, workspace);
+            SetCurrentAuthenticationContext(BaseContext);
             var categories = await SendAsync(new GetCategoriesListQuery());
 
             categories.Results.Should()
@@ -58,15 +53,13 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_should_not_returns_deleted_categories()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var categoryId1 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId4 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId5 = await SendAsync(F.Create<CreateCategoryCommand>());
-            await SendAsync(new DeleteCategoryCommand {Id = categoryId4});
-            await SendAsync(new DeleteCategoryCommand {Id = categoryId5});
+            await SendAsync(new DeleteCategoryCommand(categoryId4));
+            await SendAsync(new DeleteCategoryCommand(categoryId5));
 
             var categories = await SendAsync(new GetCategoriesListQuery());
 

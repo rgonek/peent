@@ -25,7 +25,7 @@ namespace Peent.IntegrationTests.Accounts
         public async Task should_delete_account_by_another_user_in_the_same_workspace()
         {
             Account account = An.Account.WithCurrency(A.Currency);
-            await SetUpAuthenticationContext(_context.Workspace);
+            await SetUpAuthenticationContext(BaseContext.Workspace);
             var command = new DeleteAccountCommand(account.Id);
 
             await SendAsync(command);

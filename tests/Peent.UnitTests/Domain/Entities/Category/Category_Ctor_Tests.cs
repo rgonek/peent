@@ -5,6 +5,7 @@ using AutoFixture.Kernel;
 using FluentAssertions;
 using Peent.Common;
 using Peent.CommonTests.AutoFixture;
+using Peent.Domain.Entities;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using Sut = Peent.Domain.Entities.Category;
@@ -59,14 +60,12 @@ namespace Peent.UnitTests.Domain.Entities.Category
             account.Description.Should().Be(description);
         }
 
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_workspace_id_is_not_positive__throws_argument_exception(int currencyId)
+        [Fact]
+        public void when_workspace_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.WorkspaceId).FirstDown();
-            var customizer = new FixedConstructorParameter<int>(
-                currencyId, parameterName);
+            var parameterName = nameof(Sut.Workspace).FirstDown();
+            var customizer = new FixedConstructorParameter<Workspace>(
+                null, parameterName);
 
             Action act = () => Create<Sut>(customizer);
 
@@ -77,13 +76,13 @@ namespace Peent.UnitTests.Domain.Entities.Category
         [Fact]
         public void when_workspace_id_is_positive__does_not_throw()
         {
-            var workspaceId = F.Create<int>();
-            var customizer = new FixedConstructorParameter<int>(
-                workspaceId, nameof(Sut.WorkspaceId).FirstDown());
+            var workspace = F.Create<Workspace>();
+            var customizer = new FixedConstructorParameter<Workspace>(
+                workspace, nameof(Sut.Workspace).FirstDown());
 
             var category = Create<Sut>(customizer);
 
-            category.WorkspaceId.Should().Be(workspaceId);
+            category.Workspace.Should().Be(workspace);
         }
 
         [Fact]
@@ -91,13 +90,13 @@ namespace Peent.UnitTests.Domain.Entities.Category
         {
             var name = F.Create<string>();
             var description = F.Create<string>();
-            var workspaceId = F.Create<int>();
+            var workspace = F.Create<Workspace>();
 
-            var account = new Sut(name, description, workspaceId);
+            var account = new Sut(name, description, workspace);
 
             account.Name.Should().Be(name);
             account.Description.Should().Be(description);
-            account.WorkspaceId.Should().Be(workspaceId);
+            account.Workspace.Should().Be(workspace);
         }
     }
 }

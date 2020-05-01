@@ -21,7 +21,7 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
         public async Task<PagedResult<AccountModel>> Handle(GetAccountsListQuery query, CancellationToken token)
             => await _db.Accounts
                 .Include(x => x.Currency)
-                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
+                .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspaceId())
                 .ApplyFilters(query)
                 .ApplySort(query)
                 .GetPagedAsync(

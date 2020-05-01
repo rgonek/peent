@@ -19,7 +19,7 @@ namespace Peent.Application.Categories.Queries.GetCategoriesList
 
         public async Task<PagedResult<CategoryModel>> Handle(GetCategoriesListQuery query, CancellationToken token)
             => await _db.Categories
-                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
+                .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspaceId())
                 .ApplyFilters(query)
                 .ApplySort(query)
                 .GetPagedAsync(

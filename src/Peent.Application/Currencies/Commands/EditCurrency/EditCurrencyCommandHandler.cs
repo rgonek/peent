@@ -40,7 +40,7 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
             currency.SetSymbol(command.Symbol);
             currency.SetDecimalPlaces(command.DecimalPlaces);
 
-            _db.Update(currency);
+            _db.Attach(currency);
             await _db.SaveChangesAsync(token);
 
             return default;

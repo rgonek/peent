@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -10,21 +11,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
+using Peent.Application.DynamicQuery.Sorts;
 using Peent.Application.Infrastructure;
 using Peent.CommonTests.Infrastructure;
 using Peent.Domain.Common;
 using Peent.Domain.Entities;
-using Peent.Domain.ValueObjects;
 using Peent.Persistence;
+using System.Linq.Dynamic.Core;
 using Respawn;
 
 namespace Peent.IntegrationTests.Infrastructure
 {
     public class DatabaseFixture : TestFixture
     {
-        private static readonly Checkpoint _checkpoint;
-        private static readonly IConfigurationRoot _configuration;
-        private static readonly IServiceScopeFactory _scopeFactory;
+        private static readonly Checkpoint Checkpoint;
+        private static readonly IConfigurationRoot Configuration;
+        private static readonly IServiceScopeFactory ScopeFactory;
         public static readonly IUserAccessor UserAccessor;
 
         static DatabaseFixture()
@@ -33,14 +35,14 @@ namespace Peent.IntegrationTests.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
-            _configuration = builder.Build();
+            Configuration = builder.Build();
             UserAccessor = FakeItEasy.A.Fake<IUserAccessor>();
 
             var services = new ServiceCollection();
             ConfigureServices(services);
             var provider = services.BuildServiceProvider();
-            _scopeFactory = provider.GetService<IServiceScopeFactory>();
-            _checkpoint = new Checkpoint
+            ScopeFactory = provider.GetService<IServiceScopeFactory>();
+            Checkpoint = new Checkpoint
             {
                 TablesToIgnore = new[]
                 {
@@ -53,7 +55,7 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    _configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             services.AddScoped(sp => UserAccessor);
@@ -62,50 +64,46 @@ namespace Peent.IntegrationTests.Infrastructure
         }
 
         public static Task ResetCheckpoint() =>
-            _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+            Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
 
         public static async ValueTask ExecuteScopeAsync(Func<IServiceProvider, ValueTask> action)
         {
-            using (var scope = _scopeFactory.CreateScope())
+            using var scope = ScopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetService<IApplicationDbContext>();
+            try
             {
-                var db = scope.ServiceProvider.GetService<IApplicationDbContext>();
-                try
-                {
-                    await db.BeginTransactionAsync().ConfigureAwait(false);
+                await db.BeginTransactionAsync().ConfigureAwait(false);
 
-                    await action(scope.ServiceProvider).ConfigureAwait(false);
+                await action(scope.ServiceProvider).ConfigureAwait(false);
 
-                    await db.CommitTransactionAsync().ConfigureAwait(false);
-                }
-                catch (Exception)
-                {
-                    db.RollbackTransaction();
-                    throw;
-                }
+                await db.CommitTransactionAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                db.RollbackTransaction();
+                throw;
             }
         }
 
         public static async ValueTask<T> ExecuteScopeAsync<T>(Func<IServiceProvider, ValueTask<T>> action)
         {
-            using (var scope = _scopeFactory.CreateScope())
+            using var scope = ScopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetService<IApplicationDbContext>();
+
+            try
             {
-                var db = scope.ServiceProvider.GetService<IApplicationDbContext>();
+                await db.BeginTransactionAsync().ConfigureAwait(false);
 
-                try
-                {
-                    await db.BeginTransactionAsync().ConfigureAwait(false);
+                var result = await action(scope.ServiceProvider).ConfigureAwait(false);
 
-                    var result = await action(scope.ServiceProvider).ConfigureAwait(false);
+                await db.CommitTransactionAsync().ConfigureAwait(false);
 
-                    await db.CommitTransactionAsync().ConfigureAwait(false);
-
-                    return result;
-                }
-                catch (Exception)
-                {
-                    db.RollbackTransaction();
-                    throw;
-                }
+                return result;
+            }
+            catch (Exception)
+            {
+                db.RollbackTransaction();
+                throw;
             }
         }
 
@@ -127,7 +125,8 @@ namespace Peent.IntegrationTests.Infrastructure
             {
                 foreach (var entity in entities)
                 {
-                    db.Set<T>().Add(entity);
+                    db.Set<T>().Attach(entity);
+                    db.Entry(entity).State = EntityState.Added;
                 }
 
                 return new ValueTask(db.SaveChangesAsync());
@@ -138,7 +137,8 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Add(entity);
+                db.Attach(entity);
+                db.Entry(entity).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -150,8 +150,11 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Add(entity);
-                db.Set<TEntity2>().Add(entity2);
+                db.Set<TEntity>().Attach(entity);
+                db.Entry(entity).State = EntityState.Added;
+                
+                db.Set<TEntity2>().Attach(entity2);
+                db.Entry(entity2).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -165,9 +168,14 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Add(entity);
-                db.Set<TEntity2>().Add(entity2);
-                db.Set<TEntity3>().Add(entity3);
+                db.Set<TEntity>().Attach(entity);
+                db.Entry(entity).State = EntityState.Added;
+                
+                db.Set<TEntity2>().Attach(entity2);
+                db.Entry(entity2).State = EntityState.Added;
+                
+                db.Set<TEntity3>().Attach(entity3);
+                db.Entry(entity3).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -182,10 +190,17 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Add(entity);
-                db.Set<TEntity2>().Add(entity2);
-                db.Set<TEntity3>().Add(entity3);
-                db.Set<TEntity4>().Add(entity4);
+                db.Set<TEntity>().Attach(entity);
+                db.Entry(entity).State = EntityState.Added;
+                
+                db.Set<TEntity2>().Attach(entity2);
+                db.Entry(entity2).State = EntityState.Added;
+                
+                db.Set<TEntity3>().Attach(entity3);
+                db.Entry(entity3).State = EntityState.Added;
+                
+                db.Set<TEntity4>().Attach(entity4);
+                db.Entry(entity4).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -196,13 +211,15 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(async db =>
             {
-                var entity = await db.Set<T>().FindAsync(keyValues);
-                if (entity is IHaveAuditInfo)
+                if (typeof(IEntity<>).IsAssignableFromRawGeneric(typeof(T)))
                 {
-                    await db.Users.LoadAsync();
+                    return await db.Set<T>()
+                        .Include(db.GetIncludePaths<T>())
+                        .Where($"{nameof(IEntity<int>.Id)} == @0", keyValues)
+                        .SingleOrDefaultAsync();
                 }
 
-                return entity;
+                return await db.Set<T>().FindAsync(keyValues);
             });
         }
 
@@ -234,7 +251,7 @@ namespace Peent.IntegrationTests.Infrastructure
             return user;
         }
 
-        public static async Task<Workspace> CreateWorkspaceAsync(ApplicationUser user = null)
+        public static async Task<Workspace> CreateWorkspaceAsync()
         {
             var workspace = new Workspace();
             await InsertAsync(workspace);
@@ -260,14 +277,22 @@ namespace Peent.IntegrationTests.Infrastructure
             var user = await CreateUserAsync();
             SetCurrentUser(user);
             workspace ??= await CreateWorkspaceAsync();
-            SetCurrentUser(user, workspace);
 
-            return new AuthenticationContext(user, workspace);
+            return SetCurrentAuthenticationContext(user, workspace);
         }
 
         public static void SetCurrentAuthenticationContext(AuthenticationContext context)
         {
             SetCurrentUser(context.User, context.Workspace);
+        }
+
+        public static AuthenticationContext SetCurrentAuthenticationContext(ApplicationUser user, Workspace workspace)
+        {
+            var context = new AuthenticationContext(user, workspace);
+
+            SetCurrentAuthenticationContext(context);
+            
+            return context;
         }
     }
 }

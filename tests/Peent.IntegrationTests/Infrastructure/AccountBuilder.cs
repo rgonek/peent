@@ -76,7 +76,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Account> Build()
         {
-            var account = new Account(_name, _description, _type, _currency, UserAccessor.User.GetWorkspaceId());
+            var account = new Account(_name, _description, _type, _currency, UserAccessor.User.GetWorkspace());
 
             await InsertAsync(account);
 

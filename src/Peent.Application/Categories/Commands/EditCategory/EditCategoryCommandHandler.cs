@@ -24,7 +24,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
             var category = await _db.Categories
                 .SingleOrDefaultAsync(x =>
                         x.Id == command.Id &&
-                        x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (category == null)
@@ -34,7 +34,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
                 .SingleOrDefaultAsync(x =>
                     x.Id != command.Id &&
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingCategory != null)
@@ -43,7 +43,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
             category.SetName(command.Name);
             category.SetDescription(command.Description);
 
-            _db.Update(category);
+            _db.Attach(category);
             await _db.SaveChangesAsync(token);
 
             return default;

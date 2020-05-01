@@ -21,7 +21,7 @@ namespace Peent.Application.Accounts.Commands.DeleteAccount
             var account = await _db.Accounts
                 .SingleOrDefaultAsync(x =>
                         x.Id == command.Id &&
-                        x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (account == null)

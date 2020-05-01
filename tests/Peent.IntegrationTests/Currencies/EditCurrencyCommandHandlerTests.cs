@@ -19,9 +19,8 @@ namespace Peent.IntegrationTests.Currencies
         public async Task should_edit_currency()
         {
             var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
-            var command = F.Build<EditCurrencyCommand>()
-                .With(x => x.Id, currencyId)
-                .Create();
+            var command = F.Create<EditCurrencyCommand>();
+            command.Id = currencyId;
 
             await SendAsync(command);
 
@@ -39,10 +38,9 @@ namespace Peent.IntegrationTests.Currencies
             var createCommand = F.Create<CreateCurrencyCommand>();
             await SendAsync(createCommand);
 
-            var editCommand = F.Build<EditCurrencyCommand>()
-                .With(x => x.Id, currencyId)
-                .With(x => x.Code, createCommand.Code)
-                .Create();
+            var editCommand = F.Create<EditCurrencyCommand>();
+            editCommand.Id = currencyId;
+            editCommand.Code = createCommand.Code;
 
             Invoking(async () => await SendAsync(editCommand))
                 .Should().Throw<DuplicateException>();

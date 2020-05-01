@@ -13,27 +13,27 @@ namespace Peent.Domain.Entities
 
         public Currency Currency { get; private set; }
 
-        public int WorkspaceId { get; private set; }
+        public Workspace Workspace { get; private set; }
 
         #region Ctors
         private Account() { }
 
-        public Account(string name, AccountType type, Currency currency, int workspaceId)
-            : this(name, null, type, currency, workspaceId)
+        public Account(string name, AccountType type, Currency currency, Workspace workspace)
+            : this(name, null, type, currency, workspace)
         {
         }
 
         #endregion
 
-        public Account(string name, string description, AccountType type, Currency currency, int workspaceId)
+        public Account(string name, string description, AccountType type, Currency currency, Workspace workspace)
         {
             Ensure.That(type, nameof(type)).IsNotDefault();
-            Ensure.That(workspaceId, nameof(workspaceId)).IsPositive();
+            Ensure.That(workspace, nameof(workspace)).IsNotNull();
 
             SetName(name);
             SetDescription(description);
             SetCurrency(currency);
-            WorkspaceId = workspaceId;
+            Workspace = workspace;
             Type = type;
         }
 

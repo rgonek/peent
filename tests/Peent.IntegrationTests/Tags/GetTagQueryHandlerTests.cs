@@ -18,8 +18,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task when_tag_exists__return_it()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
 
@@ -33,9 +31,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task when_tag_do_not_exists__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-
             Invoking(async () => await SendAsync(new GetTagQuery { Id = 0 }))
                 .Should().Throw<NotFoundException>();
         }
@@ -43,8 +38,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task when_tag_exists_but_is_deleted__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
             await SendAsync(new DeleteTagCommand {Id = tagId});
@@ -56,13 +49,10 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task when_tag_exists_in_another_workspace__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
 
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+            await SetUpAuthenticationContext();
 
             Invoking(async () => await SendAsync(new GetTagQuery { Id = tagId }))
                 .Should().Throw<NotFoundException>();

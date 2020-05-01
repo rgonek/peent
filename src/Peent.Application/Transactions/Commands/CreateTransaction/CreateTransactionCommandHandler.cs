@@ -51,7 +51,7 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
             var transaction = new Transaction(command.Title, command.Date, command.Description, category,
                 command.Amount, fromAccount, toAccount, tags);
 
-            _db.Transactions.Add(transaction);
+            _db.Transactions.Attach(transaction);
 
             await _db.SaveChangesAsync(token);
 

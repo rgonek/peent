@@ -10,7 +10,7 @@ namespace Peent.Domain.Entities
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public int WorkspaceId { get; private set; }
+        public Workspace Workspace { get; private set; }
 
         private readonly List<TransactionTag> _transactionTags = new List<TransactionTag>();
         public IReadOnlyCollection<TransactionTag> TransactionTags => _transactionTags.AsReadOnly();
@@ -21,20 +21,20 @@ namespace Peent.Domain.Entities
         {
         }
 
-        public Tag(string name, int workspaceId)
-            : this(name, null, workspaceId)
+        public Tag(string name, Workspace workspace)
+            : this(name, null, workspace)
         {
         }
 
         #endregion
 
-        public Tag(string name, string description, int workspaceId)
+        public Tag(string name, string description, Workspace workspace)
         {
-            Ensure.That(workspaceId, nameof(workspaceId)).IsPositive();
+            Ensure.That(workspace, nameof(workspace)).IsNotNull();
 
             SetName(name);
             SetDescription(description);
-            WorkspaceId = workspaceId;
+            Workspace = workspace;
         }
 
         public void SetName(string name)

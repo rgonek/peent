@@ -24,7 +24,7 @@ namespace Peent.Application.Tags.Commands.CreateTag
             var existingTag = await _db.Tags
                 .SingleOrDefaultAsync(x =>
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingTag != null)
@@ -33,9 +33,9 @@ namespace Peent.Application.Tags.Commands.CreateTag
             var tag = new Tag(
                 command.Name,
                 command.Description,
-                _userAccessor.User.GetWorkspaceId());
+                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
 
-            _db.Tags.Add(tag);
+            _db.Tags.Attach(tag);
 
             await _db.SaveChangesAsync(token);
 

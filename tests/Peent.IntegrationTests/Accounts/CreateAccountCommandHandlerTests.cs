@@ -36,7 +36,7 @@ namespace Peent.IntegrationTests.Accounts
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.Created.By.Should().Be(_context.User);
+            account.Created.By.Should().Be(BaseContext.User);
         }
 
         [Fact]
@@ -62,9 +62,9 @@ namespace Peent.IntegrationTests.Accounts
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.WorkspaceId.Should().Be(_context.Workspace.Id);
-            var fetchedWorkspace = await FindAsync<Workspace>(_context.Workspace.Id);
-            fetchedWorkspace.Created.By.Should().Be(_context.User);
+            account.Workspace.Should().Be(BaseContext.Workspace);
+            var fetchedWorkspace = await FindAsync<Workspace>(BaseContext.Workspace.Id);
+            fetchedWorkspace.Created.By.Should().Be(BaseContext.User);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace Peent.IntegrationTests.Accounts
         }
 
         [Fact]
-        public async Task when_account_with_given_name_exists_but_is_deleted__do_not_throw()
+        public async Task when_account_with_given_name_is_already_deleted__do_not_throw()
         {
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
             var accountId = await SendAsync(command);

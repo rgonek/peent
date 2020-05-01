@@ -18,8 +18,6 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task when_category_exists__return_it()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
 
@@ -33,9 +31,6 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task when_category_do_not_exists__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
-
             Invoking(async () => await SendAsync(new GetCategoryQuery { Id = 0 }))
                 .Should().Throw<NotFoundException>();
         }
@@ -43,11 +38,9 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task when_category_exists_but_is_deleted__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
-            await SendAsync(new DeleteCategoryCommand {Id = categoryId});
+            await SendAsync(new DeleteCategoryCommand(categoryId));
 
             Invoking(async () => await SendAsync(new GetCategoryQuery { Id = categoryId }))
                 .Should().Throw<NotFoundException>();
@@ -56,13 +49,10 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task when_category_exists_in_another_workspace__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
 
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+            await SetUpAuthenticationContext();
 
             Invoking(async () => await SendAsync(new GetCategoryQuery { Id = categoryId }))
                 .Should().Throw<NotFoundException>();

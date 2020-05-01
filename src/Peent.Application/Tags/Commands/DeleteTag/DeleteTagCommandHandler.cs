@@ -24,7 +24,7 @@ namespace Peent.Application.Tags.Commands.DeleteTag
             var tag = await _db.Tags
                 .SingleOrDefaultAsync(x =>
                         x.Id == command.Id &&
-                        x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (tag == null)

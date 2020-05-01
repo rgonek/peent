@@ -38,7 +38,7 @@ namespace Peent.IntegrationTests.Accounts
         public async Task should_edit_account_by_another_user_in_the_same_workspace()
         {
             Account account = An.Account;
-            var context = await SetUpAuthenticationContext(_context.Workspace);
+            var context = await SetUpAuthenticationContext(BaseContext.Workspace);
             var command = F.Build<EditAccountCommand>()
                 .With(x => x.Id, account.Id)
                 .With(x => x.CurrencyId, account.Currency.Id)
@@ -62,7 +62,7 @@ namespace Peent.IntegrationTests.Accounts
             await SendAsync(command);
 
             account = await FindAsync<Account>(account.Id);
-            account.LastModified.By.Should().Be(_context.User);
+            account.LastModified.By.Should().Be(BaseContext.User);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Peent.IntegrationTests.Accounts
         }
 
         [Fact]
-        public async Task When_account_with_given_name_exists__throws()
+        public void when_account_with_given_name_exists__throws()
         {
             Account account = An.Account.OfAssetType();
             Account account2 = An.Account.OfAssetType();
@@ -119,7 +119,7 @@ namespace Peent.IntegrationTests.Accounts
             Account account = An.Account;
             await SetUpAuthenticationContext();
             Account account2 = An.Account;
-            SetCurrentAuthenticationContext(_context);
+            SetCurrentAuthenticationContext(BaseContext);
 
             await SendAsync(new EditAccountCommand
             {

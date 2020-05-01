@@ -7,26 +7,26 @@ namespace Peent.Domain.Entities
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public int WorkspaceId { get; private set; }
+        public Workspace Workspace { get; private set; }
 
         #region Ctors
 
         private Category() { }
 
-        public Category(string name, int workspaceId)
-            : this(name, null, workspaceId)
+        public Category(string name, Workspace workspace)
+            : this(name, null, workspace)
         {
         }
 
         #endregion
 
-        public Category(string name, string description, int workspaceId)
+        public Category(string name, string description, Workspace workspace)
         {
-            Ensure.That(workspaceId, nameof(workspaceId)).IsPositive();
+            Ensure.That(workspace, nameof(workspace)).IsNotNull();
 
             SetName(name);
             Description = description;
-            WorkspaceId = workspaceId;
+            Workspace = workspace;
         }
 
         public void SetName(string name)

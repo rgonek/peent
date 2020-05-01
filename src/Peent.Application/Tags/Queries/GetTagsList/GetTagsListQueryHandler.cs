@@ -19,7 +19,7 @@ namespace Peent.Application.Tags.Queries.GetTagsList
 
         public async Task<PagedResult<TagModel>> Handle(GetTagsListQuery query, CancellationToken token)
             => await _db.Tags
-                .Where(x => x.WorkspaceId == _userAccessor.User.GetWorkspaceId())
+                .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspaceId())
                 .ApplyFilters(query)
                 .ApplySort(query)
                 .GetPagedAsync(

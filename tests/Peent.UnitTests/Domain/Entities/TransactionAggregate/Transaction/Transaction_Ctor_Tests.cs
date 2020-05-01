@@ -107,7 +107,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         [Fact]
         public void when_from_account_is_null__throws_argument_exception()
         {
-            var parameterName = "from" + nameof(Peent.Domain.Entities.Account).FirstDown();
+            var parameterName = "from" + nameof(Peent.Domain.Entities.Account);
             Peent.Domain.Entities.Account account = null;
             var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Account>(
                 account, parameterName);
@@ -122,7 +122,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         [Fact]
         public void when_to_account_is_null__throws_argument_exception()
         {
-            var parameterName = "to" + nameof(Peent.Domain.Entities.Account).FirstDown();
+            var parameterName = "to" + nameof(Peent.Domain.Entities.Account);
             Peent.Domain.Entities.Account account = null;
             var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Account>(
                 account, parameterName);

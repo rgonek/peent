@@ -16,8 +16,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_delete_tag()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
             var command = new DeleteTagCommand
             {
@@ -32,12 +30,9 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_delete_tag_by_another_user_in_the_same_workspace()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, workspace);
+
+            SetCurrentAuthenticationContext(await CreateUserAsync(), BaseContext.Workspace);
             var command = new DeleteTagCommand
             {
                 Id = tagId

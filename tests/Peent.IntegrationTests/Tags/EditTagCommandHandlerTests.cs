@@ -21,8 +21,6 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_edit_tag()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
             var command = F.Build<EditTagCommand>()
                 .With(x => x.Id, tagId)
@@ -38,12 +36,8 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_edit_tag_by_another_user_in_the_same_workspace()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, workspace);
+            var context = SetCurrentAuthenticationContext(await CreateUserAsync(), BaseContext.Workspace);
             var command = F.Build<EditTagCommand>()
                 .With(x => x.Id, tagId)
                 .Create();
@@ -51,14 +45,12 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.LastModified.By.Should().Be(user2.Id);
+            tag.LastModified.By.Should().Be(context.User);
         }
 
         [Fact]
         public async Task when_tag_is_edited__lastModifiedBy_is_set_to_current_user()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
             var command = F.Build<EditTagCommand>()
                 .With(x => x.Id, tagId)
@@ -67,34 +59,28 @@ namespace Peent.IntegrationTests.Tags
             await SendAsync(command);
 
             var tag = await FindAsync<Tag>(tagId);
-            tag.LastModified.By.Should().Be(user.Id);
+            tag.LastModified.By.Should().Be(BaseContext.User);
         }
 
         [Fact]
         public async Task when_tag_is_edited__lastModificationDate_is_set_to_utc_now()
         {
             var utcNow = new DateTime(2019, 02, 02, 11, 28, 32);
-            using (new ClockOverride(() => utcNow, () => utcNow.AddHours(2)))
-            {
-                var user = await CreateUserAsync();
-                SetCurrentUser(user, await CreateWorkspaceAsync(user));
-                var tagId = await SendAsync(F.Create<CreateTagCommand>());
-                var command = F.Build<EditTagCommand>()
-                    .With(x => x.Id, tagId)
-                    .Create();
+            using var _ = new ClockOverride(() => utcNow, () => utcNow.AddHours(2));
+            var tagId = await SendAsync(F.Create<CreateTagCommand>());
+            var command = F.Build<EditTagCommand>()
+                .With(x => x.Id, tagId)
+                .Create();
 
-                await SendAsync(command);
+            await SendAsync(command);
 
-                var tag = await FindAsync<Tag>(tagId);
-                tag.LastModified.On.Should().Be(utcNow);
-            }
+            var tag = await FindAsync<Tag>(tagId);
+            tag.LastModified.On.Should().Be(utcNow);
         }
 
         [Fact]
         public async Task when_tag_with_given_name_exists__throws()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
             var command2 = F.Create<CreateTagCommand>();
@@ -111,13 +97,11 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task when_tag_with_given_name_exists_but_is_deleted__do_not_throw()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
             var command2 = F.Create<CreateTagCommand>();
             await SendAsync(command2);
-            await SendAsync(new DeleteTagCommand { Id = tagId });
+            await SendAsync(new DeleteTagCommand {Id = tagId});
 
             await SendAsync(command);
         }
@@ -125,22 +109,20 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task when_tag_with_given_name_exists_in_another_workspace__do_not_throw()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+
+            await SetUpAuthenticationContext();
             var command2 = F.Create<CreateTagCommand>();
             await SendAsync(command2);
-            SetCurrentUser(user, workspace);
+            
+            SetCurrentAuthenticationContext(BaseContext);
 
             await SendAsync(new EditTagCommand
-                {
-                    Id = tagId,
-                    Name = command2.Name
-                });
+            {
+                Id = tagId,
+                Name = command2.Name
+            });
         }
     }
 }

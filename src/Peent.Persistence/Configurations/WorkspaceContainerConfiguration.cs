@@ -9,9 +9,9 @@ namespace Peent.Persistence.Configurations
         public static void ConfigureWorkspace<T>(this EntityTypeBuilder<T> builder)
             where T : class, IHaveWorkspace
         {
-            builder.HasOne<Workspace>()
+            builder.HasOne(x => x.Workspace)
                 .WithMany()
-                .HasForeignKey(x => x.WorkspaceId);
+                .IsRequired();
         }
     }
 }

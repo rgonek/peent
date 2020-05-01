@@ -36,7 +36,7 @@ namespace Peent.IntegrationTests.Infrastructure
             var category = new Category(
                 _name,
                 _description,
-                UserAccessor.User.GetWorkspaceId());
+                Workspace.FromId(UserAccessor.User.GetWorkspaceId()));
 
             await InsertAsync(category);
 

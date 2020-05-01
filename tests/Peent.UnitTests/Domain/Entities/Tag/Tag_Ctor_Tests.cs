@@ -5,6 +5,7 @@ using AutoFixture.Kernel;
 using FluentAssertions;
 using Peent.Common;
 using Peent.CommonTests.AutoFixture;
+using Peent.Domain.Entities;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using Sut = Peent.Domain.Entities.Tag;
@@ -59,14 +60,12 @@ namespace Peent.UnitTests.Domain.Entities.Tag
             tag.Description.Should().Be(description);
         }
 
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(0)]
-        public void when_workspace_id_is_not_positive__throws_argument_exception(int currencyId)
+        [Fact]
+        public void when_workspace_is_null__throws_argument_exception()
         {
-            var parameterName = nameof(Sut.WorkspaceId).FirstDown();
-            var customizer = new FixedConstructorParameter<int>(
-                currencyId, parameterName);
+            var parameterName = nameof(Sut.Workspace).FirstDown();
+            var customizer = new FixedConstructorParameter<Workspace>(
+                null, parameterName);
 
             Action act = () => Create<Sut>(customizer);
 
@@ -75,15 +74,15 @@ namespace Peent.UnitTests.Domain.Entities.Tag
         }
 
         [Fact]
-        public void when_workspace_id_is_positive__does_not_throw()
+        public void when_workspace_is_not_null__does_not_throw()
         {
-            var workspaceId = F.Create<int>();
-            var customizer = new FixedConstructorParameter<int>(
-                workspaceId, nameof(Sut.WorkspaceId).FirstDown());
+            var workspace = F.Create<Workspace>();
+            var customizer = new FixedConstructorParameter<Workspace>(
+                workspace, nameof(Sut.Workspace).FirstDown());
 
             var tag = Create<Sut>(customizer);
 
-            tag.WorkspaceId.Should().Be(workspaceId);
+            tag.Workspace.Should().Be(workspace);
         }
 
         [Fact]
@@ -91,13 +90,13 @@ namespace Peent.UnitTests.Domain.Entities.Tag
         {
             var name = F.Create<string>();
             var description = F.Create<string>();
-            var workspaceId = F.Create<int>();
+            var workspace = F.Create<Workspace>();
 
-            var tag = new Sut(name, description, workspaceId);
+            var tag = new Sut(name, description, workspace);
 
             tag.Name.Should().Be(name);
             tag.Description.Should().Be(description);
-            tag.WorkspaceId.Should().Be(workspaceId);
+            tag.Workspace.Should().Be(workspace);
         }
     }
 }

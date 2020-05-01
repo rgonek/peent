@@ -1,7 +1,9 @@
-﻿namespace Peent.Domain.Common
+﻿using Peent.Domain.Entities;
+
+namespace Peent.Domain.Common
 {
     public interface IHaveWorkspace
     {
-        int WorkspaceId { get; }
+        Workspace Workspace { get; }
     }
 }

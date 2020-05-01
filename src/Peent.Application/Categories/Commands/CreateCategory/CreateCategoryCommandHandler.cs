@@ -23,8 +23,8 @@ namespace Peent.Application.Categories.Commands.CreateCategory
         {
             var existingCategory = await _db.Categories
                 .SingleOrDefaultAsync(x =>
-                    x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                        x.Name == command.Name &&
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingCategory != null)
@@ -33,9 +33,9 @@ namespace Peent.Application.Categories.Commands.CreateCategory
             var category = new Category(
                 command.Name,
                 command.Description,
-                _userAccessor.User.GetWorkspaceId());
+                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
 
-            _db.Categories.Add(category);
+            _db.Categories.Attach(category);
 
             await _db.SaveChangesAsync(token);
 

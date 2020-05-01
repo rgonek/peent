@@ -16,8 +16,6 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task should_returns_accounts_list()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Currency currency = A.Currency;
             Account account1 = An.Account.WithCurrency(currency);
             Account account2 = An.Account.WithCurrency(currency);
@@ -34,20 +32,16 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task should_returns_accounts_list_only_for_given_user()
         {
-            var user = await CreateUserAsync();
-            var workspace = await CreateWorkspaceAsync(user);
-            SetCurrentUser(user, workspace);
-
             Currency currency = A.Currency;
             Account account1 = An.Account.WithCurrency(currency);
             Account account2 = An.Account.WithCurrency(currency);
             Account account3 = An.Account.WithCurrency(currency);
-            var user2 = await CreateUserAsync();
-            SetCurrentUser(user2, await CreateWorkspaceAsync(user2));
+
+            await SetUpAuthenticationContext();
             Account account4 = An.Account.WithCurrency(currency);
             Account account5 = An.Account.WithCurrency(currency);
 
-            SetCurrentUser(user, workspace);
+            SetCurrentAuthenticationContext(BaseContext);
             var accountsPaged = await SendAsync(new GetAccountsListQuery());
 
             accountsPaged.Results.Should()
@@ -61,8 +55,6 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task should_should_not_returns_deleted_accounts()
         {
-            var user = await CreateUserAsync();
-            SetCurrentUser(user, await CreateWorkspaceAsync(user));
             Currency currency = A.Currency;
             Account account1 = An.Account.WithCurrency(currency);
             Account account2 = An.Account.WithCurrency(currency);

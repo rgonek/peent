@@ -32,7 +32,7 @@ namespace Peent.Application.Currencies.Commands.CreateCurrency
                 command.Symbol,
                 command.DecimalPlaces);
 
-            _db.Currencies.Add(currency);
+            _db.Currencies.Attach(currency);
 
             await _db.SaveChangesAsync(token);
 

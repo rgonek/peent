@@ -26,7 +26,7 @@ namespace Peent.Application.Tags.Commands.EditTag
             var tag = await _db.Tags
                 .SingleOrDefaultAsync(x =>
                         x.Id == command.Id &&
-                        x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (tag == null)
@@ -36,7 +36,7 @@ namespace Peent.Application.Tags.Commands.EditTag
                 .SingleOrDefaultAsync(x =>
                     x.Id != command.Id &&
                     x.Name == command.Name &&
-                    x.WorkspaceId == _userAccessor.User.GetWorkspaceId(),
+                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
                     token);
 
             if (existingTag != null)
@@ -45,7 +45,7 @@ namespace Peent.Application.Tags.Commands.EditTag
             tag.SetName(command.Name);
             tag.SetDescription(command.Description);
 
-            _db.Update(tag);
+            _db.Attach(tag);
             await _db.SaveChangesAsync(token);
 
             return default;
