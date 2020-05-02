@@ -5,7 +5,7 @@ using FluentValidation.Validators;
 using Peent.Application.Infrastructure.Extensions;
 using Peent.Domain.Common;
 
-namespace Peent.Application.Common.Validators
+namespace Peent.Application.Common.Validators.ExistsValidator
 {
     public class ExistsInCurrentContextValidator<TEntity> : AsyncValidatorBase,
         IExistsInCurrentContextValidator<TEntity>

@@ -11,7 +11,16 @@ namespace Peent.UnitTests.Categories
     public class EditCategoryCommandValidatorTests
     {
         private readonly EditCategoryCommandValidator _validator =
-            new EditCategoryCommandValidator(new AlwaysExistsValidatorProvider());
+            new EditCategoryCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysUniqueValidatorProvider());
+        
+        [Fact]
+        public void when_is_unique__should_not_have_error()
+            => _validator.ShouldNotHaveValidationErrorFor(x => x.Name, F.Create<string>());
+
+        [Fact]
+        public void when_is_duplicated__should_have_error()
+            => new EditCategoryCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysDuplicatedValidatorProvider())
+                .ShouldHaveValidationErrorFor(x => x.Name, F.Create<string>());
 
         [Fact]
         public void when_id_is_0__should_have_error()
@@ -31,7 +40,7 @@ namespace Peent.UnitTests.Categories
 
         [Fact]
         public void when_does_not_exists__should_have_error()
-            => new EditCategoryCommandValidator(new AlwaysNotExistsValidatorProvider())
+            => new EditCategoryCommandValidator(new AlwaysNotExistsValidatorProvider(), new AlwaysUniqueValidatorProvider())
                 .ShouldHaveValidationErrorFor(x => x.Id, 1);
 
         [Fact]

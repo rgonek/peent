@@ -5,8 +5,8 @@ namespace Peent.Application.Common.Validators
 {
     public static class ValidatorsExtensions
     {
-        public static IRuleBuilderOptions<T, TElement> Must<T,TElement>(
-            this IRuleBuilder<T, TElement> ruleBuilder, IPropertyValidator validator)
+        public static IRuleBuilderOptions<T, TProperty> Must<T, TProperty>(
+            this IRuleBuilder<T, TProperty> ruleBuilder, IPropertyValidator validator)
         {
             return ruleBuilder.SetValidator(validator);
         }

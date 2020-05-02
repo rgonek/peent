@@ -1,6 +1,6 @@
 using FluentValidation.Validators;
 
-namespace Peent.Application.Common.Validators
+namespace Peent.Application.Common.Validators.ExistsValidator
 {
     public class ExistsInCurrentContextValidatorProvider : IExistsInCurrentContextValidatorProvider
     {

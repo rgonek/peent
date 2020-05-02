@@ -11,7 +11,16 @@ namespace Peent.UnitTests.Accounts
     public class CreateAccountCommandValidatorTests
     {
         private readonly CreateAccountCommandValidator _validator =
-            new CreateAccountCommandValidator(new AlwaysExistsValidatorProvider());
+            new CreateAccountCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysUniqueValidatorProvider());
+
+        [Fact]
+        public void when_is_unique__should_not_have_error()
+            => _validator.ShouldNotHaveValidationErrorFor(x => x.Name, F.Create<string>());
+
+        [Fact]
+        public void when_is_duplicated__should_have_error()
+            => new CreateAccountCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysDuplicatedValidatorProvider())
+                .ShouldHaveValidationErrorFor(x => x.Name, F.Create<string>());
 
         [Fact]
         public void when_name_is_null__should_have_error()

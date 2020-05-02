@@ -3,14 +3,24 @@ using Peent.Application.Currencies.Commands.CreateCurrency;
 using Xunit;
 using AutoFixture;
 using Peent.CommonTests.AutoFixture;
-using Peent.CommonTests.Infrastructure;
+using Peent.UnitTests.Common.Fakes.Validators;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Currencies
 {
     public class CreateCurrencyCommandValidatorTests
     {
-        private readonly CreateCurrencyCommandValidator _validator = new CreateCurrencyCommandValidator();
+        private readonly CreateCurrencyCommandValidator _validator =
+            new CreateCurrencyCommandValidator(new AlwaysUniqueValidatorProvider());
+        
+        [Fact]
+        public void when_is_unique__should_not_have_error()
+            => _validator.ShouldNotHaveValidationErrorFor(x => x.Code, F.CreateString(1));
+
+        [Fact]
+        public void when_is_duplicated__should_have_error()
+            => new CreateCurrencyCommandValidator(new AlwaysDuplicatedValidatorProvider())
+                .ShouldHaveValidationErrorFor(x => x.Code, F.CreateString(1));
 
         [Fact]
         public void when_code_is_null__should_have_error()

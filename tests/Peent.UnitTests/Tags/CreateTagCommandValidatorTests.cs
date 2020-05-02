@@ -3,13 +3,23 @@ using Peent.Application.Tags.Commands.CreateTag;
 using Xunit;
 using AutoFixture;
 using Peent.CommonTests.AutoFixture;
+using Peent.UnitTests.Common.Fakes.Validators;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Tags
 {
     public class CreateTagCommandValidatorTests
     {
-        private readonly CreateTagCommandValidator _validator = new CreateTagCommandValidator();
+        private readonly CreateTagCommandValidator _validator = new CreateTagCommandValidator(new AlwaysUniqueValidatorProvider());
+        
+        [Fact]
+        public void when_is_unique__should_not_have_error()
+            => _validator.ShouldNotHaveValidationErrorFor(x => x.Name, F.Create<string>());
+
+        [Fact]
+        public void when_is_duplicated__should_have_error()
+            => new CreateTagCommandValidator(new AlwaysDuplicatedValidatorProvider())
+                .ShouldHaveValidationErrorFor(x => x.Name, F.Create<string>());
 
         [Fact]
         public void when_name_is_null__should_have_error()

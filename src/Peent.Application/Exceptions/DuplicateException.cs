@@ -6,38 +6,28 @@ namespace Peent.Application.Exceptions
 {
     public class DuplicateException : Exception
     {
-        public string EntityName { get; set; }
-        public string KeyName { get; set; }
-        public object Key { get; set; }
-
-        public override string Message =>
-            string.IsNullOrEmpty(KeyName) ?
-                $"Entity \"{EntityName}\" ({Key}) already exists." :
-                $"Entity \"{EntityName}\" ({KeyName}: {Key}) already exists.";
-
-        public DuplicateException(string name, object key)
+        public DuplicateException(string entityName, object key)
+            : base(BuildMessage(entityName, key))
         {
-            EntityName = name;
-            Key = key;
         }
 
-        public DuplicateException(string name, string keyName, object key)
+        public DuplicateException(string entityName, string keyName, object key)
+            : base(BuildMessage(entityName, keyName, key))
         {
-            EntityName = name;
-            KeyName = keyName;
-            Key = key;
         }
 
         public static DuplicateException Create<TEntity>(object key)
             where TEntity : class
-        {
-            return new DuplicateException(typeof(TEntity).Name, key);
-        }
+            => new DuplicateException(typeof(TEntity).Name, key);
 
         public static DuplicateException Create<TEntity>(Expression<Func<TEntity, object>> expression, object key)
             where TEntity : class
-        {
-            return new DuplicateException(typeof(TEntity).Name, expression.GetMemberName(), key);
-        }
+            => new DuplicateException(typeof(TEntity).Name, expression.GetMemberName(), key);
+
+        private static string BuildMessage(string entityName, object key)
+            => $"Entity \"{entityName}\" ({key}) already exists.";
+
+        private static string BuildMessage(string entityName, string keyName, object key)
+            => $"Entity \"{entityName}\" ({keyName}: {key}) already exists.";
     }
 }

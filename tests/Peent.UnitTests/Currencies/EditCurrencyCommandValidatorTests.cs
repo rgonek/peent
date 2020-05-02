@@ -12,7 +12,7 @@ namespace Peent.UnitTests.Currencies
     public class EditCurrencyCommandValidatorTests
     {
         private readonly EditCurrencyCommandValidator _validator =
-            new EditCurrencyCommandValidator(new AlwaysExistsValidatorProvider());
+            new EditCurrencyCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysUniqueValidatorProvider());
 
         [Fact]
         public void when_id_is_0__should_have_error()
@@ -32,7 +32,7 @@ namespace Peent.UnitTests.Currencies
 
         [Fact]
         public void when_does_not_exists__should_have_error()
-            => new EditCurrencyCommandValidator(new AlwaysNotExistsValidatorProvider())
+            => new EditCurrencyCommandValidator(new AlwaysNotExistsValidatorProvider(), new AlwaysUniqueValidatorProvider())
                 .ShouldHaveValidationErrorFor(x => x.Id, 1);
 
         [Fact]

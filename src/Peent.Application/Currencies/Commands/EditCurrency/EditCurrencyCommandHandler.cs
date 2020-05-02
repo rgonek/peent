@@ -1,9 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Peent.Application.Exceptions;
-using Peent.Domain.Entities;
 
 namespace Peent.Application.Currencies.Commands.EditCurrency
 {
@@ -16,8 +13,6 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
 
         public async Task<Unit> Handle(EditCurrencyCommand command, CancellationToken token)
         {
-            await ThrowsIfDuplicateAsync(command, token);
-
             var currency = await _db.Currencies.FindAsync(new[] {command.Id}, token);
             currency.SetCode(command.Code);
             currency.SetName(command.Name);
@@ -28,20 +23,6 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
             await _db.SaveChangesAsync(token);
 
             return default;
-        }
-
-        private async Task ThrowsIfDuplicateAsync(EditCurrencyCommand command, CancellationToken token)
-        {
-            var existingCurrency = await _db.Currencies
-                .SingleOrDefaultAsync(x =>
-                        x.Id != command.Id &&
-                        x.Code == command.Code,
-                    token);
-
-            if (existingCurrency != null)
-            {
-                throw DuplicateException.Create<Currency>(x => x.Code, command.Code);
-            }
         }
     }
 }

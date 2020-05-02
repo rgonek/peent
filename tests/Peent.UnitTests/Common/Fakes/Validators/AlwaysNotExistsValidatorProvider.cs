@@ -1,5 +1,6 @@
 using FluentValidation.Validators;
 using Peent.Application.Common.Validators;
+using Peent.Application.Common.Validators.ExistsValidator;
 
 namespace Peent.UnitTests.Common.Fakes.Validators
 {

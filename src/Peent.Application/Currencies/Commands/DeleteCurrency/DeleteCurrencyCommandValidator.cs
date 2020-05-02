@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Peent.Application.Common.Validators;
+using Peent.Application.Common.Validators.ExistsValidator;
 using Peent.Application.Currencies.Queries.GetCurrency;
 using Peent.Domain.Entities;
 

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Peent.Application.Common.Validators;
+using Peent.Application.Common.Validators.ExistsValidator;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Accounts.Commands.EditAccount

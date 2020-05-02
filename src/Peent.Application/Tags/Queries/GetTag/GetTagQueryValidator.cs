@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Peent.Application.Common.Validators;
+using Peent.Application.Common.Validators.ExistsValidator;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Tags.Queries.GetTag
@@ -8,11 +9,10 @@ namespace Peent.Application.Tags.Queries.GetTag
     {
         public GetTagQueryValidator(IExistsInCurrentContextValidatorProvider exists)
         {
-            var val = exists.In<Tag>();
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .Must(val);
+                .Must(exists.In<Tag>());
         }
     }
 }

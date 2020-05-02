@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Peent.Application.Categories.Queries.GetCategory;
 using Peent.Application.Common.Validators;
+using Peent.Application.Common.Validators.ExistsValidator;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Categories.Commands.DeleteCategory
