@@ -12,19 +12,11 @@ namespace Peent.Application.Currencies.Commands.CreateCurrency
         private readonly IApplicationDbContext _db;
 
         public CreateCurrencyCommandHandler(IApplicationDbContext db)
-        {
-            _db = db;
-        }
+            => _db = db;
 
         public async Task<int> Handle(CreateCurrencyCommand command, CancellationToken token)
         {
-            var existingCurrency = await _db.Currencies
-                .SingleOrDefaultAsync(x =>
-                    x.Code == command.Code,
-                    token);
-
-            if (existingCurrency != null)
-                throw DuplicateException.Create<Currency>(x => x.Code, command.Code);
+            await ThrowsIfDuplicateAsync(command, token);
 
             var currency = new Currency(
                 command.Code,
@@ -33,10 +25,22 @@ namespace Peent.Application.Currencies.Commands.CreateCurrency
                 command.DecimalPlaces);
 
             _db.Currencies.Attach(currency);
-
             await _db.SaveChangesAsync(token);
 
             return currency.Id;
+        }
+
+        private async Task ThrowsIfDuplicateAsync(CreateCurrencyCommand command, CancellationToken token)
+        {
+            var existingCurrency = await _db.Currencies
+                .SingleOrDefaultAsync(x =>
+                        x.Code == command.Code,
+                    token);
+
+            if (existingCurrency != null)
+            {
+                throw DuplicateException.Create<Currency>(x => x.Code, command.Code);
+            }
         }
     }
 }

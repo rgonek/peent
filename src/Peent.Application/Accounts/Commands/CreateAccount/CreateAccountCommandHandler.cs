@@ -18,24 +18,13 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
 
         public async Task<int> Handle(CreateAccountCommand command, CancellationToken token)
         {
-            var existingAccount = await _db.Accounts
-                .SingleOrDefaultAsync(x =>
-                    x.Name == command.Name &&
-                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId() &&
-                    x.Type == command.Type,
-                    token);
-            if (existingAccount != null)
-                throw DuplicateException.Create<Account>(x => x.Name, command.Name);
-
-            var currency = await _db.Currencies.SingleOrDefaultAsync(x => x.Id == command.CurrencyId, token);
-            if (currency == null)
-                throw NotFoundException.Create<Currency>(x => x.Id, command.CurrencyId);
+            await ThrowsIfDuplicateAsync(command, token);
 
             var account = new Account(
                 command.Name,
                 command.Description,
                 command.Type,
-                currency,
+                await _db.Currencies.FindAsync(command.CurrencyId),
                 Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
 
             _db.Accounts.Attach(account);
@@ -43,6 +32,20 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
             await _db.SaveChangesAsync(token);
 
             return account.Id;
+        }
+
+        private async Task ThrowsIfDuplicateAsync(CreateAccountCommand command, CancellationToken token)
+        {
+            var existingAccount = await _db.Accounts
+                .SingleOrDefaultAsync(x =>
+                        x.Name == command.Name &&
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId() &&
+                        x.Type == command.Type,
+                    token);
+            if (existingAccount != null)
+            {
+                throw DuplicateException.Create<Account>(x => x.Name, command.Name);
+            }
         }
     }
 }

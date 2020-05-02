@@ -14,7 +14,7 @@ namespace Peent.UnitTests.Currencies
 
         public EditCurrencyCommandValidatorTests()
         {
-            _validator = new EditCurrencyCommandValidator();
+//            _validator = new EditCurrencyCommandValidator();
         }
 
         [Fact]

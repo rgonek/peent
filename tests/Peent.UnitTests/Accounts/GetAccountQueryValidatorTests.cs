@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Accounts
 
         public GetAccountQueryValidatorTests()
         {
-            _validator = new GetAccountQueryValidator();
+//            _validator = new GetAccountQueryValidator();
         }
 
         [Fact]

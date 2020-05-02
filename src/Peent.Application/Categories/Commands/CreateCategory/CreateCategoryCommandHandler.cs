@@ -14,12 +14,24 @@ namespace Peent.Application.Categories.Commands.CreateCategory
         private readonly IUserAccessor _userAccessor;
 
         public CreateCategoryCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-        {
-            _db = db;
-            _userAccessor = userAccessor;
-        }
+            => (_db, _userAccessor) = (db, userAccessor);
 
         public async Task<int> Handle(CreateCategoryCommand command, CancellationToken token)
+        {
+            await ThrowsIfDuplicateAsync(command, token);
+
+            var category = new Category(
+                command.Name,
+                command.Description,
+                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
+
+            _db.Categories.Attach(category);
+            await _db.SaveChangesAsync(token);
+
+            return category.Id;
+        }
+
+        private async Task ThrowsIfDuplicateAsync(CreateCategoryCommand command, CancellationToken token)
         {
             var existingCategory = await _db.Categories
                 .SingleOrDefaultAsync(x =>
@@ -28,18 +40,9 @@ namespace Peent.Application.Categories.Commands.CreateCategory
                     token);
 
             if (existingCategory != null)
+            {
                 throw DuplicateException.Create<Category>(x => x.Name, command.Name);
-
-            var category = new Category(
-                command.Name,
-                command.Description,
-                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
-
-            _db.Categories.Attach(category);
-
-            await _db.SaveChangesAsync(token);
-
-            return category.Id;
+            }
         }
     }
 }

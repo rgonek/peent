@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Tags
 
         public DeleteTagCommandValidatorTests()
         {
-            _validator = new DeleteTagCommandValidator();
+//            _validator = new DeleteTagCommandValidator();
         }
 
         [Fact]

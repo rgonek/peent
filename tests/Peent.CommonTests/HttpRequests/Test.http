@@ -1,0 +1,10 @@
+POST http://localhost:5001/accounts
+Content-Type: application/json
+
+{
+  "name": "qqqqq",
+  "type": 1,
+  "currencyId": 99
+}
+
+###

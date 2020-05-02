@@ -14,7 +14,7 @@ namespace Peent.UnitTests.Accounts
 
         public EditAccountCommandValidatorTests()
         {
-            _validator = new EditAccountCommandValidator();
+//            _validator = new EditAccountCommandValidator();
         }
 
         [Fact]

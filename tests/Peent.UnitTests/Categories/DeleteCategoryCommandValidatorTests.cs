@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Categories
 
         public DeleteCategoryCommandValidatorTests()
         {
-            _validator = new DeleteCategoryCommandValidator();
+//            _validator = new DeleteCategoryCommandValidator();
         }
 
         [Fact]

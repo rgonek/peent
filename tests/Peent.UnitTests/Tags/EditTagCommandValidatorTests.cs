@@ -14,7 +14,7 @@ namespace Peent.UnitTests.Tags
 
         public EditTagCommandValidatorTests()
         {
-            _validator = new EditTagCommandValidator();
+//            _validator = new EditTagCommandValidator();
         }
 
         [Fact]

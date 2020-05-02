@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Categories
 
         public GetCategoryQueryValidatorTests()
         {
-            _validator = new GetCategoryQueryValidator();
+//            _validator = new GetCategoryQueryValidator();
         }
 
         [Fact]

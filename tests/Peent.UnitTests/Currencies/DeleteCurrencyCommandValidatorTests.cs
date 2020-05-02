@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Currencies
 
         public DeleteCurrencyCommandValidatorTests()
         {
-            _validator = new DeleteCurrencyCommandValidator();
+//            _validator = new DeleteCurrencyCommandValidator();
         }
 
         [Fact]

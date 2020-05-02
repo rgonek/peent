@@ -14,7 +14,7 @@ namespace Peent.UnitTests.Categories
 
         public EditCategoryCommandValidatorTests()
         {
-            _validator = new EditCategoryCommandValidator();
+//            _validator = new EditCategoryCommandValidator();
         }
 
         [Fact]

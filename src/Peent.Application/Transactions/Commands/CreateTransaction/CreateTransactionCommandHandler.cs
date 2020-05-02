@@ -15,37 +15,15 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
         private readonly IApplicationDbContext _db;
 
         public CreateTransactionCommandHandler(IApplicationDbContext db)
-        {
-            _db = db;
-        }
+            => _db = db;
 
         public async Task<long> Handle(CreateTransactionCommand command, CancellationToken token)
         {
-            var category = await _db.Categories.FindAsync(new object[] { command.CategoryId }, token);
-            if (category == null)
-                throw NotFoundException.Create<Category>(x => x.Id, command.CategoryId);
-
-            var tags = new List<Tag>();
-            if (command.TagIds != null && command.TagIds.Any())
-            {
-                var ids = command.TagIds.ToList();
-                tags = await _db.Tags
-                    .Where(x => ids.Contains(x.Id))
-                    .ToListAsync(token);
-                if (command.TagIds.Count != tags.Count)
-                    throw NotFoundException.Create<Tag>(x => x.Id,
-                        string.Join(", ", command.TagIds));
-            }
-
-            var fromAccount = await _db.Accounts.FindAsync(new object[] { command.FromAccountId }, token);
-            if (fromAccount == null)
-                throw NotFoundException.Create<Account>(x => x.Id, command.FromAccountId);
-
-            var toAccount = await _db.Accounts.FindAsync(new object[] { command.ToAccountId }, token);
-            if (toAccount == null)
-                throw NotFoundException.Create<Account>(x => x.Id, command.ToAccountId);
-
+            var tags = await GetTagsOrThrowsIfNotExistsAsync(command, token);
+            var category = await _db.Categories.FindAsync(new object[] {command.CategoryId}, token);
+            var fromAccount = await _db.Accounts.FindAsync(new object[] {command.FromAccountId}, token);
             await _db.Entry(fromAccount).Reference(x => x.Currency).LoadAsync(token);
+            var toAccount = await _db.Accounts.FindAsync(new object[] {command.ToAccountId}, token);
             await _db.Entry(toAccount).Reference(x => x.Currency).LoadAsync(token);
 
             var transaction = new Transaction(command.Title, command.Date, command.Description, category,
@@ -56,6 +34,27 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
             await _db.SaveChangesAsync(token);
 
             return transaction.Id;
+        }
+
+        private async Task<List<Tag>> GetTagsOrThrowsIfNotExistsAsync(CreateTransactionCommand command, CancellationToken token)
+        {
+            var tags = new List<Tag>();
+            if (command.TagIds == null || !command.TagIds.Any())
+            {
+                return tags;
+            }
+            
+            var ids = command.TagIds.ToList();
+            tags = await _db.Tags
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync(token);
+            if (command.TagIds.Count != tags.Count)
+            {
+                throw NotFoundException.Create<Tag>(x => x.Id,
+                    string.Join(", ", command.TagIds));
+            }
+
+            return tags;
         }
     }
 }

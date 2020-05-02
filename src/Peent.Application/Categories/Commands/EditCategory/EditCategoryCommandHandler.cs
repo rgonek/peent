@@ -14,32 +14,13 @@ namespace Peent.Application.Categories.Commands.EditCategory
         private readonly IUserAccessor _userAccessor;
 
         public EditCategoryCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-        {
-            _db = db;
-            _userAccessor = userAccessor;
-        }
+            => (_db, _userAccessor) = (db, userAccessor);
 
         public async Task<Unit> Handle(EditCategoryCommand command, CancellationToken token)
         {
-            var category = await _db.Categories
-                .SingleOrDefaultAsync(x =>
-                        x.Id == command.Id &&
-                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
-                    token);
+            await ThrowsIfDuplicateAsync(command, token);
 
-            if (category == null)
-                throw NotFoundException.Create<Category>(x => x.Id, command.Id);
-
-            var existingCategory = await _db.Categories
-                .SingleOrDefaultAsync(x =>
-                    x.Id != command.Id &&
-                    x.Name == command.Name &&
-                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
-                    token);
-
-            if (existingCategory != null)
-                throw DuplicateException.Create<Category>(x => x.Name, command.Name);
-
+            var category = await _db.Categories.FindAsync(new[] {command.Id}, token);
             category.SetName(command.Name);
             category.SetDescription(command.Description);
 
@@ -47,6 +28,21 @@ namespace Peent.Application.Categories.Commands.EditCategory
             await _db.SaveChangesAsync(token);
 
             return default;
+        }
+
+        private async Task ThrowsIfDuplicateAsync(EditCategoryCommand command, CancellationToken token)
+        {
+            var existingCategory = await _db.Categories
+                .SingleOrDefaultAsync(x =>
+                        x.Id != command.Id &&
+                        x.Name == command.Name &&
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
+                    token);
+
+            if (existingCategory != null)
+            {
+                throw DuplicateException.Create<Category>(x => x.Name, command.Name);
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using FluentValidation.TestHelper;
+using Moq;
+using Peent.Application;
 using Peent.Application.Tags.Queries.GetTag;
 using Xunit;
 
@@ -10,7 +12,9 @@ namespace Peent.UnitTests.Tags
 
         public GetTagQueryValidatorTests()
         {
-            _validator = new GetTagQueryValidator();
+//            _validator = new GetTagQueryValidator(
+//                new Mock<IApplicationDbContext>().Object,
+//                new Mock<IUserAccessor>().Object);
         }
 
         [Fact]
@@ -26,7 +30,7 @@ namespace Peent.UnitTests.Tags
         }
 
         [Fact]
-        public void when_name_is_greater_than_0__should_not_have_error()
+        public void when_id_is_greater_than_0__should_not_have_error()
         {
             _validator.ShouldNotHaveValidationErrorFor(x => x.Id, 1);
         }

@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Accounts
 
         public DeleteAccountCommandValidatorTests()
         {
-            _validator = new DeleteAccountCommandValidator();
+//            _validator = new DeleteAccountCommandValidator();
         }
 
         [Fact]

@@ -1,14 +1,17 @@
 ﻿using FluentValidation;
+using Peent.Application.Common.Validators;
+using Peent.Domain.Entities;
 
 namespace Peent.Application.Currencies.Commands.EditCurrency
 {
     public class EditCurrencyCommandValidator : AbstractValidator<EditCurrencyCommand>
     {
-        public EditCurrencyCommandValidator()
+        public EditCurrencyCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
         {
             RuleFor(x => x.Id)
                 .NotNull()
-                .GreaterThan(0);
+                .GreaterThan(0)
+                .MustExistsInAuthenticationContext(typeof(Currency), db, userAccessor);
             RuleFor(x => x.Code)
                 .NotEmpty()
                 .MaximumLength(3);

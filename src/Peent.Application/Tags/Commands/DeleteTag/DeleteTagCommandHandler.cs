@@ -1,35 +1,19 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Peent.Application.Exceptions;
-using Peent.Application.Infrastructure.Extensions;
-using Peent.Domain.Entities;
 
 namespace Peent.Application.Tags.Commands.DeleteTag
 {
     public class DeleteTagCommandHandler : IRequestHandler<DeleteTagCommand, Unit>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
 
-        public DeleteTagCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-        {
-            _db = db;
-            _userAccessor = userAccessor;
-        }
+        public DeleteTagCommandHandler(IApplicationDbContext db)
+            => _db = db;
 
         public async Task<Unit> Handle(DeleteTagCommand command, CancellationToken token)
         {
-            var tag = await _db.Tags
-                .SingleOrDefaultAsync(x =>
-                        x.Id == command.Id &&
-                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
-                    token);
-
-            if (tag == null)
-                throw NotFoundException.Create<Tag>(x => x.Id, command.Id);
-
+            var tag = await _db.Tags.FindAsync(new[] {command.Id}, token);
             _db.Remove(tag);
             await _db.SaveChangesAsync(token);
 

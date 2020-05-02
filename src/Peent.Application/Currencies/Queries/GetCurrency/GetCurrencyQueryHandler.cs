@@ -1,10 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Peent.Application.Exceptions;
 using Peent.Application.Currencies.Models;
-using Peent.Domain.Entities;
 
 namespace Peent.Application.Currencies.Queries.GetCurrency
 {
@@ -13,18 +10,11 @@ namespace Peent.Application.Currencies.Queries.GetCurrency
         private readonly IApplicationDbContext _db;
 
         public GetCurrencyQueryHandler(IApplicationDbContext db)
-        {
-            _db = db;
-        }
+            => _db = db;
 
         public async Task<CurrencyModel> Handle(GetCurrencyQuery query, CancellationToken token)
         {
-            var currency = await _db.Currencies
-                .SingleOrDefaultAsync(x => x.Id == query.Id,
-                    cancellationToken: token);
-
-            if (currency == null)
-                throw NotFoundException.Create<Currency>(x => x.Id, query.Id);
+            var currency = await _db.Currencies.FindAsync(new[] {query.Id}, token);
 
             return new CurrencyModel(currency);
         }

@@ -16,32 +16,13 @@ namespace Peent.Application.Tags.Commands.EditTag
         private readonly IUserAccessor _userAccessor;
 
         public EditTagCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-        {
-            _db = db;
-            _userAccessor = userAccessor;
-        }
+            => (_db, _userAccessor) = (db, userAccessor);
 
         public async Task<Unit> Handle(EditTagCommand command, CancellationToken token)
         {
-            var tag = await _db.Tags
-                .SingleOrDefaultAsync(x =>
-                        x.Id == command.Id &&
-                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
-                    token);
-
-            if (tag == null)
-                throw NotFoundException.Create<Tag>(x => x.Id, command.Id);
-
-            var existingTag = await _db.Tags
-                .SingleOrDefaultAsync(x =>
-                    x.Id != command.Id &&
-                    x.Name == command.Name &&
-                    x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
-                    token);
-
-            if (existingTag != null)
-                throw DuplicateException.Create<Tag>(x => x.Name, command.Name);
-
+            await ThrowsIfDuplicateAsync(command, token);
+            
+            var tag = await _db.Tags.FindAsync(new[] {command.Id}, token);
             tag.SetName(command.Name);
             tag.SetDescription(command.Description);
 
@@ -49,6 +30,19 @@ namespace Peent.Application.Tags.Commands.EditTag
             await _db.SaveChangesAsync(token);
 
             return default;
+        }
+
+        private async Task ThrowsIfDuplicateAsync(EditTagCommand command, CancellationToken token)
+        {
+            var existingTag = await _db.Tags
+                .SingleOrDefaultAsync(x =>
+                        x.Id != command.Id &&
+                        x.Name == command.Name &&
+                        x.Workspace.Id == _userAccessor.User.GetWorkspaceId(),
+                    token);
+
+            if (existingTag != null)
+                throw DuplicateException.Create<Tag>(x => x.Name, command.Name);
         }
     }
 }

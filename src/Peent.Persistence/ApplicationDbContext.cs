@@ -11,7 +11,6 @@ using Peent.Application.Infrastructure.Extensions;
 using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
-using Peent.Domain.ValueObjects;
 
 namespace Peent.Persistence
 {

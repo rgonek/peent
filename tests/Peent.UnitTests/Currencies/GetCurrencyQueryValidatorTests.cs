@@ -10,7 +10,7 @@ namespace Peent.UnitTests.Currencies
 
         public GetCurrencyQueryValidatorTests()
         {
-            _validator = new GetCurrencyQueryValidator();
+//            _validator = new GetCurrencyQueryValidator();
         }
 
         [Fact]

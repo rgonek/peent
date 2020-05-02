@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -23,6 +24,11 @@ namespace Peent.Application
         EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry<TEntity> Remove<TEntity>(TEntity entity) where TEntity : class;
+
+        object Find(Type entityType, params object[] keyValues);
+        ValueTask<object> FindAsync(Type entityType, params object[] keyValues);
+        ValueTask<object> FindAsync(Type entityType, object[] keyValues, CancellationToken cancellationToken );
+        
         int SaveChanges();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 

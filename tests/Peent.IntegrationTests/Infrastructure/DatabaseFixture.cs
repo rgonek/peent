@@ -124,8 +124,7 @@ namespace Peent.IntegrationTests.Infrastructure
             {
                 foreach (var entity in entities)
                 {
-                    db.Set<T>().Attach(entity);
-                    db.Entry(entity).State = EntityState.Added;
+                    db.Set<T>().Attach(entity).State = EntityState.Added;
                 }
 
                 return new ValueTask(db.SaveChangesAsync());
@@ -136,8 +135,7 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Attach(entity);
-                db.Entry(entity).State = EntityState.Added;
+                db.Attach(entity).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -149,11 +147,8 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Attach(entity);
-                db.Entry(entity).State = EntityState.Added;
-
-                db.Set<TEntity2>().Attach(entity2);
-                db.Entry(entity2).State = EntityState.Added;
+                db.Set<TEntity>().Attach(entity).State = EntityState.Added;
+                db.Set<TEntity2>().Attach(entity2).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -167,14 +162,9 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Attach(entity);
-                db.Entry(entity).State = EntityState.Added;
-
-                db.Set<TEntity2>().Attach(entity2);
-                db.Entry(entity2).State = EntityState.Added;
-
-                db.Set<TEntity3>().Attach(entity3);
-                db.Entry(entity3).State = EntityState.Added;
+                db.Set<TEntity>().Attach(entity).State = EntityState.Added;
+                db.Set<TEntity2>().Attach(entity2).State = EntityState.Added;
+                db.Set<TEntity3>().Attach(entity3).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -189,17 +179,10 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             return ExecuteDbContextAsync(db =>
             {
-                db.Set<TEntity>().Attach(entity);
-                db.Entry(entity).State = EntityState.Added;
-
-                db.Set<TEntity2>().Attach(entity2);
-                db.Entry(entity2).State = EntityState.Added;
-
-                db.Set<TEntity3>().Attach(entity3);
-                db.Entry(entity3).State = EntityState.Added;
-
-                db.Set<TEntity4>().Attach(entity4);
-                db.Entry(entity4).State = EntityState.Added;
+                db.Set<TEntity>().Attach(entity).State = EntityState.Added;
+                db.Set<TEntity2>().Attach(entity2).State = EntityState.Added;
+                db.Set<TEntity3>().Attach(entity3).State = EntityState.Added;
+                db.Set<TEntity4>().Attach(entity4).State = EntityState.Added;
 
                 return new ValueTask(db.SaveChangesAsync());
             });
@@ -264,7 +247,7 @@ namespace Peent.IntegrationTests.Infrastructure
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString()),
+                new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString())
             }, "mock"));
             FakeItEasy.A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
 
