@@ -7,12 +7,12 @@ namespace Peent.Application.Currencies.Commands.DeleteCurrency
 {
     public class DeleteCurrencyCommandValidator : AbstractValidator<GetCurrencyQuery>
     {
-        public DeleteCurrencyCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public DeleteCurrencyCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Currency), db, userAccessor);
+                .Must(exists.In<Currency>());
         }
     }
 }

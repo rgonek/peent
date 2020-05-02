@@ -6,12 +6,12 @@ namespace Peent.Application.Categories.Queries.GetCategory
 {
     public class GetCategoryQueryValidator : AbstractValidator<GetCategoryQuery>
     {
-        public GetCategoryQueryValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public GetCategoryQueryValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Category), db, userAccessor);
+                .Must(exists.In<Category>());
         }
     }
 }

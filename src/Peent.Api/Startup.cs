@@ -15,6 +15,7 @@ using Peent.Api.Infrastructure;
 using Peent.Api.Infrastructure.ModelBinders;
 using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
+using Peent.Application.Common.Validators;
 using Peent.Application.Infrastructure;
 using Peent.Domain.Entities;
 using Peent.Persistence;
@@ -91,6 +92,8 @@ namespace Peent.Api
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(PerformanceBehaviour<,>));
+            services.AddScoped(typeof(IExistsInCurrentContextValidator<>), typeof(ExistsInCurrentContextValidator<>));
+            services.AddScoped<IExistsInCurrentContextValidatorProvider, ExistsInCurrentContextValidatorProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,12 +7,12 @@ namespace Peent.Application.Accounts.Commands.DeleteAccount
 {
     public class DeleteAccountCommandValidator : AbstractValidator<GetAccountQuery>
     {
-        public DeleteAccountCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public DeleteAccountCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Account), db, userAccessor);
+                .Must(exists.In<Account>());
         }
     }
 }

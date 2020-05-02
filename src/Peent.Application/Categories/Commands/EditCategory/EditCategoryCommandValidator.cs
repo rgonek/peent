@@ -6,12 +6,12 @@ namespace Peent.Application.Categories.Commands.EditCategory
 {
     public class EditCategoryCommandValidator : AbstractValidator<EditCategoryCommand>
     {
-        public EditCategoryCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public EditCategoryCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Category), db, userAccessor);
+                .Must(exists.In<Category>());
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(1000);

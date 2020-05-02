@@ -6,12 +6,12 @@ namespace Peent.Application.Accounts.Queries.GetAccount
 {
     public class GetAccountQueryValidator : AbstractValidator<GetAccountQuery>
     {
-        public GetAccountQueryValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public GetAccountQueryValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Account), db, userAccessor);
+                .Must(exists.In<Account>());
         }
     }
 }

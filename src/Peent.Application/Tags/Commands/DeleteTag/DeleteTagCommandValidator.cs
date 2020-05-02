@@ -6,12 +6,12 @@ namespace Peent.Application.Tags.Commands.DeleteTag
 {
     public class DeleteTagCommandValidator : AbstractValidator<DeleteTagCommand>
     {
-        public DeleteTagCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public DeleteTagCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Tag), db, userAccessor);
+                .Must(exists.In<Currency>());
         }
     }
 }

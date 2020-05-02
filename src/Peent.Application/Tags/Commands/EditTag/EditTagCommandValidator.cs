@@ -6,12 +6,12 @@ namespace Peent.Application.Tags.Commands.EditTag
 {
     public class EditTagCommandValidator : AbstractValidator<EditTagCommand>
     {
-        public EditTagCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public EditTagCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Tag), db, userAccessor);
+                .Must(exists.In<Currency>());
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(1000);

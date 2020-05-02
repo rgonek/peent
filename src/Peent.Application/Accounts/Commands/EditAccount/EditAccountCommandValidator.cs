@@ -6,12 +6,12 @@ namespace Peent.Application.Accounts.Commands.EditAccount
 {
     public class EditAccountCommandValidator : AbstractValidator<EditAccountCommand>
     {
-        public EditAccountCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public EditAccountCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Account), db, userAccessor);
+                .Must(exists.In<Account>());
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(1000);
@@ -20,7 +20,7 @@ namespace Peent.Application.Accounts.Commands.EditAccount
             RuleFor(x => x.CurrencyId)
                 .NotEmpty()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Currency), db, userAccessor);
+                .Must(exists.In<Currency>());
         }                
     }
 }

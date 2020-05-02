@@ -6,12 +6,12 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
 {
     public class EditCurrencyCommandValidator : AbstractValidator<EditCurrencyCommand>
     {
-        public EditCurrencyCommandValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public EditCurrencyCommandValidator(IExistsInCurrentContextValidatorProvider exists)
         {
             RuleFor(x => x.Id)
                 .NotNull()
                 .GreaterThan(0)
-                .MustExistsInAuthenticationContext(typeof(Currency), db, userAccessor);
+                .Must(exists.In<Currency>());
             RuleFor(x => x.Code)
                 .NotEmpty()
                 .MaximumLength(3);
