@@ -7,8 +7,6 @@ namespace Peent.Application.Common.Validators
     {
         public static IRuleBuilderOptions<T, TProperty> Must<T, TProperty>(
             this IRuleBuilder<T, TProperty> ruleBuilder, IPropertyValidator validator)
-        {
-            return ruleBuilder.SetValidator(validator);
-        }
+            => ruleBuilder.SetValidator(validator);
     }
 }
