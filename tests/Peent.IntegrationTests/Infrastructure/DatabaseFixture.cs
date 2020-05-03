@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
-using FakeItEasy;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +14,7 @@ using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 using System.Linq.Dynamic.Core;
+using Moq;
 using Peent.Application.Common;
 using Peent.Application.Common.DynamicQuery.Sorts;
 using Respawn;
@@ -26,6 +26,7 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly Checkpoint Checkpoint;
         private static readonly IConfigurationRoot Configuration;
         private static readonly IServiceScopeFactory ScopeFactory;
+        private static readonly Mock<IUserAccessor> MockUserAccessor;
         public static readonly IUserAccessor UserAccessor;
 
         static DatabaseFixture()
@@ -35,7 +36,8 @@ namespace Peent.IntegrationTests.Infrastructure
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-            UserAccessor = FakeItEasy.A.Fake<IUserAccessor>();
+            MockUserAccessor = new Mock<IUserAccessor>();
+            UserAccessor = MockUserAccessor.Object;
 
             var services = new ServiceCollection();
             ConfigureServices(services);
@@ -249,7 +251,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString())
             }, "mock"));
-            FakeItEasy.A.CallTo(() => UserAccessor.User).Returns(claimsPrincipal);
+            MockUserAccessor.Setup(x => x.User).Returns(claimsPrincipal);
 
             return claimsPrincipal;
         }
@@ -258,6 +260,7 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user);
+            
             workspace ??= await CreateWorkspaceAsync();
 
             return SetCurrentAuthenticationContext(user, workspace);
