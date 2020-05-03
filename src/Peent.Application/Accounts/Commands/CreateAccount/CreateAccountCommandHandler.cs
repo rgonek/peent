@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Peent.Application.Infrastructure.Extensions;
+using Peent.Application.Common.Extensions;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Accounts.Commands.CreateAccount

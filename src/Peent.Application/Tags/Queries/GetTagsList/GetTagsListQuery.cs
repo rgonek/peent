@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MediatR;
 using Peent.Application.Common;
-using Peent.Application.Infrastructure;
+using Peent.Application.Common.DynamicQuery.Contracts;
 using Peent.Application.Tags.Models;
 
 namespace Peent.Application.Tags.Queries.GetTagsList

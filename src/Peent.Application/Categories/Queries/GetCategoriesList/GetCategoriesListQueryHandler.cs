@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Peent.Application.Categories.Models;
 using Peent.Application.Common;
-using Peent.Application.DynamicQuery;
-using Peent.Application.Infrastructure.Extensions;
+using Peent.Application.Common.DynamicQuery;
+using Peent.Application.Common.Extensions;
 
 namespace Peent.Application.Categories.Queries.GetCategoriesList
 {

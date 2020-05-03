@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Peent.Application.Common;
-using Peent.Application.DynamicQuery;
+using Peent.Application.Common.DynamicQuery;
+using Peent.Application.Common.Extensions;
 using Peent.Application.Tags.Models;
-using Peent.Application.Infrastructure.Extensions;
 
 namespace Peent.Application.Tags.Queries.GetTagsList
 {

@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
 using FluentValidation.Validators;
-using Peent.Application.Infrastructure.Extensions;
+using Peent.Application.Common.Extensions;
 using Peent.Domain.Common;
 
 namespace Peent.Application.Common.Validators.ExistsValidator

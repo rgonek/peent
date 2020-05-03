@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Peent.Application.Common.Extensions;
 using Peent.Application.Exceptions;
-using Peent.Application.Infrastructure.Extensions;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Accounts.Commands.EditAccount

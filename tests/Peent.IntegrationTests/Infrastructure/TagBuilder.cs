@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Peent.Application.Infrastructure.Extensions;
 using Peent.Domain.Entities;
 using AutoFixture;
+using Peent.Application.Common.Extensions;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 

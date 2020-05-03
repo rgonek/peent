@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Peent.Application.Common;
-using Peent.Application.Infrastructure;
+using Peent.Application.Common.DynamicQuery.Contracts;
 using Peent.Common;
 
 namespace Peent.Api.Infrastructure.ModelBinders

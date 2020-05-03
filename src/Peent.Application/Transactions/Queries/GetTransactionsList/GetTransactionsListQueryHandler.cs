@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using MediatR;
 using Peent.Application.Common;
-using Peent.Application.DynamicQuery;
-using Peent.Application.Infrastructure.Extensions;
-using Peent.Application.Specifications;
+using Peent.Application.Common.DynamicQuery;
+using Peent.Application.Common.Extensions;
+using Peent.Application.Common.Specifications;
 using Peent.Application.Transactions.Models;
 using Peent.Application.Transactions.Specifications;
 

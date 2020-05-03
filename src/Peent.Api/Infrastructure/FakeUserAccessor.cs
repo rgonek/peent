@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Peent.Application;
-using Peent.Application.Infrastructure;
+using Peent.Application.Common;
 
 namespace Peent.Api.Infrastructure
 {

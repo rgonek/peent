@@ -2,8 +2,8 @@
 using MediatR;
 using Peent.Application.Common;
 using Peent.Application.Accounts.Models;
+using Peent.Application.Common.DynamicQuery.Contracts;
 using Peent.Application.Currencies.Models;
-using Peent.Application.Infrastructure;
 
 namespace Peent.Application.Accounts.Queries.GetAccountsList
 {

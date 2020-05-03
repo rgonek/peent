@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Peent.Application.Common.Specifications;
 using Peent.Application.Exceptions;
-using Peent.Application.Specifications;
 using Peent.Application.Transactions.Models;
 using Peent.Application.Transactions.Specifications;
 using Peent.Domain.Entities;

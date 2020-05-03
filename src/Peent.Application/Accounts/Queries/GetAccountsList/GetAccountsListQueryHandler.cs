@@ -5,8 +5,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Common;
 using Peent.Application.Accounts.Models;
-using Peent.Application.DynamicQuery;
-using Peent.Application.Infrastructure.Extensions;
+using Peent.Application.Common.DynamicQuery;
+using Peent.Application.Common.Extensions;
 
 namespace Peent.Application.Accounts.Queries.GetAccountsList
 {

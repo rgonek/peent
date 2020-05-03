@@ -1,4 +1,4 @@
-﻿using Peent.Application.Specifications;
+﻿using Peent.Application.Common.Specifications;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
 

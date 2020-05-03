@@ -2,7 +2,7 @@
 using MediatR;
 using Peent.Application.Categories.Models;
 using Peent.Application.Common;
-using Peent.Application.Infrastructure;
+using Peent.Application.Common.DynamicQuery.Contracts;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Categories.Queries.GetCategoriesList

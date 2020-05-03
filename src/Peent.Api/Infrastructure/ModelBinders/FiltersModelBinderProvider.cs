@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Peent.Application.Infrastructure;
+using Peent.Application.Common.DynamicQuery.Contracts;
 
 namespace Peent.Api.Infrastructure.ModelBinders
 {

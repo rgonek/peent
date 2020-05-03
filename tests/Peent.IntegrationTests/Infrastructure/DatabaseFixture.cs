@@ -10,13 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
-using Peent.Application.DynamicQuery.Sorts;
-using Peent.Application.Infrastructure;
 using Peent.CommonTests.Infrastructure;
 using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 using System.Linq.Dynamic.Core;
+using Peent.Application.Common;
+using Peent.Application.Common.DynamicQuery.Sorts;
 using Respawn;
 
 namespace Peent.IntegrationTests.Infrastructure

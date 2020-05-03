@@ -2,7 +2,7 @@
 using Peent.Domain.Entities;
 using AutoFixture;
 using Peent.Application.Accounts.Commands.CreateAccount;
-using Peent.Application.Infrastructure.Extensions;
+using Peent.Application.Common.Extensions;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 

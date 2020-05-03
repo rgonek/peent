@@ -15,10 +15,10 @@ using Peent.Api.Infrastructure;
 using Peent.Api.Infrastructure.ModelBinders;
 using Peent.Application;
 using Peent.Application.Categories.Queries.GetCategory;
+using Peent.Application.Common.Behaviors;
 using Peent.Application.Common.Validators;
 using Peent.Application.Common.Validators.ExistsValidator;
 using Peent.Application.Common.Validators.UniqueValidator;
-using Peent.Application.Infrastructure;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 
