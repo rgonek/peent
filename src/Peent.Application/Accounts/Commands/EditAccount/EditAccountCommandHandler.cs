@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Peent.Application.Common;
 using Peent.Application.Common.Extensions;
 using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
@@ -18,12 +19,12 @@ namespace Peent.Application.Accounts.Commands.EditAccount
 
         public async Task<Unit> Handle(EditAccountCommand command, CancellationToken token)
         {
-            var account = await _db.Accounts.FindAsync(new[] {command.Id}, token);
+            var account = await _db.Accounts.GetAsync(command.Id, token);
             await ThrowsIfDuplicateAsync(command, token, account);
 
             account.SetName(command.Name);
             account.SetDescription(command.Description);
-            account.SetCurrency(await _db.Currencies.FindAsync(new[] {command.CurrencyId}, token));
+            account.SetCurrency(await _db.Currencies.GetAsync(command.CurrencyId, token));
 
             _db.Attach(account);
             await _db.SaveChangesAsync(token);

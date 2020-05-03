@@ -52,7 +52,7 @@ namespace Peent.IntegrationTests.Tags
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
 
             Invoking(async () => await SendAsync(new GetTagQuery { Id = tagId }))
                 .Should().Throw<NotFoundException>();

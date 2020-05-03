@@ -37,7 +37,7 @@ namespace Peent.IntegrationTests.Categories
         public async Task should_edit_category_by_another_user_in_the_same_workspace()
         {
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            var currentContext = SetCurrentAuthenticationContext(await CreateUserAsync(), BaseContext.Workspace);
+            var currentContext = RunAs(await CreateUserAsync(), BaseContext.Workspace);
             var command = F.Build<EditCategoryCommand>()
                 .With(x => x.Id, categoryId)
                 .Create();
@@ -112,11 +112,11 @@ namespace Peent.IntegrationTests.Categories
             var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
             
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             var command2 = F.Create<CreateCategoryCommand>();
             await SendAsync(command2);
             
-            SetCurrentAuthenticationContext(BaseContext);
+            RunAs(BaseContext);
 
             await SendAsync(new EditCategoryCommand
             {

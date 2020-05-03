@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Currencies.Commands.EditCurrency
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Currencies.Commands.EditCurrency
 
         public async Task<Unit> Handle(EditCurrencyCommand command, CancellationToken token)
         {
-            var currency = await _db.Currencies.FindAsync(new[] {command.Id}, token);
+            var currency = await _db.Currencies.GetAsync(command.Id, token);
             currency.SetCode(command.Code);
             currency.SetName(command.Name);
             currency.SetSymbol(command.Symbol);

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Accounts.Commands.DeleteAccount
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Accounts.Commands.DeleteAccount
 
         public async Task<Unit> Handle(DeleteAccountCommand command, CancellationToken token)
         {
-            _db.Remove(await _db.Accounts.FindAsync(new[] {command.Id}, token));
+            _db.Remove(await _db.Accounts.GetAsync(command.Id, token));
             await _db.SaveChangesAsync(token);
 
             return default;

@@ -32,7 +32,7 @@ namespace Peent.IntegrationTests.Tags
         {
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
 
-            SetCurrentAuthenticationContext(await CreateUserAsync(), BaseContext.Workspace);
+            RunAs(await CreateUserAsync(), BaseContext.Workspace);
             var command = new DeleteTagCommand
             {
                 Id = tagId

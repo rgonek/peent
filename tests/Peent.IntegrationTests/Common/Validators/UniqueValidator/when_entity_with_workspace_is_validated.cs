@@ -33,7 +33,7 @@ namespace Peent.IntegrationTests.Common.Validators.UniqueValidator
         public async void and_entity_exists_in_another_workspace__does_not_return_error()
         {
             Account account = An.Account;
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
 
             var result = await ValidateUniqueAsync<Account>(x => x.Name == account.Name);
 

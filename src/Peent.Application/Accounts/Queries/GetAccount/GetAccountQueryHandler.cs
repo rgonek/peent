@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Peent.Application.Accounts.Models;
+using Peent.Application.Common;
 
 namespace Peent.Application.Accounts.Queries.GetAccount
 {
@@ -14,7 +15,7 @@ namespace Peent.Application.Accounts.Queries.GetAccount
 
         public async Task<AccountModel> Handle(GetAccountQuery query, CancellationToken token)
         {
-            var account = await _db.Accounts.FindAsync(new[] {query.Id}, token);
+            var account = await _db.Accounts.GetAsync(query.Id, token);
             await _db.Entry(account).Reference(x => x.Currency).LoadAsync(token);
 
             return new AccountModel(account);

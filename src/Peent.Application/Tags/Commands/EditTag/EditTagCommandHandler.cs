@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Tags.Commands.EditTag
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Tags.Commands.EditTag
 
         public async Task<Unit> Handle(EditTagCommand command, CancellationToken token)
         {
-            var tag = await _db.Tags.FindAsync(new[] {command.Id}, token);
+            var tag = await _db.Tags.GetAsync(command.Id, token);
             tag.SetName(command.Name);
             tag.SetDescription(command.Description);
 

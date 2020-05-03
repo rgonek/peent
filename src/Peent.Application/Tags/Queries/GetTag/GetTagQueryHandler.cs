@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 using Peent.Application.Tags.Models;
 
 namespace Peent.Application.Tags.Queries.GetTag
@@ -14,7 +15,7 @@ namespace Peent.Application.Tags.Queries.GetTag
 
         public async Task<TagModel> Handle(GetTagQuery query, CancellationToken token)
         {
-            var tag = await _db.Tags.FindAsync(new[] {query.Id}, token);
+            var tag = await _db.Tags.GetAsync(query.Id, token);
 
             return new TagModel(tag);
         }

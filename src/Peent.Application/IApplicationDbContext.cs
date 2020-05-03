@@ -21,16 +21,9 @@ namespace Peent.Application
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
         EntityEntry<TEntity> Attach<TEntity>(TEntity entity) where TEntity : class;
-        EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : class;
-        EntityEntry<TEntity> Update<TEntity>(TEntity entity) where TEntity : class;
         EntityEntry<TEntity> Remove<TEntity>(TEntity entity) where TEntity : class;
-
-        object Find(Type entityType, params object[] keyValues);
-        ValueTask<object> FindAsync(Type entityType, params object[] keyValues);
-        ValueTask<object> FindAsync(Type entityType, object[] keyValues, CancellationToken cancellationToken );
         
-        int SaveChanges();
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();

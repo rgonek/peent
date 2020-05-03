@@ -29,7 +29,7 @@ namespace Peent.Application.Common.Validators.ExistsValidator
         {
             var typeEntity = typeof(TEntity);
             context.MessageFormatter.AppendArgument("EntityName", typeEntity.Name);
-            var entity = await _db.Set<TEntity>().FindAsync(new[] {context.PropertyValue}, cancellation);
+            var entity = await _db.Set<TEntity>().GetAsync(context.PropertyValue, cancellation);
             if (entity is null)
             {
                 return false;

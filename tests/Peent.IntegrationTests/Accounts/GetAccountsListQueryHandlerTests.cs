@@ -37,11 +37,11 @@ namespace Peent.IntegrationTests.Accounts
             Account account2 = An.Account.WithCurrency(currency);
             Account account3 = An.Account.WithCurrency(currency);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             Account account4 = An.Account.WithCurrency(currency);
             Account account5 = An.Account.WithCurrency(currency);
 
-            SetCurrentAuthenticationContext(BaseContext);
+            RunAs(BaseContext);
             var accountsPaged = await SendAsync(new GetAccountsListQuery());
 
             accountsPaged.Results.Should()

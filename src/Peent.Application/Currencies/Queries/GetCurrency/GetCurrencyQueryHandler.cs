@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 using Peent.Application.Currencies.Models;
 
 namespace Peent.Application.Currencies.Queries.GetCurrency
@@ -14,7 +15,7 @@ namespace Peent.Application.Currencies.Queries.GetCurrency
 
         public async Task<CurrencyModel> Handle(GetCurrencyQuery query, CancellationToken token)
         {
-            var currency = await _db.Currencies.FindAsync(new[] {query.Id}, token);
+            var currency = await _db.Currencies.GetAsync(query.Id, token);
 
             return new CurrencyModel(currency);
         }

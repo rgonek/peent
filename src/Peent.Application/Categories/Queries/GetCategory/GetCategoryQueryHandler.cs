@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Peent.Application.Categories.Models;
+using Peent.Application.Common;
 
 namespace Peent.Application.Categories.Queries.GetCategory
 {
@@ -14,7 +15,7 @@ namespace Peent.Application.Categories.Queries.GetCategory
 
         public async Task<CategoryModel> Handle(GetCategoryQuery query, CancellationToken token)
         {
-            var category = await _db.Categories.FindAsync(new[] {query.Id}, token);
+            var category = await _db.Categories.GetAsync(query.Id, token);
 
             return new CategoryModel(category);
         }

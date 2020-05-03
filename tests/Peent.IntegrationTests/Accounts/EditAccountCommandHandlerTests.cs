@@ -38,7 +38,7 @@ namespace Peent.IntegrationTests.Accounts
         public async Task should_edit_account_by_another_user_in_the_same_workspace()
         {
             Account account = An.Account;
-            var context = await SetUpAuthenticationContext(BaseContext.Workspace);
+            var context = await RunAsNewUserAsync(BaseContext.Workspace);
             var command = F.Build<EditAccountCommand>()
                 .With(x => x.Id, account.Id)
                 .With(x => x.CurrencyId, account.Currency.Id)
@@ -117,9 +117,9 @@ namespace Peent.IntegrationTests.Accounts
         public async Task when_account_with_given_name_exists_in_another_workspace__do_not_throw()
         {
             Account account = An.Account;
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             Account account2 = An.Account;
-            SetCurrentAuthenticationContext(BaseContext);
+            RunAs(BaseContext);
 
             await SendAsync(new EditAccountCommand
             {

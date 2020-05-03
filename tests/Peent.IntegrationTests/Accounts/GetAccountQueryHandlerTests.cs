@@ -49,7 +49,7 @@ namespace Peent.IntegrationTests.Accounts
         {
             Account account = An.Account;
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
 
             Invoking(async () => await SendAsync(new GetAccountQuery { Id = account.Id }))
                 .Should().Throw<NotFoundException>();

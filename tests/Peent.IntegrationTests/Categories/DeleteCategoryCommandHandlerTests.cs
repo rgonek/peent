@@ -29,7 +29,7 @@ namespace Peent.IntegrationTests.Categories
         public async Task should_delete_category_by_another_user_in_the_same_workspace()
         {
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            SetCurrentUser(await CreateUserAsync(), BaseContext.Workspace);
+            RunAs(await CreateUserAsync(), BaseContext.Workspace);
             var command = new DeleteCategoryCommand(categoryId);
             
             await SendAsync(command);

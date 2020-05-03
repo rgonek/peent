@@ -35,11 +35,11 @@ namespace Peent.IntegrationTests.Categories
             var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             var categoryId4 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId5 = await SendAsync(F.Create<CreateCategoryCommand>());
 
-            SetCurrentAuthenticationContext(BaseContext);
+            RunAs(BaseContext);
             var categories = await SendAsync(new GetCategoriesListQuery());
 
             categories.Results.Should()

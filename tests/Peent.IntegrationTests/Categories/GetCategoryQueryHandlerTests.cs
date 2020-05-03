@@ -52,7 +52,7 @@ namespace Peent.IntegrationTests.Categories
             var command = F.Create<CreateCategoryCommand>();
             var categoryId = await SendAsync(command);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
 
             Invoking(async () => await SendAsync(new GetCategoryQuery { Id = categoryId }))
                 .Should().Throw<NotFoundException>();

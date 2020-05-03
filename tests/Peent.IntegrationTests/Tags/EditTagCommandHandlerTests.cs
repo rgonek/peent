@@ -37,7 +37,7 @@ namespace Peent.IntegrationTests.Tags
         public async Task should_edit_tag_by_another_user_in_the_same_workspace()
         {
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
-            var context = SetCurrentAuthenticationContext(await CreateUserAsync(), BaseContext.Workspace);
+            var context = RunAs(await CreateUserAsync(), BaseContext.Workspace);
             var command = F.Build<EditTagCommand>()
                 .With(x => x.Id, tagId)
                 .Create();
@@ -112,11 +112,11 @@ namespace Peent.IntegrationTests.Tags
             var command = F.Create<CreateTagCommand>();
             var tagId = await SendAsync(command);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             var command2 = F.Create<CreateTagCommand>();
             await SendAsync(command2);
             
-            SetCurrentAuthenticationContext(BaseContext);
+            RunAs(BaseContext);
 
             await SendAsync(new EditTagCommand
             {

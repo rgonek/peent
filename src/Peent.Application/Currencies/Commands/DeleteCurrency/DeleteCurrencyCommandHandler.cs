@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Currencies.Commands.DeleteCurrency
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Currencies.Commands.DeleteCurrency
 
         public async Task<Unit> Handle(DeleteCurrencyCommand command, CancellationToken token)
         {
-            var currency = await _db.Currencies.FindAsync(new[]{command.Id}, token);
+            var currency = await _db.Currencies.GetAsync(command.Id, token);
             _db.Remove(currency);
             await _db.SaveChangesAsync(token);
 

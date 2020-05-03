@@ -33,7 +33,7 @@ namespace Peent.IntegrationTests.Common.Validators.ExistsValidator
         public async void and_entity_exists_in_another_workspace__returns_error()
         {
             Account account = An.Account;
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
 
             var result = await ValidateExistsAsync<Account>(account.Id);
 

@@ -243,7 +243,7 @@ namespace Peent.IntegrationTests.Infrastructure
             return workspace;
         }
 
-        public static ClaimsPrincipal SetCurrentUser(ApplicationUser user, Workspace workspace = null)
+        private static void SetCurrentUser(ApplicationUser user, Workspace workspace = null)
         {
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
@@ -252,30 +252,28 @@ namespace Peent.IntegrationTests.Infrastructure
                 new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString())
             }, "mock"));
             MockUserAccessor.Setup(x => x.User).Returns(claimsPrincipal);
-
-            return claimsPrincipal;
         }
 
-        public static async Task<AuthenticationContext> SetUpAuthenticationContext(Workspace workspace = null)
+        public static async Task<RunAsContext> RunAsNewUserAsync(Workspace workspace = null)
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user);
             
             workspace ??= await CreateWorkspaceAsync();
 
-            return SetCurrentAuthenticationContext(user, workspace);
+            return RunAs(user, workspace);
         }
 
-        public static void SetCurrentAuthenticationContext(AuthenticationContext context)
+        public static void RunAs(RunAsContext context)
         {
             SetCurrentUser(context.User, context.Workspace);
         }
 
-        public static AuthenticationContext SetCurrentAuthenticationContext(ApplicationUser user, Workspace workspace)
+        public static RunAsContext RunAs(ApplicationUser user, Workspace workspace)
         {
-            var context = new AuthenticationContext(user, workspace);
+            var context = new RunAsContext(user, workspace);
 
-            SetCurrentAuthenticationContext(context);
+            RunAs(context);
 
             return context;
         }

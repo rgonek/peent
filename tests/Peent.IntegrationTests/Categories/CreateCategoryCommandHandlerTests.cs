@@ -86,7 +86,7 @@ namespace Peent.IntegrationTests.Categories
             var command = F.Create<CreateCategoryCommand>();
             await SendAsync(command);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             await SendAsync(command);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Categories.Commands.EditCategory
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Categories.Commands.EditCategory
 
         public async Task<Unit> Handle(EditCategoryCommand command, CancellationToken token)
         {
-            var category = await _db.Categories.FindAsync(new[] {command.Id}, token);
+            var category = await _db.Categories.GetAsync(command.Id, token);
             category.SetName(command.Name);
             category.SetDescription(command.Description);
 

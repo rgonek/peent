@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 using Peent.Application.Common.Extensions;
 using Peent.Domain.Entities;
 
@@ -20,7 +21,7 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                 command.Name,
                 command.Description,
                 command.Type,
-                await _db.Currencies.FindAsync(command.CurrencyId),
+                await _db.Currencies.GetAsync(command.CurrencyId, token),
                 Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
 
             _db.Accounts.Attach(account);

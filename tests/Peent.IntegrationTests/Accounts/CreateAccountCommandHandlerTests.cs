@@ -85,7 +85,7 @@ namespace Peent.IntegrationTests.Accounts
 
             await SendAsync(command);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             await SendAsync(command);
         }
 

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Peent.Application.Common;
 using Peent.Application.Exceptions;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
@@ -20,10 +21,10 @@ namespace Peent.Application.Transactions.Commands.CreateTransaction
         public async Task<long> Handle(CreateTransactionCommand command, CancellationToken token)
         {
             var tags = await GetTagsOrThrowsIfNotExistsAsync(command, token);
-            var category = await _db.Categories.FindAsync(new object[] {command.CategoryId}, token);
-            var fromAccount = await _db.Accounts.FindAsync(new object[] {command.FromAccountId}, token);
+            var category = await _db.Categories.GetAsync(command.CategoryId, token);
+            var fromAccount = await _db.Accounts.GetAsync(command.FromAccountId, token);
             await _db.Entry(fromAccount).Reference(x => x.Currency).LoadAsync(token);
-            var toAccount = await _db.Accounts.FindAsync(new object[] {command.ToAccountId}, token);
+            var toAccount = await _db.Accounts.GetAsync(command.ToAccountId, token);
             await _db.Entry(toAccount).Reference(x => x.Currency).LoadAsync(token);
 
             var transaction = new Transaction(command.Title, command.Date, command.Description, category,

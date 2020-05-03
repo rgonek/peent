@@ -35,11 +35,11 @@ namespace Peent.IntegrationTests.Tags
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
 
-            SetCurrentAuthenticationContext(BaseContext);
+            RunAs(BaseContext);
             var tagsPaged = await SendAsync(new GetTagsListQuery());
 
             tagsPaged.Results.Should()

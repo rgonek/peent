@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Categories.Commands.DeleteCategory
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Categories.Commands.DeleteCategory
 
         public async Task<Unit> Handle(DeleteCategoryCommand command, CancellationToken token)
         {
-            _db.Remove(await _db.Categories.FindAsync(new[] {command.Id}, token));
+            _db.Remove(await _db.Categories.GetAsync(command.Id, token));
             await _db.SaveChangesAsync(token);
             return default;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Peent.Application.Common;
 
 namespace Peent.Application.Tags.Commands.DeleteTag
 {
@@ -13,7 +14,7 @@ namespace Peent.Application.Tags.Commands.DeleteTag
 
         public async Task<Unit> Handle(DeleteTagCommand command, CancellationToken token)
         {
-            var tag = await _db.Tags.FindAsync(new[] {command.Id}, token);
+            var tag = await _db.Tags.GetAsync(command.Id, token);
             _db.Remove(tag);
             await _db.SaveChangesAsync(token);
 

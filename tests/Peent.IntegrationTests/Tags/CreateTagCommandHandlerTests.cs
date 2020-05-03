@@ -84,7 +84,7 @@ namespace Peent.IntegrationTests.Tags
             var command = F.Create<CreateTagCommand>();
             await SendAsync(command);
 
-            await SetUpAuthenticationContext();
+            await RunAsNewUserAsync();
             await SendAsync(command);
         }
 
