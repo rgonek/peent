@@ -18,7 +18,8 @@ namespace Peent.IntegrationTests.Common.Validators
 {
     public class ValidationFixture
     {
-        public static ValueTask<List<ValidationFailure>> ValidateUniqueAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+        public static ValueTask<List<ValidationFailure>> ValidateUniqueAsync<TEntity>(
+            Expression<Func<TEntity, bool>> predicate)
             where TEntity : class
             => ValidateAsync<TEntity, TestCommand>(x => x.Id, null,
                 (db, userAccessor) =>

@@ -11,7 +11,7 @@ namespace Peent.UnitTests.Accounts
     public class EditAccountCommandValidatorTests
     {
         private readonly EditAccountCommandValidator _validator =
-            new EditAccountCommandValidator(new AlwaysExistsValidatorProvider());
+            new EditAccountCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysUniqueValidatorProvider());
 
         [Fact]
         public void when_id_is_0__should_have_error()
@@ -31,7 +31,7 @@ namespace Peent.UnitTests.Accounts
 
         [Fact]
         public void when_account_does_not_exists__should_have_error()
-            => new EditAccountCommandValidator(new AlwaysNotExistsValidatorProvider())
+            => new EditAccountCommandValidator(new AlwaysNotExistsValidatorProvider(), new AlwaysUniqueValidatorProvider())
                 .ShouldHaveValidationErrorFor(x => x.Id, 1);
 
         [Fact]
@@ -88,7 +88,7 @@ namespace Peent.UnitTests.Accounts
 
         [Fact]
         public void when_currency_does_not_exists__should_have_error()
-            => new EditAccountCommandValidator(new AlwaysNotExistsValidatorProvider())
+            => new EditAccountCommandValidator(new AlwaysNotExistsValidatorProvider(), new AlwaysUniqueValidatorProvider())
                 .ShouldHaveValidationErrorFor(x => x.CurrencyId, 1);
     }
 }

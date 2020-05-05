@@ -8,5 +8,8 @@ namespace Peent.Application.Common.Validators.UniqueValidator
         where TEntity : class
     {
         IPropertyValidator WhereNot<T>(Func<T, Expression<Func<TEntity, bool>>> predicate);
+        IPropertyValidator WhereNot<T>(
+            Func<T, object> propertyFinder,
+            Func<TEntity, T, Expression<Func<TEntity, bool>>> predicate);
     }
 }

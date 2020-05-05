@@ -10,5 +10,9 @@ namespace Peent.UnitTests.Common.Fakes.Validators
     {
         public IPropertyValidator WhereNot<T>(Func<T, Expression<Func<TEntity, bool>>> predicate)
             => new AlwaysTrueValidator();
+
+        public IPropertyValidator WhereNot<T>(Func<T, object> propertyFinder,
+            Func<TEntity, T, Expression<Func<TEntity, bool>>> predicate)
+            => new AlwaysTrueValidator();
     }
 }
