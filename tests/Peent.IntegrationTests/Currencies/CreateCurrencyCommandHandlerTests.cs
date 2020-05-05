@@ -12,11 +12,12 @@ using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class CreateCurrencyCommandHandlerTests : IntegrationTestBase
+    public class CreateCurrencyCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_create_currency()
         {
+            await RunAsNewUserAsync();
             var command = F.Create<CreateCurrencyCommand>();
 
             var currencyId = await SendAsync(command);
@@ -26,20 +27,6 @@ namespace Peent.IntegrationTests.Currencies
             currency.Name.Should().Be(command.Name);
             currency.Symbol.Should().Be(command.Symbol);
             currency.DecimalPlaces.Should().Be(command.DecimalPlaces);
-        }
-
-        [Fact]
-        public async Task when_currency_with_given_code_exists__throws()
-        {
-            var command = F.Create<CreateCurrencyCommand>();
-            await SendAsync(command);
-
-            command = F.Build<CreateCurrencyCommand>()
-                .With(x => x.Code, command.Code)
-                .Create();
-
-            Invoking(async () => await SendAsync(command))
-                .Should().Throw<DuplicateException>();
         }
     }
 }

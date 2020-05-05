@@ -28,6 +28,7 @@ namespace Peent.CommonTests.AutoFixture
                     fixture.CreateString(12));
 
             fixture.Customizations.Insert(0, new ValidRandomAccountTypeSequenceGenerator());
+            fixture.Customizations.Insert(0, new ValidRandomAccountTypeSequenceGenerator());
         }
     }
 }

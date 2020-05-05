@@ -11,11 +11,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Transactions
 {
-    public class CreateTransactionCommandHandlerTests : IntegrationTestBase
+    public class CreateTransactionCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_create_transaction()
         {
+            await RunAsNewUserAsync();
             Account fromAccount = An.Account.OfAssetType();
             Account toAccount = An.Account.OfExpenseType();
             var command = A.Transaction
@@ -33,14 +34,8 @@ namespace Peent.IntegrationTests.Transactions
             transaction.Date.Should().Be(command.Date);
             transaction.Entries.Should().HaveCount(2)
                 .And.SatisfyRespectively(
-                    first =>
-                    {
-                        first.Money.Should().Be(new Money(command.Amount, fromAccount.Currency));
-                    },
-                    second =>
-                    {
-                        second.Money.Should().Be(new Money(-command.Amount, toAccount.Currency));
-                    });
+                    first => { first.Money.Should().Be(new Money(command.Amount, fromAccount.Currency)); },
+                    second => { second.Money.Should().Be(new Money(-command.Amount, toAccount.Currency)); });
         }
 
         private static async ValueTask<Transaction> FindAsync(long id)

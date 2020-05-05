@@ -11,11 +11,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class DeleteCategoryCommandHandlerTests : IntegrationTestBase
+    public class DeleteCategoryCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_delete_category()
         {
+            await RunAsNewUserAsync();
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
             var command = new DeleteCategoryCommand(categoryId);
             
@@ -28,8 +29,9 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_delete_category_by_another_user_in_the_same_workspace()
         {
+            var runAs = await RunAsNewUserAsync();
             var categoryId = await SendAsync(F.Create<CreateCategoryCommand>());
-            RunAs(await CreateUserAsync(), BaseContext.Workspace);
+            RunAs(await CreateUserAsync(), runAs.Workspace);
             var command = new DeleteCategoryCommand(categoryId);
             
             await SendAsync(command);

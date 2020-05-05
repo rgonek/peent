@@ -11,11 +11,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class DeleteCurrencyCommandHandlerTests : IntegrationTestBase
+    public class DeleteCurrencyCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_delete_currency()
         {
+            await RunAsNewUserAsync();
             var currencyId = await SendAsync(F.Create<CreateCurrencyCommand>());
             var command = new DeleteCurrencyCommand
             {

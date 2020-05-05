@@ -8,11 +8,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Common.Validators.UniqueValidator
 {
-    public class when_entity_with_workspace_is_validated : IntegrationTestBase
+    public class when_entity_with_workspace_is_validated : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async void and_entity_is_unique__does_not_return_error()
         {
+            await RunAsNewUserAsync();
             var result = await ValidateUniqueAsync<Account>(x => x.Name == "test");
 
             result.Should().BeEmpty();
@@ -21,6 +22,7 @@ namespace Peent.IntegrationTests.Common.Validators.UniqueValidator
         [Fact]
         public async void and_entity_is_duplicated__returns_error()
         {
+            await RunAsNewUserAsync();
             Account account = An.Account;
             
             var result = await ValidateUniqueAsync<Account>(x => x.Name == account.Name);
@@ -32,6 +34,7 @@ namespace Peent.IntegrationTests.Common.Validators.UniqueValidator
         [Fact]
         public async void and_entity_exists_in_another_workspace__does_not_return_error()
         {
+            await RunAsNewUserAsync();
             Account account = An.Account;
             await RunAsNewUserAsync();
 

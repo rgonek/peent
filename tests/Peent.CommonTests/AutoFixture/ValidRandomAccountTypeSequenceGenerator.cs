@@ -17,10 +17,8 @@ namespace Peent.CommonTests.AutoFixture
                 return new NoSpecimen();
             }
 
-            var values = Enums.GetValues<AccountType>()
-                .Except(new[] { AccountType.Unknown })
-                .ToList();
-            var randomIndex = StaticRandom.Next(0, values.Count);
+            var values = new[] {AccountType.Asset};
+            var randomIndex = StaticRandom.Next(0, values.Length);
             var result = values[randomIndex];
             return result;
         }

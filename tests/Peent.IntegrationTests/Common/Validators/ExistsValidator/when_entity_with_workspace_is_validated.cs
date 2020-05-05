@@ -8,11 +8,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Common.Validators.ExistsValidator
 {
-    public class when_entity_with_workspace_is_validated : IntegrationTestBase
+    public class when_entity_with_workspace_is_validated : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async void and_entity_exists__does_not_return_error()
         {
+            await RunAsNewUserAsync();
             Account account = An.Account;
 
             var result = await ValidateExistsAsync<Account>(account.Id);
@@ -23,6 +24,7 @@ namespace Peent.IntegrationTests.Common.Validators.ExistsValidator
         [Fact]
         public async void and_entity_does_not_exist__returns_error()
         {
+            await RunAsNewUserAsync();
             var result = await ValidateExistsAsync<Account>(0);
 
             result.Should().HaveCount(1);
@@ -32,6 +34,7 @@ namespace Peent.IntegrationTests.Common.Validators.ExistsValidator
         [Fact]
         public async void and_entity_exists_in_another_workspace__returns_error()
         {
+            await RunAsNewUserAsync();
             Account account = An.Account;
             await RunAsNewUserAsync();
 

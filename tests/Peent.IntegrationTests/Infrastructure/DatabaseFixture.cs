@@ -50,6 +50,8 @@ namespace Peent.IntegrationTests.Infrastructure
                     "__EFMigrationsHistory"
                 }
             };
+            
+//            EnsureDatabase();
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -64,8 +66,17 @@ namespace Peent.IntegrationTests.Infrastructure
             services.AddMediatR(typeof(GetCategoryQueryHandler));
         }
 
-        public static Task ResetCheckpoint() =>
-            Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+        public static async Task ResetCheckpoint()
+        {
+            await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+        }
+
+        private static void EnsureDatabase()
+        {
+            using var scope = ScopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+            context.Database.Migrate();
+        }
 
         public static async ValueTask ExecuteScopeAsync(Func<IServiceProvider, ValueTask> action)
         {
@@ -258,7 +269,7 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             var user = await CreateUserAsync();
             SetCurrentUser(user);
-            
+
             workspace ??= await CreateWorkspaceAsync();
 
             return RunAs(user, workspace);

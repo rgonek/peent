@@ -11,11 +11,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class DeleteTagCommandHandlerTests : IntegrationTestBase
+    public class DeleteTagCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_delete_tag()
         {
+            await RunAsNewUserAsync();
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
             var command = new DeleteTagCommand
             {
@@ -30,9 +31,10 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_delete_tag_by_another_user_in_the_same_workspace()
         {
+            var runAs = await RunAsNewUserAsync();
             var tagId = await SendAsync(F.Create<CreateTagCommand>());
 
-            RunAs(await CreateUserAsync(), BaseContext.Workspace);
+            RunAs(await CreateUserAsync(), runAs.Workspace);
             var command = new DeleteTagCommand
             {
                 Id = tagId

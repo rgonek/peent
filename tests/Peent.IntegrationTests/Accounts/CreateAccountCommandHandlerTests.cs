@@ -3,20 +3,18 @@ using System.Threading.Tasks;
 using Peent.Domain.Entities;
 using Xunit;
 using FluentAssertions;
-using Peent.Application.Accounts.Commands.DeleteAccount;
-using Peent.Application.Exceptions;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
-using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class CreateAccountCommandHandlerTests : IntegrationTestBase
+    public class CreateAccountCommandHandlerTests : IntegrationTest // IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_create_account()
         {
+            await RunAsNewUserAsync();
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
@@ -31,17 +29,19 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task when_account_is_created__createdBy_is_set_to_current_user()
         {
+            var runAs = await RunAsNewUserAsync();
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.Created.By.Should().Be(BaseContext.User);
+            account.Created.By.Should().Be(runAs.User);
         }
 
         [Fact]
         public async Task when_account_is_created__creationDate_is_set_to_utc_now()
         {
+            await RunAsNewUserAsync();
             var utcNow = new DateTime(2019, 02, 02, 11, 28, 32);
             using (new ClockOverride(() => utcNow, () => utcNow.AddHours(2)))
             {
@@ -57,46 +57,15 @@ namespace Peent.IntegrationTests.Accounts
         [Fact]
         public async Task when_account_is_created__workspace_is_set_to_current_user_workspace()
         {
+            var runAs = await RunAsNewUserAsync();
             var command = An.Account.WithCurrency(A.Currency).AsCommand();
 
             var accountId = await SendAsync(command);
 
             var account = await FindAsync<Account>(accountId);
-            account.Workspace.Should().Be(BaseContext.Workspace);
-            var fetchedWorkspace = await FindAsync<Workspace>(BaseContext.Workspace.Id);
-            fetchedWorkspace.Created.By.Should().Be(BaseContext.User);
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_exists__throws()
-        {
-            var command = An.Account.WithCurrency(A.Currency).AsCommand();
-
-            await SendAsync(command);
-
-            Invoking(async () => await SendAsync(command))
-                .Should().Throw<DuplicateException>();
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_exists_in_another_workspace__do_not_throw()
-        {
-            var command = An.Account.WithCurrency(A.Currency).AsCommand();
-
-            await SendAsync(command);
-
-            await RunAsNewUserAsync();
-            await SendAsync(command);
-        }
-
-        [Fact]
-        public async Task when_account_with_given_name_is_already_deleted__do_not_throw()
-        {
-            var command = An.Account.WithCurrency(A.Currency).AsCommand();
-            var accountId = await SendAsync(command);
-            await SendAsync(new DeleteAccountCommand(accountId));
-
-            await SendAsync(command);
+            account.Workspace.Should().Be(runAs.Workspace);
+            var fetchedWorkspace = await FindAsync<Workspace>(runAs.Workspace.Id);
+            fetchedWorkspace.Created.By.Should().Be(runAs.User);
         }
     }
 }

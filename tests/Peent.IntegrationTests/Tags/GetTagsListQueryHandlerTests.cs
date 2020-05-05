@@ -11,11 +11,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class GetTagsListQueryHandlerTests : IntegrationTestBase
+    public class GetTagsListQueryHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_returns_tags_list()
         {
+            await RunAsNewUserAsync();
             var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
@@ -31,6 +32,7 @@ namespace Peent.IntegrationTests.Tags
         [Fact]
         public async Task should_returns_tags_list_only_for_given_user()
         {
+            var runAs = await RunAsNewUserAsync();
             var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
@@ -39,28 +41,7 @@ namespace Peent.IntegrationTests.Tags
             var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
             var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
 
-            RunAs(BaseContext);
-            var tagsPaged = await SendAsync(new GetTagsListQuery());
-
-            tagsPaged.Results.Should()
-                .Contain(x => x.Id == tagId1)
-                .And.Contain(x => x.Id == tagId2)
-                .And.Contain(x => x.Id == tagId3)
-                .And.NotContain(x => x.Id == tagId4)
-                .And.NotContain(x => x.Id == tagId5);
-        }
-
-        [Fact]
-        public async Task should_should_not_returns_deleted_tags()
-        {
-            var tagId1 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId2 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId3 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId4 = await SendAsync(F.Create<CreateTagCommand>());
-            var tagId5 = await SendAsync(F.Create<CreateTagCommand>());
-            await SendAsync(new DeleteTagCommand { Id = tagId4 });
-            await SendAsync(new DeleteTagCommand { Id = tagId5 });
-
+            RunAs(runAs);
             var tagsPaged = await SendAsync(new GetTagsListQuery());
 
             tagsPaged.Results.Should()

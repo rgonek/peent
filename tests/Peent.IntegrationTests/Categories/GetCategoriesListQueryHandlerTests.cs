@@ -11,11 +11,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class GetCategoriesListQueryHandlerTests : IntegrationTestBase
+    public class GetCategoriesListQueryHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_returns_categories_list()
         {
+            await RunAsNewUserAsync();
             var categoryId1 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
@@ -31,6 +32,7 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_returns_categories_list_only_for_given_user()
         {
+            var runAs = await RunAsNewUserAsync();
             var categoryId1 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
@@ -39,28 +41,7 @@ namespace Peent.IntegrationTests.Categories
             var categoryId4 = await SendAsync(F.Create<CreateCategoryCommand>());
             var categoryId5 = await SendAsync(F.Create<CreateCategoryCommand>());
 
-            RunAs(BaseContext);
-            var categories = await SendAsync(new GetCategoriesListQuery());
-
-            categories.Results.Should()
-                .Contain(x => x.Id == categoryId1)
-                .And.Contain(x => x.Id == categoryId2)
-                .And.Contain(x => x.Id == categoryId3)
-                .And.NotContain(x => x.Id == categoryId4)
-                .And.NotContain(x => x.Id == categoryId5);
-        }
-
-        [Fact]
-        public async Task should_should_not_returns_deleted_categories()
-        {
-            var categoryId1 = await SendAsync(F.Create<CreateCategoryCommand>());
-            var categoryId2 = await SendAsync(F.Create<CreateCategoryCommand>());
-            var categoryId3 = await SendAsync(F.Create<CreateCategoryCommand>());
-            var categoryId4 = await SendAsync(F.Create<CreateCategoryCommand>());
-            var categoryId5 = await SendAsync(F.Create<CreateCategoryCommand>());
-            await SendAsync(new DeleteCategoryCommand(categoryId4));
-            await SendAsync(new DeleteCategoryCommand(categoryId5));
-
+            RunAs(runAs);
             var categories = await SendAsync(new GetCategoriesListQuery());
 
             categories.Results.Should()

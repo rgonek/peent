@@ -10,11 +10,12 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class GetCurrenciesListQueryHandlerTests : IntegrationTestBase
+    public class GetCurrenciesListQueryHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_returns_currencies_list()
         {
+            await RunAsNewUserAsync();
             var currencyId1 = await SendAsync(F.Create<CreateCurrencyCommand>());
             var currencyId2 = await SendAsync(F.Create<CreateCurrencyCommand>());
             var currencyId3 = await SendAsync(F.Create<CreateCurrencyCommand>());
