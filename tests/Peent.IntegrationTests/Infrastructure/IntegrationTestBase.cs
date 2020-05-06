@@ -43,12 +43,11 @@ namespace Peent.IntegrationTests.Infrastructure
     {
         public IntegrationTest()
         {
-            ResetCheckpoint().GetAwaiter().GetResult();
+            ResetState().GetAwaiter().GetResult();
         }
 
         public void Dispose()
         {
-//            ResetCheckpoint().GetAwaiter().GetResult();
         }
     }
 }

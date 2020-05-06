@@ -12,7 +12,7 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class EditAccountCommandHandlerTests  : IntegrationTest//IClassFixture<IntegrationTest>
+    public class EditAccountCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_edit_account()

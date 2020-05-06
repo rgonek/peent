@@ -8,7 +8,7 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class GetAccountQueryHandlerTests :IntegrationTest// IClassFixture<IntegrationTest>
+    public class GetAccountQueryHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task when_account_exists__return_it()
@@ -16,7 +16,7 @@ namespace Peent.IntegrationTests.Accounts
             await RunAsNewUserAsync();
             Account account = An.Account;
 
-            var accountModel = await SendAsync(new GetAccountQuery { Id = account.Id });
+            var accountModel = await SendAsync(new GetAccountQuery {Id = account.Id});
 
             accountModel.Id.Should().Be(account.Id);
             accountModel.Name.Should().Be(account.Name);

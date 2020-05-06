@@ -11,7 +11,7 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class GetAccountsListQueryHandlerTests : IntegrationTest // IClassFixture<IntegrationTest>
+    public class GetAccountsListQueryHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_returns_accounts_list()

@@ -8,6 +8,7 @@ using FluentValidation.Internal;
 using FluentValidation.Results;
 using FluentValidation.Validators;
 using AutoFixture;
+using Microsoft.Extensions.DependencyInjection;
 using Peent.Application;
 using Peent.Application.Common.Validators.ExistsValidator;
 using Peent.Application.Common.Validators.UniqueValidator;
@@ -43,7 +44,9 @@ namespace Peent.IntegrationTests.Common.Validators
             where TEntity : class
             => ExecuteDbContextAsync(async db =>
             {
-                var validator = validatorFactory(db, UserAccessor);
+                using var scope = ScopeFactory.CreateScope();
+                var userAccessor = scope.ServiceProvider.GetService<IUserAccessor>();
+                var validator = validatorFactory(db, userAccessor);
 
                 var command = F.Build<TCommand>()
                     .With(commandPropertyPicker, commandValue)

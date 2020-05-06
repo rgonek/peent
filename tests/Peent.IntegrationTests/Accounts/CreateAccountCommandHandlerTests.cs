@@ -9,7 +9,7 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class CreateAccountCommandHandlerTests : IntegrationTest // IClassFixture<IntegrationTest>
+    public class CreateAccountCommandHandlerTests : IClassFixture<IntegrationTest>
     {
         [Fact]
         public async Task should_create_account()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -25,9 +26,8 @@ namespace Peent.IntegrationTests.Infrastructure
     {
         private static readonly Checkpoint Checkpoint;
         private static readonly IConfigurationRoot Configuration;
-        private static readonly IServiceScopeFactory ScopeFactory;
-        private static readonly Mock<IUserAccessor> MockUserAccessor;
-        public static readonly IUserAccessor UserAccessor;
+        public static readonly IServiceScopeFactory ScopeFactory;
+        private static ClaimsPrincipal _currentUser;
 
         static DatabaseFixture()
         {
@@ -36,13 +36,11 @@ namespace Peent.IntegrationTests.Infrastructure
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-            MockUserAccessor = new Mock<IUserAccessor>();
-            UserAccessor = MockUserAccessor.Object;
 
             var services = new ServiceCollection();
             ConfigureServices(services);
-            var provider = services.BuildServiceProvider();
-            ScopeFactory = provider.GetService<IServiceScopeFactory>();
+            ScopeFactory = services.BuildServiceProvider()
+                .GetService<IServiceScopeFactory>();
             Checkpoint = new Checkpoint
             {
                 TablesToIgnore = new[]
@@ -51,7 +49,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 }
             };
 
-            EnsureDatabase();
+            EnsureDatabase().GetAwaiter().GetResult();
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -61,21 +59,25 @@ namespace Peent.IntegrationTests.Infrastructure
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped(sp => UserAccessor);
+            var currentUserServiceDescriptor = services.FirstOrDefault(d =>
+                d.ServiceType == typeof(IUserAccessor));
+            services.Remove(currentUserServiceDescriptor);
+            services.AddTransient(provider => Mock.Of<IUserAccessor>(s => s.User == _currentUser));
 
             services.AddMediatR(typeof(GetCategoryQueryHandler));
         }
 
-        public static async Task ResetCheckpoint()
+        public static async Task ResetState()
         {
             await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+            _currentUser = null;
         }
 
-        private static void EnsureDatabase()
+        private static async Task EnsureDatabase()
         {
             using var scope = ScopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-            context.Database.Migrate();
+            await context.Database.MigrateAsync();
         }
 
         public static async ValueTask ExecuteScopeAsync(Func<IServiceProvider, ValueTask> action)
@@ -256,13 +258,12 @@ namespace Peent.IntegrationTests.Infrastructure
 
         private static void SetCurrentUser(ApplicationUser user, Workspace workspace = null)
         {
-            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            _currentUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString())
             }, "mock"));
-            MockUserAccessor.Setup(x => x.User).Returns(claimsPrincipal);
         }
 
         public static async Task<RunAsContext> RunAsNewUserAsync(Workspace workspace = null)
