@@ -63,6 +63,19 @@ namespace Peent.Persistence
                 }
             }
 
+            foreach (var entry in ChangeTracker.Entries<IHaveWorkspace>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                    {
+                        entry.Entity.SetWorkspace(_userAccessor.User.GetWorkspace());
+                        Entry(entry.Entity.Workspace).State = EntityState.Unchanged;
+                    }
+                        break;
+                }
+            }
+
             return await base.SaveChangesAsync(cancellationToken);
         }
 

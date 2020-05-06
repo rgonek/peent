@@ -1,7 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using AutoFixture;
 using AutoFixture.Kernel;
-using Microsoft.EntityFrameworkCore.Internal;
 using Peent.CommonTests.AutoFixture;
 
 namespace Peent.CommonTests.Infrastructure

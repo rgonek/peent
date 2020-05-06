@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MediatR;
 using Peent.Application.Common;
-using Peent.Application.Common.Extensions;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Accounts.Commands.CreateAccount
@@ -10,10 +9,9 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
     public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, int>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
 
-        public CreateAccountCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-            => (_db, _userAccessor) = (db, userAccessor);
+        public CreateAccountCommandHandler(IApplicationDbContext db)
+            => _db = db;
 
         public async Task<int> Handle(CreateAccountCommand command, CancellationToken token)
         {
@@ -21,8 +19,7 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                 command.Name,
                 command.Description,
                 command.Type,
-                await _db.Currencies.GetAsync(command.CurrencyId, token),
-                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
+                await _db.Currencies.GetAsync(command.CurrencyId, token));
 
             _db.Accounts.Attach(account);
 

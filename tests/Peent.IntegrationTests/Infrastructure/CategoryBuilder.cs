@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Peent.Domain.Entities;
 using AutoFixture;
-using Peent.Application.Common.Extensions;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
@@ -33,10 +32,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Category> Build()
         {
-            var category = new Category(
-                _name,
-                _description,
-                Workspace.FromId(UserAccessor.User.GetWorkspaceId()));
+            var category = new Category(_name, _description);
 
             await InsertAsync(category);
 

@@ -9,23 +9,19 @@ namespace Peent.Domain.Entities
         public string Description { get; private set; }
         public Workspace Workspace { get; private set; }
 
-        #region Ctors
-
-        private Category() { }
-
-        public Category(string name, Workspace workspace)
-            : this(name, null, workspace)
+        public Category(string name, string description = null)
         {
-        }
-
-        #endregion
-
-        public Category(string name, string description, Workspace workspace)
-        {
-            Ensure.That(workspace, nameof(workspace)).IsNotNull();
-
             SetName(name);
             Description = description;
+        }
+
+        public void SetWorkspace(Workspace workspace)
+        {
+            if (Workspace != null)
+            {
+//                throws
+            }
+
             Workspace = workspace;
         }
 

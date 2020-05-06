@@ -122,46 +122,19 @@ namespace Peent.UnitTests.Domain.Entities.Account
         }
 
         [Fact]
-        public void when_workspace_is_null__throws_argument_exception()
-        {
-            var parameterName = nameof(Sut.Workspace).FirstDown();
-            var customizer = new FixedConstructorParameter<Workspace>(
-                null, parameterName);
-
-            Action act = () => Create<Sut>(customizer);
-
-            act.Should().Throw<ArgumentException>()
-                .WithMessage($"*{parameterName}*");
-        }
-
-        [Fact]
-        public void when_workspace_is_not_null__does_not_throw()
-        {
-            var workspace = F.Create<Workspace>();
-            var customizer = new FixedConstructorParameter<Workspace>(
-                workspace, nameof(Sut.Workspace).FirstDown());
-
-            var account = Create<Sut>(customizer);
-
-            account.Workspace.Should().Be(workspace);
-        }
-
-        [Fact]
         public void when_all_parameters_are_valid__correctly_set_properties()
         {
             var name = F.Create<string>();
             var description = F.Create<string>();
             var type = F.Create<AccountType>();
             var currency = F.Create<Peent.Domain.Entities.Currency>();
-            var workspace = F.Create<Workspace>();
 
-            var account = new Sut(name, description, type, currency, workspace);
+            var account = new Sut(name, description, type, currency);
 
             account.Name.Should().Be(name);
             account.Description.Should().Be(description);
             account.Type.Should().Be(type);
             account.Currency.Should().Be(currency);
-            account.Workspace.Should().Be(workspace);
         }
     }
 }

@@ -21,20 +21,22 @@ namespace Peent.Domain.Entities
         {
         }
 
-        public Tag(string name, Workspace workspace)
-            : this(name, null, workspace)
-        {
-        }
-
         #endregion
 
-        public Tag(string name, string description, Workspace workspace)
+        public void SetWorkspace(Workspace workspace)
         {
-            Ensure.That(workspace, nameof(workspace)).IsNotNull();
+            if (Workspace != null)
+            {
+//                throws
+            }
 
+            Workspace = workspace;
+        }
+
+        public Tag(string name, string description = null)
+        {
             SetName(name);
             SetDescription(description);
-            Workspace = workspace;
         }
 
         public void SetName(string name)

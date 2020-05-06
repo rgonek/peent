@@ -61,42 +61,15 @@ namespace Peent.UnitTests.Domain.Entities.Tag
         }
 
         [Fact]
-        public void when_workspace_is_null__throws_argument_exception()
-        {
-            var parameterName = nameof(Sut.Workspace).FirstDown();
-            var customizer = new FixedConstructorParameter<Workspace>(
-                null, parameterName);
-
-            Action act = () => Create<Sut>(customizer);
-
-            act.Should().Throw<ArgumentException>()
-                .WithMessage($"*{parameterName}*");
-        }
-
-        [Fact]
-        public void when_workspace_is_not_null__does_not_throw()
-        {
-            var workspace = F.Create<Workspace>();
-            var customizer = new FixedConstructorParameter<Workspace>(
-                workspace, nameof(Sut.Workspace).FirstDown());
-
-            var tag = Create<Sut>(customizer);
-
-            tag.Workspace.Should().Be(workspace);
-        }
-
-        [Fact]
         public void when_all_parameters_are_valid__correctly_set_properties()
         {
             var name = F.Create<string>();
             var description = F.Create<string>();
-            var workspace = F.Create<Workspace>();
 
-            var tag = new Sut(name, description, workspace);
+            var tag = new Sut(name, description);
 
             tag.Name.Should().Be(name);
             tag.Description.Should().Be(description);
-            tag.Workspace.Should().Be(workspace);
         }
     }
 }

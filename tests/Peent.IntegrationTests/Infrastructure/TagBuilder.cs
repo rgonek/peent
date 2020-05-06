@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Peent.Domain.Entities;
 using AutoFixture;
-using Peent.Application.Common.Extensions;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
@@ -34,7 +32,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public async Task<Tag> Build()
         {
-            var tag = new Tag(_name, _description, Workspace.FromId(UserAccessor.User.GetWorkspaceId()));
+            var tag = new Tag(_name, _description);
 
             await InsertAsync(tag);
 

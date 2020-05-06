@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Peent.Application.Common.Extensions;
 using Peent.Domain.Entities;
 
 namespace Peent.Application.Tags.Commands.CreateTag
@@ -9,17 +8,15 @@ namespace Peent.Application.Tags.Commands.CreateTag
     public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, int>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
 
-        public CreateTagCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-            => (_db, _userAccessor) = (db, userAccessor);
+        public CreateTagCommandHandler(IApplicationDbContext db)
+            => _db = db;
 
         public async Task<int> Handle(CreateTagCommand command, CancellationToken token)
         {
             var tag = new Tag(
                 command.Name,
-                command.Description,
-                Workspace.FromId(_userAccessor.User.GetWorkspaceId()));
+                command.Description);
 
             _db.Tags.Attach(tag);
 

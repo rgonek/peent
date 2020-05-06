@@ -16,25 +16,36 @@ namespace Peent.Domain.Entities
         public Workspace Workspace { get; private set; }
 
         #region Ctors
-        private Account() { }
 
-        public Account(string name, AccountType type, Currency currency, Workspace workspace)
-            : this(name, null, type, currency, workspace)
+        private Account()
+        {
+        }
+
+        public Account(string name, AccountType type, Currency currency)
+            : this(name, null, type, currency)
         {
         }
 
         #endregion
 
-        public Account(string name, string description, AccountType type, Currency currency, Workspace workspace)
+        public Account(string name, string description, AccountType type, Currency currency)
         {
             Ensure.That(type, nameof(type)).IsNotDefault();
-            Ensure.That(workspace, nameof(workspace)).IsNotNull();
 
             SetName(name);
             SetDescription(description);
             SetCurrency(currency);
-            Workspace = workspace;
             Type = type;
+        }
+
+        public void SetWorkspace(Workspace workspace)
+        {
+            if (Workspace != null)
+            {
+//                throws
+            }
+
+            Workspace = workspace;
         }
 
         public void SetName(string name)

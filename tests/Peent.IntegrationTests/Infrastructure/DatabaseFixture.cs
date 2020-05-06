@@ -50,8 +50,8 @@ namespace Peent.IntegrationTests.Infrastructure
                     "__EFMigrationsHistory"
                 }
             };
-            
-//            EnsureDatabase();
+
+            EnsureDatabase();
         }
 
         private static void ConfigureServices(IServiceCollection services)
