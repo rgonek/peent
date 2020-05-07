@@ -24,4 +24,4 @@ jobs:
     - name: Test
       env: 
         buildDbConnectionString: ${{ secrets.BuildDbConnectionString }}
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity diagnostic
