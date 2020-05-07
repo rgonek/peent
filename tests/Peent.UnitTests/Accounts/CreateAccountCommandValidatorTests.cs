@@ -1,24 +1,15 @@
-﻿using System;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
 using Peent.Application.Accounts.Commands.CreateAccount;
 using Xunit;
 using AutoFixture;
 using Peent.CommonTests.AutoFixture;
 using Peent.UnitTests.Common.Fakes.Validators;
-using Xunit.Abstractions;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 
 namespace Peent.UnitTests.Accounts
 {
     public class CreateAccountCommandValidatorTests
     {
-        public CreateAccountCommandValidatorTests(ITestOutputHelper output)
-        {
-            Console.WriteLine("Secret test");
-            Console.WriteLine("Secret " + Environment.GetEnvironmentVariable("SuperSecret"));
-            output.WriteLine("Secret: " + Environment.GetEnvironmentVariable("SuperSecret"));
-        }
-        
         private readonly CreateAccountCommandValidator _validator =
             new CreateAccountCommandValidator(new AlwaysExistsValidatorProvider(), new AlwaysUniqueValidatorProvider());
 

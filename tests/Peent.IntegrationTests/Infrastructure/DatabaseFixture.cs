@@ -52,9 +52,10 @@ namespace Peent.IntegrationTests.Infrastructure
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            var environmentConnectionString = Environment.GetEnvironmentVariable("BuildDbConnectionString");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    environmentConnectionString ?? Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             var currentUserServiceDescriptor = services.FirstOrDefault(d =>

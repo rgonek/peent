@@ -5,7 +5,6 @@ using Xunit;
 using FluentAssertions;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
-using Xunit.Abstractions;
 using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
@@ -13,11 +12,6 @@ namespace Peent.IntegrationTests.Accounts
     [Collection(nameof(SharedFixture))]
     public class CreateAccountCommandHandlerTests
     {
-        public CreateAccountCommandHandlerTests(ITestOutputHelper output)
-        {
-            output.WriteLine("Secret: " + Environment.GetEnvironmentVariable("SuperSecret"));
-        }
-        
         [Fact]
         public async Task should_create_account()
         {
