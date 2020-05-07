@@ -28,6 +28,8 @@ namespace Peent.IntegrationTests.Infrastructure
 
         static DatabaseFixture()
         {
+            Console.WriteLine("Secret: " + Environment.GetEnvironmentVariable("buildDbConnectionString"));
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
