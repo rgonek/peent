@@ -25,4 +25,4 @@ jobs:
       env: 
         buildDbConnectionString: ${{ secrets.BuildDbConnectionString }}
         SuperSecret: ${{ secrets.SuperSecret }}
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity detailed
