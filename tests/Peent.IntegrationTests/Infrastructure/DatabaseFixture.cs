@@ -53,14 +53,14 @@ namespace Peent.IntegrationTests.Infrastructure
         private static void ConfigureServices(IServiceCollection services)
         {
             var environmentConnectionString = Environment.GetEnvironmentVariable("BuildDbConnectionString");
-            Console.WriteLine("Secret: " + environmentConnectionString);
-            Console.WriteLine("Secret2: " + environmentConnectionString.Substring(2));
-            Console.WriteLine("Secret3: " + Environment.GetEnvironmentVariable("NotExisting"));
-            Console.WriteLine("Secret4: " + Environment.GetEnvironmentVariable("NotExisting") ?? "other");
+            Console.WriteLine("Onion: " + environmentConnectionString);
+            Console.WriteLine("Onion2: " + environmentConnectionString.Substring(2));
+            Console.WriteLine("Onion3: " + Environment.GetEnvironmentVariable("NotExisting"));
+            Console.WriteLine("Onion4: " + Environment.GetEnvironmentVariable("NotExisting") ?? "other");
             var connectionString = string.IsNullOrWhiteSpace(environmentConnectionString)
                 ? Configuration.GetConnectionString("DefaultConnection")
                 : environmentConnectionString;
-            Console.WriteLine("Secret5: " + connectionString.Substring(2));
+            Console.WriteLine("Onion5: " + connectionString.Substring(2));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
