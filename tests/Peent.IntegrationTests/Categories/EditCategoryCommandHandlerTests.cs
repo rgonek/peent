@@ -13,7 +13,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class EditCategoryCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class EditCategoryCommandHandlerTests
     {
         [Fact]
         public async Task should_edit_category()

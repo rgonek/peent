@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class EditCurrencyCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class EditCurrencyCommandHandlerTests
     {
         [Fact]
         public async Task should_edit_currency()

@@ -8,7 +8,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class DeleteAccountCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class DeleteAccountCommandHandlerTests
     {
         [Fact]
         public async Task should_delete_account()

@@ -12,7 +12,8 @@ using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class GetCurrencyQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetCurrencyQueryHandlerTests
     {
         [Fact]
         public async Task when_currency_exists__return_it()

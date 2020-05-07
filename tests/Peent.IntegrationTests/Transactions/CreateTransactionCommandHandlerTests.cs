@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Transactions
 {
-    public class CreateTransactionCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class CreateTransactionCommandHandlerTests
     {
         [Fact(Skip = "Skip until fix.")]
         public async Task should_create_transaction()

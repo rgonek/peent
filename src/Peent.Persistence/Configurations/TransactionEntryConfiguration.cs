@@ -34,14 +34,6 @@ namespace Peent.Persistence.Configurations
                     .IsRequired();
             });
 
-//            builder.HasOne(x => x.Currency)
-//                .WithMany()
-//                .IsRequired();
-//
-//            builder.Property(x => x.Amount)
-//                .HasColumnType("decimal(38,18)")
-//                .IsRequired();
-
             builder.ConfigureAuditInfo();
         }
     }

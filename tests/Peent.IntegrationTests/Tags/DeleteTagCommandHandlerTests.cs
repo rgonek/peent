@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class DeleteTagCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class DeleteTagCommandHandlerTests
     {
         [Fact]
         public async Task should_delete_tag()

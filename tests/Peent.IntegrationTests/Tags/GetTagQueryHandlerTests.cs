@@ -10,7 +10,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class GetTagQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetTagQueryHandlerTests
     {
         [Fact]
         public async Task when_tag_exists__return_it()

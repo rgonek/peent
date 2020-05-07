@@ -8,7 +8,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Accounts
 {
-    public class GetAccountQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetAccountQueryHandlerTests
     {
         [Fact]
         public async Task when_account_exists__return_it()

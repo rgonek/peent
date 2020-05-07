@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class GetTagsListQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetTagsListQueryHandlerTests
     {
         [Fact]
         public async Task should_returns_tags_list()

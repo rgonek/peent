@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class GetCategoriesListQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetCategoriesListQueryHandlerTests
     {
         [Fact]
         public async Task should_returns_categories_list()

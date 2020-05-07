@@ -12,7 +12,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class CreateCategoryCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class CreateCategoryCommandHandlerTests
     {
         [Fact]
         public async Task should_create_category()

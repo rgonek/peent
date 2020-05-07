@@ -16,7 +16,8 @@ using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class EditTagCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class EditTagCommandHandlerTests
     {
         [Fact]
         public async Task should_edit_tag()

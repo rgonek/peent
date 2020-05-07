@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class DeleteCategoryCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class DeleteCategoryCommandHandlerTests
     {
         [Fact]
         public async Task should_delete_category()

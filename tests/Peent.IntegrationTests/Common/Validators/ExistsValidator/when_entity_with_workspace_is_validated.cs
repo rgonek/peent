@@ -8,7 +8,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Common.Validators.ExistsValidator
 {
-    public class when_entity_with_workspace_is_validated : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class when_entity_with_workspace_is_validated
     {
         [Fact]
         public async void and_entity_exists__does_not_return_error()

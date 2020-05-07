@@ -10,7 +10,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Categories
 {
-    public class GetCategoryQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetCategoryQueryHandlerTests
     {
         [Fact]
         public async Task when_category_exists__return_it()

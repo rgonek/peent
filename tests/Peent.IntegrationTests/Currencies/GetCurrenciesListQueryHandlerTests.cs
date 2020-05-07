@@ -10,7 +10,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class GetCurrenciesListQueryHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class GetCurrenciesListQueryHandlerTests
     {
         [Fact]
         public async Task should_returns_currencies_list()

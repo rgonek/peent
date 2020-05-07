@@ -15,7 +15,8 @@ using static FluentAssertions.FluentActions;
 
 namespace Peent.IntegrationTests.Tags
 {
-    public class CreateTagCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class CreateTagCommandHandlerTests
     {
         [Fact]
         public async Task should_create_tag()

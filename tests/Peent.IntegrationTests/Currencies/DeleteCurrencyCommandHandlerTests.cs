@@ -11,7 +11,8 @@ using static Peent.IntegrationTests.Infrastructure.DatabaseFixture;
 
 namespace Peent.IntegrationTests.Currencies
 {
-    public class DeleteCurrencyCommandHandlerTests : IClassFixture<IntegrationTest>
+    [Collection(nameof(SharedFixture))]
+    public class DeleteCurrencyCommandHandlerTests
     {
         [Fact]
         public async Task should_delete_currency()
