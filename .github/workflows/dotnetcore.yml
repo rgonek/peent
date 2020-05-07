@@ -22,4 +22,6 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      env: 
+        buildDbConnectionString: ${{ secrets.BuildDbConnectionString }}
       run: dotnet test --no-restore --verbosity normal
