@@ -9,9 +9,9 @@ namespace Peent.Application.Common.Validators.UniqueValidator
         where TEntity : class
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _userAccessor;
 
-        public UniquePredicate(IApplicationDbContext db, IUserAccessor userAccessor)
+        public UniquePredicate(IApplicationDbContext db, ICurrentContextService userAccessor)
         {
             Ensure.That(db, nameof(db)).IsNotNull();
             Ensure.That(userAccessor, nameof(userAccessor)).IsNotNull();

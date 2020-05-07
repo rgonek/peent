@@ -13,9 +13,9 @@ namespace Peent.Application.Transactions.Queries.GetTransaction
     public class GetTransactionQueryHandler : IRequestHandler<GetTransactionQuery, TransactionModel>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _userAccessor;
 
-        public GetTransactionQueryHandler(IApplicationDbContext db, IUserAccessor userAccessor)
+        public GetTransactionQueryHandler(IApplicationDbContext db, ICurrentContextService userAccessor)
         {
             _db = db;
             _userAccessor = userAccessor;

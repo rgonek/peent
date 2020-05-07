@@ -12,14 +12,14 @@ namespace Peent.Application.Tags.Queries.GetTagsList
     public class GetTagsListQueryHandler : IRequestHandler<GetTagsListQuery, PagedResult<TagModel>>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _currentContextService;
 
-        public GetTagsListQueryHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-            => (_db, _userAccessor) = (db, userAccessor);
+        public GetTagsListQueryHandler(IApplicationDbContext db, ICurrentContextService currentContextService)
+            => (_db, _currentContextService) = (db, currentContextService);
 
         public async Task<PagedResult<TagModel>> Handle(GetTagsListQuery query, CancellationToken token)
             => await _db.Tags
-                .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspaceId())
+                .Where(x => x.Workspace.Id == _currentContextService.Workspace.Id)
                 .ApplyFilters(query)
                 .ApplySort(query)
                 .GetPagedAsync(

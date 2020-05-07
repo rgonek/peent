@@ -33,19 +33,19 @@ namespace Peent.IntegrationTests.Common.Validators
 
         public static ValueTask<List<ValidationFailure>> ValidateAsync<TEntity>(
             object commandValue,
-            Func<IApplicationDbContext, IUserAccessor, IPropertyValidator> validatorFactory)
+            Func<IApplicationDbContext, ICurrentContextService, IPropertyValidator> validatorFactory)
             where TEntity : class
             => ValidateAsync<TEntity, TestCommand>(x => x.Id, commandValue, validatorFactory);
 
         public static ValueTask<List<ValidationFailure>> ValidateAsync<TEntity, TCommand>(
             Expression<Func<TCommand, object>> commandPropertyPicker,
             object commandValue,
-            Func<IApplicationDbContext, IUserAccessor, IPropertyValidator> validatorFactory)
+            Func<IApplicationDbContext, ICurrentContextService, IPropertyValidator> validatorFactory)
             where TEntity : class
             => ExecuteDbContextAsync(async db =>
             {
                 using var scope = ScopeFactory.CreateScope();
-                var userAccessor = scope.ServiceProvider.GetService<IUserAccessor>();
+                var userAccessor = scope.ServiceProvider.GetService<ICurrentContextService>();
                 var validator = validatorFactory(db, userAccessor);
 
                 var command = F.Build<TCommand>()

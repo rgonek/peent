@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -76,8 +77,10 @@ namespace Peent.Api
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
             services.AddHttpContextAccessor();
-            services.AddScoped<IUserAccessor, FakeUserAccessor>();
-            //services.AddScoped<IUserAccessor, UserAccessor>();
+            var fakeCurrentContextService = new FakeCurrentContextService(Guid.Parse("E78EECD3-87CA-4DBA-B5B2-861BC5A65F4A"),1);
+            services.AddSingleton<ICurrentContextService>(provider => fakeCurrentContextService);
+//            services.AddScoped<ICurrentContextService, FakeCurrentContextService>();
+//            services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddSwaggerGen(c =>
             {

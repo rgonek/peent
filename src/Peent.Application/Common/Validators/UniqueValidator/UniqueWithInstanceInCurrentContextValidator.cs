@@ -16,24 +16,24 @@ namespace Peent.Application.Common.Validators.UniqueValidator
         where TEntity : class
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _currentContextService;
         private readonly Func<T, object> _propertyFinder;
         private readonly Func<TEntity, T, Expression<Func<TEntity, bool>>> _predicate;
 
         public UniqueWithInstanceInCurrentContextValidator(
             IApplicationDbContext db,
-            IUserAccessor userAccessor,
+            ICurrentContextService currentContextService,
             Func<T, object> propertyFinder,
             Func<TEntity, T, Expression<Func<TEntity, bool>>> predicate)
             : base("Entity \"{EntityName}\" ({PropertyValue}) already exists.")
         {
             Ensure.That(db, nameof(db)).IsNotNull();
-            Ensure.That(userAccessor, nameof(userAccessor)).IsNotNull();
+            Ensure.That(currentContextService, nameof(currentContextService)).IsNotNull();
             Ensure.That(propertyFinder, nameof(propertyFinder)).IsNotNull();
             Ensure.That(predicate, nameof(predicate)).IsNotNull();
 
             _db = db;
-            _userAccessor = userAccessor;
+            _currentContextService = currentContextService;
             _propertyFinder = propertyFinder;
             _predicate = predicate;
         }
@@ -53,7 +53,7 @@ namespace Peent.Application.Common.Validators.UniqueValidator
             {
                 query = query
                     .OfType<IHaveWorkspace>()
-                    .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspace().Id)
+                    .Where(x => x.Workspace.Id == _currentContextService.Workspace.Id)
                     .OfType<TEntity>();
             }
 

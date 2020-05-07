@@ -11,9 +11,9 @@ namespace Peent.Application.Transactions.Commands.DeleteTransaction
     public class DeleteTransactionCommandHandler : IRequestHandler<DeleteTransactionCommand, Unit>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _userAccessor;
 
-        public DeleteTransactionCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
+        public DeleteTransactionCommandHandler(IApplicationDbContext db, ICurrentContextService userAccessor)
         {
             _db = db;
             _userAccessor = userAccessor;

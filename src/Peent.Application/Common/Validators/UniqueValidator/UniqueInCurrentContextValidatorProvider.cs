@@ -3,9 +3,9 @@ namespace Peent.Application.Common.Validators.UniqueValidator
     public class UniqueInCurrentContextValidatorProvider : IUniqueInCurrentContextValidatorProvider
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _userAccessor;
 
-        public UniqueInCurrentContextValidatorProvider(IApplicationDbContext db, IUserAccessor userAccessor)
+        public UniqueInCurrentContextValidatorProvider(IApplicationDbContext db, ICurrentContextService userAccessor)
             => (_db, _userAccessor) = (db, userAccessor);
 
         public IUniquePredicate<TEntity> In<TEntity>()

@@ -12,16 +12,16 @@ namespace Peent.Application.Common.Validators.ExistsValidator
         where TEntity : class
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _currentContextService;
 
-        public ExistsInCurrentContextValidator(IApplicationDbContext db, IUserAccessor userAccessor)
+        public ExistsInCurrentContextValidator(IApplicationDbContext db, ICurrentContextService currentContextService)
             : base("Entity \"{EntityName}\" ({PropertyValue}) was not found.")
         {
             Ensure.That(db, nameof(db)).IsNotNull();
-            Ensure.That(userAccessor, nameof(userAccessor)).IsNotNull();
+            Ensure.That(currentContextService, nameof(currentContextService)).IsNotNull();
 
             _db = db;
-            _userAccessor = userAccessor;
+            _currentContextService = currentContextService;
         }
 
         protected override async Task<bool> IsValidAsync(PropertyValidatorContext context,
@@ -43,7 +43,7 @@ namespace Peent.Application.Common.Validators.ExistsValidator
             var entityWithWorkspace = entity as IHaveWorkspace;
             await _db.Entry(entityWithWorkspace).Reference(x => x.Workspace).LoadAsync(cancellation);
 
-            return entityWithWorkspace.Workspace == _userAccessor.User.GetWorkspace();
+            return entityWithWorkspace.Workspace == _currentContextService.Workspace;
         }
     }
 }

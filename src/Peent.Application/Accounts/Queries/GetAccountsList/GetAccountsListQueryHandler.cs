@@ -13,15 +13,15 @@ namespace Peent.Application.Accounts.Queries.GetAccountsList
     public class GetAccountsListQueryHandler : IRequestHandler<GetAccountsListQuery, PagedResult<AccountModel>>
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _currentContextService;
 
-        public GetAccountsListQueryHandler(IApplicationDbContext db, IUserAccessor userAccessor)
-            => (_db, _userAccessor) = (db, userAccessor);
+        public GetAccountsListQueryHandler(IApplicationDbContext db, ICurrentContextService currentContextService)
+            => (_db, _currentContextService) = (db, currentContextService);
 
         public async Task<PagedResult<AccountModel>> Handle(GetAccountsListQuery query, CancellationToken token)
             => await _db.Accounts
                 .Include(x => x.Currency)
-                .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspaceId())
+                .Where(x => x.Workspace.Id == _currentContextService.Workspace.Id)
                 .ApplyFilters(query)
                 .ApplySort(query)
                 .GetPagedAsync(

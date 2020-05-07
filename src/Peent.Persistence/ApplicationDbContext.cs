@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Peent.Application;
-using Peent.Application.Common.Extensions;
 using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
@@ -18,14 +17,14 @@ namespace Peent.Persistence
         IApplicationDbContext
     {
         private IDbContextTransaction _currentTransaction;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _currentContextService;
 
         public ApplicationDbContext(
             DbContextOptions options,
-            IUserAccessor userAccessor)
+            ICurrentContextService currentContextService)
             : base(options)
         {
-            _userAccessor = userAccessor;
+            _currentContextService = currentContextService;
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -50,13 +49,13 @@ namespace Peent.Persistence
                 {
                     case EntityState.Added:
                     {
-                        entry.Entity.SetCreatedBy(_userAccessor.User.GetUser());
+                        entry.Entity.SetCreatedBy(_currentContextService.User);
                         Entry(entry.Entity.Created.By).State = EntityState.Unchanged;
                     }
                         break;
                     case EntityState.Modified:
                     {
-                        entry.Entity.SetModifiedBy(_userAccessor.User.GetUser());
+                        entry.Entity.SetModifiedBy(_currentContextService.User);
                         Entry(entry.Entity.LastModified.By).State = EntityState.Unchanged;
                     }
                         break;
@@ -69,7 +68,7 @@ namespace Peent.Persistence
                 {
                     case EntityState.Added:
                     {
-                        entry.Entity.SetWorkspace(_userAccessor.User.GetWorkspace());
+                        entry.Entity.SetWorkspace(_currentContextService.Workspace);
                         Entry(entry.Entity.Workspace).State = EntityState.Unchanged;
                     }
                         break;

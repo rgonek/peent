@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
 using MediatR;
@@ -15,8 +14,6 @@ using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 using System.Linq.Dynamic.Core;
-using Moq;
-using Peent.Application.Common;
 using Peent.Application.Common.DynamicQuery.Sorts;
 using Respawn;
 
@@ -27,7 +24,7 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly Checkpoint Checkpoint;
         private static readonly IConfigurationRoot Configuration;
         public static readonly IServiceScopeFactory ScopeFactory;
-        private static ClaimsPrincipal _currentUser;
+        public static readonly FakeCurrentContextService FakeCurrentContextService;
 
         static DatabaseFixture()
         {
@@ -35,6 +32,7 @@ namespace Peent.IntegrationTests.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables();
+            FakeCurrentContextService = new FakeCurrentContextService();
             Configuration = builder.Build();
 
             var services = new ServiceCollection();
@@ -60,9 +58,9 @@ namespace Peent.IntegrationTests.Infrastructure
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             var currentUserServiceDescriptor = services.FirstOrDefault(d =>
-                d.ServiceType == typeof(IUserAccessor));
+                d.ServiceType == typeof(ICurrentContextService));
             services.Remove(currentUserServiceDescriptor);
-            services.AddTransient(provider => Mock.Of<IUserAccessor>(s => s.User == _currentUser));
+            services.AddSingleton<ICurrentContextService>(provider => FakeCurrentContextService);
 
             services.AddMediatR(typeof(GetCategoryQueryHandler));
         }
@@ -70,7 +68,7 @@ namespace Peent.IntegrationTests.Infrastructure
         public static async Task ResetState()
         {
             await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
-            _currentUser = null;
+            FakeCurrentContextService.Reset();
         }
 
         private static async Task EnsureDatabase()
@@ -257,14 +255,7 @@ namespace Peent.IntegrationTests.Infrastructure
         }
 
         private static void SetCurrentUser(ApplicationUser user, Workspace workspace = null)
-        {
-            _currentUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(KnownClaims.WorkspaceId, workspace is null ? "" : workspace.Id.ToString())
-            }, "mock"));
-        }
+            => FakeCurrentContextService.SetCurrentContext(user, workspace);
 
         public static async Task<RunAsContext> RunAsNewUserAsync(Workspace workspace = null)
         {
@@ -277,9 +268,7 @@ namespace Peent.IntegrationTests.Infrastructure
         }
 
         public static void RunAs(RunAsContext context)
-        {
-            SetCurrentUser(context.User, context.Workspace);
-        }
+            => SetCurrentUser(context.User, context.Workspace);
 
         public static RunAsContext RunAs(ApplicationUser user, Workspace workspace)
         {

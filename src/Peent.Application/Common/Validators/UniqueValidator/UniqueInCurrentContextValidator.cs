@@ -16,12 +16,12 @@ namespace Peent.Application.Common.Validators.UniqueValidator
         where TEntity : class
     {
         private readonly IApplicationDbContext _db;
-        private readonly IUserAccessor _userAccessor;
+        private readonly ICurrentContextService _userAccessor;
         private readonly Func<T, Expression<Func<TEntity, bool>>> _predicate;
 
         public UniqueInCurrentContextValidator(
             IApplicationDbContext db,
-            IUserAccessor userAccessor,
+            ICurrentContextService userAccessor,
             Func<T, Expression<Func<TEntity, bool>>> predicate)
             : base("Entity \"{EntityName}\" ({PropertyValue}) already exists.")
         {
@@ -46,7 +46,7 @@ namespace Peent.Application.Common.Validators.UniqueValidator
             {
                 query = query
                     .OfType<IHaveWorkspace>()
-                    .Where(x => x.Workspace.Id == _userAccessor.User.GetWorkspace().Id)
+                    .Where(x => x.Workspace.Id == _userAccessor.Workspace.Id)
                     .OfType<TEntity>();
             }
 

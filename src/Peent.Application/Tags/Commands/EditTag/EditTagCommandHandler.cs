@@ -9,7 +9,7 @@ namespace Peent.Application.Tags.Commands.EditTag
     {
         private readonly IApplicationDbContext _db;
 
-        public EditTagCommandHandler(IApplicationDbContext db, IUserAccessor userAccessor)
+        public EditTagCommandHandler(IApplicationDbContext db, ICurrentContextService userAccessor)
             => _db = db;
 
         public async Task<Unit> Handle(EditTagCommand command, CancellationToken token)
