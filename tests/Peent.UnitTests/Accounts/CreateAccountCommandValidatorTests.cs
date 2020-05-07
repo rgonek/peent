@@ -14,6 +14,8 @@ namespace Peent.UnitTests.Accounts
     {
         public CreateAccountCommandValidatorTests(ITestOutputHelper output)
         {
+            Console.WriteLine("Secret test");
+            Console.WriteLine("Secret " + Environment.GetEnvironmentVariable("SuperSecret"));
             output.WriteLine("Secret: " + Environment.GetEnvironmentVariable("SuperSecret"));
         }
         
