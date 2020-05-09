@@ -25,6 +25,8 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly IConfigurationRoot Configuration;
         public static readonly IServiceScopeFactory ScopeFactory;
         public static readonly FakeCurrentContextService FakeCurrentContextService;
+        private static readonly bool UseSqlServer =
+            string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
 
         static DatabaseFixture()
         {
@@ -47,13 +49,15 @@ namespace Peent.IntegrationTests.Infrastructure
                 }
             };
 
-//            EnsureDatabase().GetAwaiter().GetResult();
+            if (UseSqlServer)
+            {
+                EnsureDatabase().GetAwaiter().GetResult();
+            }
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var useSqlServer = string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
-            if (useSqlServer)
+            if (UseSqlServer)
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -75,7 +79,10 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public static async Task ResetState()
         {
-            await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+            if (UseSqlServer)
+            {
+                await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+            }
             FakeCurrentContextService.Reset();
         }
 
