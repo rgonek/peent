@@ -47,16 +47,22 @@ namespace Peent.IntegrationTests.Infrastructure
                 }
             };
 
-            EnsureDatabase().GetAwaiter().GetResult();
+//            EnsureDatabase().GetAwaiter().GetResult();
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var environmentConnectionString = Environment.GetEnvironmentVariable("BuildDbConnectionString");
-            var connectionString = string.IsNullOrWhiteSpace(environmentConnectionString)
-                ? Configuration.GetConnectionString("DefaultConnection")
-                : environmentConnectionString;
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            var useSqlServer = string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
+            if (useSqlServer)
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=Peent.sqlite"));
+            }
+
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
             var currentUserServiceDescriptor = services.FirstOrDefault(d =>
