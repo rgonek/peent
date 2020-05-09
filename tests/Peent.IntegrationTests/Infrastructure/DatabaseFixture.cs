@@ -57,7 +57,7 @@ namespace Peent.IntegrationTests.Infrastructure
         {
             var _ = IsGithubActions
                 ? services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("MySqlConnection")))
+                    options.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection")))
                 : services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -74,7 +74,7 @@ namespace Peent.IntegrationTests.Infrastructure
         public static async Task ResetState()
         {
             await Checkpoint.Reset(IsGithubActions
-                ? Configuration.GetConnectionString("MySqlConnection")
+                ? Configuration.GetConnectionString("NpgsqlConnection")
                 : Configuration.GetConnectionString("DefaultConnection"));
 
             FakeCurrentContextService.Reset();
