@@ -64,7 +64,8 @@ namespace Peent.IntegrationTests.Infrastructure
             }
             else
             {
-                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=Peent.sqlite"));
+                services.AddDbContext<ApplicationDbContext>(options => 
+                    options.UseSqlite("Data Source=Peent.sqlite"));
             }
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
