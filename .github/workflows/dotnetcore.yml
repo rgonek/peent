@@ -8,25 +8,23 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     services:
       mysql:
           image: mysql:5.7
           env:
-              MYSQL_ALLOW_EMPTY_PASSWORD: yes
+              MYSQL_ROOT_PASSWORD: password
               MYSQL_DATABASE: peent-test
           ports:
-              - 3306
+              - 32574:3306
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Verify MySQL connection from container 
+    - name: Verify MySQL connection from host
       run: |
-        apt-get update
-        apt-get install -y mysql-client
-        mysql --host mysql -e "SHOW DATABASES"
+        sudo apt-get install -y mysql-client
+        mysql --host 127.0.0.1 --port 32574 -uroot -ppassword -e "SHOW DATABASES"
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
