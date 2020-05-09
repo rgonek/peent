@@ -25,8 +25,9 @@ namespace Peent.IntegrationTests.Infrastructure
         private static readonly IConfigurationRoot Configuration;
         public static readonly IServiceScopeFactory ScopeFactory;
         public static readonly FakeCurrentContextService FakeCurrentContextService;
-        private static readonly bool UseSqlServer =
-            string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
+
+        private static readonly bool IsGithubActions =
+            string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")) == false;
 
         static DatabaseFixture()
         {
@@ -49,24 +50,16 @@ namespace Peent.IntegrationTests.Infrastructure
                 }
             };
 
-            if (UseSqlServer)
-            {
-                EnsureDatabase().GetAwaiter().GetResult();
-            }
+            EnsureDatabase().GetAwaiter().GetResult();
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            if (UseSqlServer)
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
+            var _ = IsGithubActions
+                ? services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString("MySqlConnection")))
+                : services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            }
-            else
-            {
-                services.AddDbContext<ApplicationDbContext>(options => 
-                    options.UseSqlite("Data Source=Peent.sqlite"));
-            }
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
@@ -80,10 +73,10 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public static async Task ResetState()
         {
-            if (UseSqlServer)
-            {
-                await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
-            }
+            await Checkpoint.Reset(IsGithubActions
+                ? Configuration.GetConnectionString("MySqlConnection")
+                : Configuration.GetConnectionString("DefaultConnection"));
+
             FakeCurrentContextService.Reset();
         }
 
