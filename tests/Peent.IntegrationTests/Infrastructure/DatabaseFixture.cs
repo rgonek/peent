@@ -55,10 +55,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var _ = IsGithubActions
-                ? services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("NpgsqlConnection")))
-                : services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
@@ -73,9 +70,7 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public static async Task ResetState()
         {
-            await Checkpoint.Reset(IsGithubActions
-                ? Configuration.GetConnectionString("NpgsqlConnection")
-                : Configuration.GetConnectionString("DefaultConnection"));
+            await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
 
             FakeCurrentContextService.Reset();
         }

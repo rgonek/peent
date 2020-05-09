@@ -18,7 +18,8 @@ namespace Peent.Persistence.Configurations
 
             builder.HasOne(x => x.Account)
                 .WithMany()
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.OwnsOne(x => x.Money, b =>
             {
