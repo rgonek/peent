@@ -14,6 +14,7 @@ using Peent.Domain.Common;
 using Peent.Domain.Entities;
 using Peent.Persistence;
 using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Peent.Application.Common.DynamicQuery.Sorts;
 using Respawn;
 
@@ -50,12 +51,19 @@ namespace Peent.IntegrationTests.Infrastructure
                 }
             };
 
-            EnsureDatabase().GetAwaiter().GetResult();
+            if (IsGithubActions == false)
+            {
+                EnsureDatabase().GetAwaiter().GetResult();
+            }
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            var _ = IsGithubActions
+                ? services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseInMemoryDatabase("TestDb")
+                        .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning)))
+                : services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
@@ -70,7 +78,10 @@ namespace Peent.IntegrationTests.Infrastructure
 
         public static async Task ResetState()
         {
-            await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+            if (IsGithubActions == false)
+            {
+                await Checkpoint.Reset(Configuration.GetConnectionString("DefaultConnection"));
+            }
 
             FakeCurrentContextService.Reset();
         }
