@@ -14,7 +14,7 @@ namespace Peent.IntegrationTests.Transactions
     [Collection(nameof(SharedFixture))]
     public class CreateTransactionCommandHandlerTests
     {
-        [Fact(Skip = "Skip until fix.")]
+        [Fact]
         public async Task should_create_transaction()
         {
             await RunAsNewUserAsync();

@@ -7,9 +7,13 @@ using FluentAssertions;
 using Peent.Common;
 using Peent.CommonTests.AutoFixture;
 using Peent.Domain.Entities;
+using Peent.Domain.ValueObjects;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
 using Sut = Peent.Domain.Entities.TransactionAggregate.Transaction;
+using AccountEntity = Peent.Domain.Entities.Account;
+using TagEntity = Peent.Domain.Entities.Tag;
+using CategoryEntity = Peent.Domain.Entities.Category;
 
 namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
 {
@@ -20,15 +24,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         public Transaction_Ctor_Tests()
         {
             _fixture.Customizations.Insert(0, new FixedConstructorParameter<AccountType>(
-                AccountType.Asset, nameof(Peent.Domain.Entities.Account.Type).FirstDown()));
-            var entries = new List<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>
-            {
-                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>(),
-                _fixture.Create<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>()
-            };
-            _fixture.Customizations.Add(
-                new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.TransactionAggregate.TransactionEntry>>(
-                    entries, nameof(Sut.Entries).FirstDown()));
+                AccountType.Asset, nameof(AccountEntity.Type).FirstDown()));
         }
 
         [Theory]
@@ -83,7 +79,7 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         public void when_category_is_null__throws_argument_exception()
         {
             var parameterName = nameof(Sut.Category).FirstDown();
-            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Category>(null, parameterName);
+            var customizer = new FixedConstructorParameter<CategoryEntity>(null, parameterName);
             _fixture.Customizations.Add(customizer);
 
             Action act = () => Create<Sut>(_fixture);
@@ -95,8 +91,8 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         [Fact]
         public void when_category_is_not_null__does_not_throw()
         {
-            var category = _fixture.Create<Peent.Domain.Entities.Category>();
-            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Category>(
+            var category = _fixture.Create<CategoryEntity>();
+            var customizer = new FixedConstructorParameter<CategoryEntity>(
                 category, nameof(Sut.Category).FirstDown());
             _fixture.Customizations.Add(customizer);
 
@@ -109,8 +105,8 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         public void when_from_account_is_null__throws_argument_exception()
         {
             var parameterName = "from" + nameof(Peent.Domain.Entities.Account);
-            Peent.Domain.Entities.Account account = null;
-            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Account>(
+            AccountEntity account = null;
+            var customizer = new FixedConstructorParameter<AccountEntity>(
                 account, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
@@ -124,8 +120,8 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
         public void when_to_account_is_null__throws_argument_exception()
         {
             var parameterName = "to" + nameof(Peent.Domain.Entities.Account);
-            Peent.Domain.Entities.Account account = null;
-            var customizer = new FixedConstructorParameter<Peent.Domain.Entities.Account>(
+            AccountEntity account = null;
+            var customizer = new FixedConstructorParameter<AccountEntity>(
                 account, parameterName);
             _fixture.Customizations.Insert(1, customizer);
 
@@ -135,17 +131,17 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
                 .WithMessage($"*{parameterName}*");
         }
 
-        [Fact(Skip = "Skip until fix")]
+        [Fact]
         public void when_tags_are_null__does_not_throw()
         {
-            var parameterName = nameof(Sut.TransactionTags).FirstDown();
-            var customizer = new FixedConstructorParameter<IEnumerable<Peent.Domain.Entities.Tag>>(
-                null, parameterName);
-            _fixture.Customizations.Add(customizer);
-            _fixture.Customize<Sut>(c =>
-                c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
-
-            var transaction = Create<Sut>(_fixture);
+            var transaction = new Sut(
+                _fixture.Create<string>(),
+                _fixture.Create<DateTime>(),
+                _fixture.Create<CategoryEntity>(),
+                _fixture.Create<decimal>(),
+                _fixture.Create<AccountEntity>(),
+                _fixture.Create<AccountEntity>(), 
+                tags: null);
 
             transaction.TransactionTags.Should().BeEmpty();
         }
@@ -156,11 +152,11 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
             var title = _fixture.Create<string>();
             var date = _fixture.Create<DateTime>();
             var description = _fixture.Create<string>();
-            var category = _fixture.Create<Peent.Domain.Entities.Category>();
-            var tags = _fixture.Create<List<Peent.Domain.Entities.Tag>>();
+            var category = _fixture.Create<CategoryEntity>();
+            var tags = _fixture.Create<List<TagEntity>>();
             var amount = _fixture.Create<decimal>();
-            var fromAccount = _fixture.Create<Peent.Domain.Entities.Account>();
-            var toAccount = _fixture.Create<Peent.Domain.Entities.Account>();
+            var fromAccount = _fixture.Create<AccountEntity>();
+            var toAccount = _fixture.Create<AccountEntity>();
 
             var transaction = new Sut(title, date, description, category, amount, fromAccount, toAccount, tags);
 
@@ -168,9 +164,12 @@ namespace Peent.UnitTests.Domain.Entities.TransactionAggregate.Transaction
             transaction.Date.Should().Be(date);
             transaction.Description.Should().Be(description);
             transaction.Category.Should().Be(category);
-            // TODO: check entries
-            //transaction.Entries.Should().BeEquivalentTo(entries);
             transaction.TransactionTags.Select(x => x.Tag).Should().BeEquivalentTo(tags);
+            transaction.Entries.Should().HaveCount(2);
+            transaction.Entries.First().Account.Should().Be(fromAccount);
+            transaction.Entries.First().Money.Should().Be(new Money(amount, fromAccount.Currency));
+            transaction.Entries.Last().Account.Should().Be(toAccount);
+            transaction.Entries.Last().Money.Should().Be(new Money(-amount, toAccount.Currency));
         }
     }
 }
