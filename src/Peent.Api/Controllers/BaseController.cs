@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Peent.Application.Exceptions;
+using Peent.Application.Common.Exceptions;
 
 namespace Peent.Api.Controllers
 {

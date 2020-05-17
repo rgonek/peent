@@ -18,7 +18,7 @@ namespace Peent.IntegrationTests.Categories
         [Fact]
         public async Task should_create_category()
         {
-            var runAs = await RunAsNewUserAsync();
+            await RunAsNewUserAsync();
             var command = F.Create<CreateCategoryCommand>();
 
             var categoryId = await SendAsync(command);

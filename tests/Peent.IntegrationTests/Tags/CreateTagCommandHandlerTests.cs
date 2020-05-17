@@ -6,7 +6,6 @@ using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Tags.Commands.CreateTag;
 using Peent.Application.Tags.Commands.DeleteTag;
-using Peent.Application.Exceptions;
 using Peent.Common.Time;
 using Peent.IntegrationTests.Infrastructure;
 using static Peent.CommonTests.Infrastructure.TestFixture;

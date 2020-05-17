@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Peent.Application.Common;
-using Peent.Application.Exceptions;
+using Peent.Application.Common.Exceptions;
 using Peent.Domain.Entities;
 using Peent.Domain.Entities.TransactionAggregate;
 

@@ -3,7 +3,6 @@ using Peent.Application.Currencies.Queries.GetCurrency;
 using AutoFixture;
 using FluentAssertions;
 using Peent.Application.Currencies.Commands.CreateCurrency;
-using Peent.Application.Exceptions;
 using Peent.IntegrationTests.Infrastructure;
 using Xunit;
 using static Peent.CommonTests.Infrastructure.TestFixture;
