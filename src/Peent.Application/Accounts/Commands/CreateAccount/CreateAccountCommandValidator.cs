@@ -16,8 +16,8 @@ namespace Peent.Application.Accounts.Commands.CreateAccount
                 .NotEmpty()
                 .MaximumLength(1000)
                 .Must(beUnique.In<Account>()
-                    .WhereNot<CreateAccountCommand>(cmd => x => 
-                        x.Name == cmd.Name && 
+                    .WhereNot<CreateAccountCommand>(cmd => x =>
+                        x.Name == cmd.Name &&
                         x.Type == cmd.Type));
             RuleFor(x => x.Description)
                 .MaximumLength(2000);

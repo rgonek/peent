@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Dynamic.Core.CustomTypeProviders;
+using System.Reflection;
 
 namespace Peent.Application.Common.DynamicQuery
 {
@@ -16,6 +17,11 @@ namespace Peent.Application.Common.DynamicQuery
             set.Add(typeof(Microsoft.EntityFrameworkCore.DbFunctionsExtensions));
 
             return set;
+        }
+
+        public Dictionary<Type, List<MethodInfo>> GetExtensionMethods()
+        {
+            return new Dictionary<Type, List<MethodInfo>>();
         }
 
         public Type ResolveType(string typeName)

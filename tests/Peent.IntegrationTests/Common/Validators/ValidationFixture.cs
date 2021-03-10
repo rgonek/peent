@@ -52,7 +52,7 @@ namespace Peent.IntegrationTests.Common.Validators
                     .With(commandPropertyPicker, commandValue)
                     .Create();
 
-                var validationContext = new ValidationContext(command);
+                var validationContext = new ValidationContext<TCommand>(command);
                 var rule = PropertyRule.Create(commandPropertyPicker);
                 var propertyValidatorContext = new PropertyValidatorContext(validationContext, rule, "");
                 return (await validator.ValidateAsync(propertyValidatorContext, default)).ToList();

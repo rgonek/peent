@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using EnsureThat;
 using FluentValidation.Validators;
 using Microsoft.EntityFrameworkCore;
-using Peent.Application.Common.Extensions;
 using Peent.Domain.Common;
 
 namespace Peent.Application.Common.Validators.UniqueValidator
 {
-    public class UniqueInCurrentContextValidator<T, TEntity> : AsyncValidatorBase,
+    public class UniqueInCurrentContextValidator<T, TEntity> :
+        AsyncValidatorBase,
         IUniqueInCurrentContextValidator
         where TEntity : class
     {
@@ -23,7 +23,6 @@ namespace Peent.Application.Common.Validators.UniqueValidator
             IApplicationDbContext db,
             ICurrentContextService userAccessor,
             Func<T, Expression<Func<TEntity, bool>>> predicate)
-            : base("Entity \"{EntityName}\" ({PropertyValue}) already exists.")
         {
             Ensure.That(db, nameof(db)).IsNotNull();
             Ensure.That(userAccessor, nameof(userAccessor)).IsNotNull();
@@ -34,15 +33,18 @@ namespace Peent.Application.Common.Validators.UniqueValidator
             _predicate = predicate;
         }
 
-        protected override async Task<bool> IsValidAsync(PropertyValidatorContext context,
+        protected override string GetDefaultMessageTemplate() => "Entity \"{EntityName}\" ({PropertyValue}) already exists.";
+
+        protected override async Task<bool> IsValidAsync(
+            PropertyValidatorContext context,
             CancellationToken cancellation)
         {
-            var typeEntity = typeof(TEntity);
-            context.MessageFormatter.AppendArgument("EntityName", typeEntity.Name);
+            var entityType = typeof(TEntity);
+            context.MessageFormatter.AppendArgument("EntityName", entityType.Name);
 
-            var query = _db.Set<TEntity>().Where(_predicate((T)context.Instance));
+            var query = _db.Set<TEntity>().Where(_predicate((T)context.InstanceToValidate));
 
-            if (typeof(IHaveWorkspace).IsAssignableFrom(typeEntity))
+            if (typeof(IHaveWorkspace).IsAssignableFrom(entityType))
             {
                 query = query
                     .OfType<IHaveWorkspace>()
