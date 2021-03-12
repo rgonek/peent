@@ -1,5 +1,4 @@
-﻿#nullable enable
-using EnsureThat;
+﻿using EnsureThat;
 using Peent.Domain.Common;
 using Peent.Domain.ValueObjects;
 
@@ -9,7 +8,7 @@ namespace Peent.Domain.Entities.TransactionAggregate
     {
         public Transaction Transaction { get; private set; }
         public Account Account { get; private set; }
-        
+
         public Money Money { get; private set; }
 
         private TransactionEntry() { }

@@ -48,7 +48,7 @@ namespace Peent.Api
 
             services.AddControllers(options =>
                 {
-                    var workerProvider = options.ModelBinderProviders.First(p => p.GetType() == typeof(ComplexTypeModelBinderProvider));
+                    var workerProvider = options.ModelBinderProviders.First(p => p.GetType() == typeof(ComplexObjectModelBinderProvider));
                     var workerProviderIndex = options.ModelBinderProviders.IndexOf(workerProvider);
                     var paginationBinderProvider = new PaginationModelBinderProvider(workerProvider);
                     var sortsBinderProvider = new SortsModelBinderProvider(paginationBinderProvider);

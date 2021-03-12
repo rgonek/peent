@@ -53,9 +53,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
-            <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.0.0-preview8.19405.7\ref\netcoreapp3.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
             <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.0.0-preview8.19405.7\ref\netcoreapp3.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
         </Reference>
